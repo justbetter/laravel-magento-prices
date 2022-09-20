@@ -1,0 +1,62 @@
+{
+    "name": "justbetter/laravel-magento-prices",
+    "description": "Generic package to push prices to Magento",
+    "type": "package",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "brick/money": "^0.5",
+        "justbetter/laravel-error-logger": "*",
+        "justbetter/laravel-magento-client": "^1.0",
+        "justbetter/laravel-magento-products": "^1.0",
+        "laravel/framework": "^9.0",
+        "spatie/laravel-activitylog": "^4.5"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.2",
+        "nunomaduro/larastan": "^2.2",
+        "orchestra/testbench": "^6.0 || ^7.0",
+        "phpstan/phpstan-mockery": "^1.1",
+        "phpunit/phpunit": "^9.5.10",
+        "doctrine/dbal": "^3.4"
+    },
+    "authors": [
+        {
+            "name": "Vincent Boon",
+            "email": "vincent@justbetter.nl",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JustBetter\\MagentoPrices\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JustBetter\\MagentoPrices\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan",
+        "style": "pint --test",
+        "quality": [
+            "@test",
+            "@analyse",
+            "@style"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JustBetter\\MagentoPrices\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
