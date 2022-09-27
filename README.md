@@ -13,7 +13,7 @@ This package can:
 - Automatically stop syncing when updating fails
 - Logs activities using [Spatie activitylog](https://github.com/spatie/laravel-activitylog)
 - Logs errors using [JustBetter Error Logger](https://github.com/justbetter/laravel-error-logger)
-- Checks if Magento products exist using [JustBetter Magento Products](https://bitbucket.org/just-better/laravel-magento-products)
+- Checks if Magento products exist using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 
 ## Installation
 
@@ -33,7 +33,6 @@ Run migrations.
 
 ## Usage
 
-Require this package and create your own price retriever.
 Add the following commands to your scheduler:
 ```php
 <?php
