@@ -13,8 +13,6 @@ class SyncPricesCommand extends Command
 
     public function handle(): int
     {
-        $this->info('Dispatching...');
-
         if ($this->option('sync')) {
             /** @phpstan-ignore-next-line */
             SyncPricesJob::dispatchSync($this->argument('limit'), $this->argument('limit'));
@@ -22,8 +20,6 @@ class SyncPricesCommand extends Command
             /** @phpstan-ignore-next-line */
             SyncPricesJob::dispatch($this->argument('limit'), $this->argument('limit'));
         }
-
-        $this->info('Done!');
 
         return static::SUCCESS;
     }
