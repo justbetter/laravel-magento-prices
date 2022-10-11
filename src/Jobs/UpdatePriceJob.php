@@ -9,7 +9,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Data\PriceData;
-use JustBetter\MagentoPrices\Exceptions\SkuNotFoundException;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 
