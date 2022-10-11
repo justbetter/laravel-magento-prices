@@ -3,7 +3,6 @@
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoPrices\Exceptions\SkuNotFoundException;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoBasePricesJob;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoSpecialPricesJob;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoTierPricesJob;
