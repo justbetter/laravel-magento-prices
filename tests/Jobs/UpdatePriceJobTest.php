@@ -3,7 +3,6 @@
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoPrices\Exceptions\SkuNotFoundException;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoBasePricesJob;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoSpecialPricesJob;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoTierPricesJob;
@@ -37,16 +36,6 @@ class UpdatePriceJobTest extends TestCase
         ]);
     }
 
-    public function test_it_throws_exception_when_sku_does_not_exist(): void
-    {
-        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
-            $mock->shouldNotReceive('exists');
-        });
-
-        $this->expectException(SkuNotFoundException::class);
-        UpdatePriceJob::dispatchSync('::sku_that_does_not_exist::');
-    }
-
     public function test_it_checks_existence(): void
     {
         MagentoPrice::query()->create([
@@ -66,7 +55,6 @@ class UpdatePriceJobTest extends TestCase
 
         $this->assertFalse($model->update);
         $this->assertFalse($model->sync);
-        $this->assertEquals(1, $model->errors()->count());
     }
 
     public function test_it_dispatches_update_jobs(): void
