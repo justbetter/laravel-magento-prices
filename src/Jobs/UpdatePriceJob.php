@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Exceptions\SkuNotFoundException;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
@@ -33,17 +32,10 @@ class UpdatePriceJob implements ShouldQueue, ShouldBeUnique
         $model = MagentoPrice::findBySku($this->sku);
 
         if ($model === null) {
-            throw new SkuNotFoundException($this->sku);
+            return;
         }
 
         if (! $checksMagentoExistence->exists($model->sku)) {
-            Error::log()
-                ->withGroup('Prices')
-                ->withMessage("Product $model->sku not found in Magento")
-                ->withModel($model)
-                ->hideFromIndex()
-                ->save();
-
             $model->update([
                 'update' => false,
                 'sync' => false,
