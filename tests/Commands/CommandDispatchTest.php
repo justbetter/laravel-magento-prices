@@ -3,10 +3,12 @@
 namespace JustBetter\MagentoPrices\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
+use JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand;
 use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
 use JustBetter\MagentoPrices\Commands\SearchMissingPricesCommand;
 use JustBetter\MagentoPrices\Commands\SyncPricesCommand;
 use JustBetter\MagentoPrices\Commands\UpdatePriceCommand;
+use JustBetter\MagentoPrices\Jobs\MonitorWaitTimesJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePriceJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePricesJob;
 use JustBetter\MagentoPrices\Jobs\SyncMissingPricesJob;
@@ -62,6 +64,10 @@ class CommandDispatchTest extends TestCase
             'Search missing' => [
                 SearchMissingPricesCommand::class,
                 SyncMissingPricesJob::class,
+            ],
+            'Monitor wait times' => [
+                MonitorWaitTimesCommand::class,
+                MonitorWaitTimesJob::class,
             ],
         ];
     }

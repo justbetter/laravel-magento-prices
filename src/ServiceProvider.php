@@ -5,11 +5,13 @@ namespace JustBetter\MagentoPrices;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JustBetter\MagentoPrices\Actions\CheckTierDuplicates;
 use JustBetter\MagentoPrices\Actions\FindProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Actions\MonitorWaitTimes;
 use JustBetter\MagentoPrices\Actions\ProcessPrice;
 use JustBetter\MagentoPrices\Actions\SyncPrices;
 use JustBetter\MagentoPrices\Actions\UpdateMagentoBasePrice;
 use JustBetter\MagentoPrices\Actions\UpdateMagentoSpecialPrices;
 use JustBetter\MagentoPrices\Actions\UpdateMagentoTierPrices;
+use JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand;
 use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
 use JustBetter\MagentoPrices\Commands\SearchMissingPricesCommand;
 use JustBetter\MagentoPrices\Commands\SyncPricesCommand;
@@ -35,6 +37,8 @@ class ServiceProvider extends BaseServiceProvider
 
         SyncPrices::bind();
         ProcessPrice::bind();
+
+        MonitorWaitTimes::bind();
 
         return $this;
     }
@@ -66,6 +70,7 @@ class ServiceProvider extends BaseServiceProvider
                 SyncPricesCommand::class,
                 UpdatePriceCommand::class,
                 SearchMissingPricesCommand::class,
+                MonitorWaitTimesCommand::class,
             ]);
         }
 
