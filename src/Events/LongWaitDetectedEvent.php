@@ -4,7 +4,7 @@ namespace JustBetter\MagentoPrices\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 
-class LongWaitDetected
+class LongWaitDetectedEvent
 {
     use Dispatchable;
 

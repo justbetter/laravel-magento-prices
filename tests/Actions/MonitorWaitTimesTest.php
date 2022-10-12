@@ -4,7 +4,7 @@ namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoPrices\Actions\MonitorWaitTimes;
-use JustBetter\MagentoPrices\Events\LongWaitDetected;
+use JustBetter\MagentoPrices\Events\LongWaitDetectedEvent;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
@@ -31,7 +31,7 @@ class MonitorWaitTimesTest extends TestCase
 
         $action->monitor();
 
-        Event::assertDispatched(LongWaitDetected::class, function (LongWaitDetected $event) {
+        Event::assertDispatched(LongWaitDetectedEvent::class, function (LongWaitDetectedEvent $event) {
             return $event->type === 'retrieve' && $event->wait === 10;
         });
     }
@@ -57,7 +57,7 @@ class MonitorWaitTimesTest extends TestCase
 
         $action->monitor();
 
-        Event::assertNotDispatched(LongWaitDetected::class);
+        Event::assertNotDispatched(LongWaitDetectedEvent::class);
     }
 
     public function test_update_wait_times_dispatches_event(): void
@@ -81,7 +81,7 @@ class MonitorWaitTimesTest extends TestCase
 
         $action->monitor();
 
-        Event::assertDispatched(LongWaitDetected::class, function (LongWaitDetected $event) {
+        Event::assertDispatched(LongWaitDetectedEvent::class, function (LongWaitDetectedEvent $event) {
             return $event->type === 'update' && $event->wait === 10;
         });
     }
@@ -107,6 +107,6 @@ class MonitorWaitTimesTest extends TestCase
 
         $action->monitor();
 
-        Event::assertNotDispatched(LongWaitDetected::class);
+        Event::assertNotDispatched(LongWaitDetectedEvent::class);
     }
 }

@@ -176,7 +176,7 @@ The sync limits the amount of products that are retrieved/updated each sync.
 This may result in long waits if not properly configured for the amount of updates you get.
 
 To detect this you can add the `\JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand` to your schedule.
-This will fire the `\JustBetter\MagentoPrices\Events\LongWaitDetected` event in which you can for example trigger more updates or send a notification.
+This will fire the `\JustBetter\MagentoPrices\Events\LongWaitDetectedEvent` event in which you can for example trigger more updates or send a notification.
 
 You can configure the limits of when the event will be fired in the config:
 ```php

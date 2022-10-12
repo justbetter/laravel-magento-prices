@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoPrices\Actions;
 
 use JustBetter\MagentoPrices\Contracts\MonitorsWaitTimes;
-use JustBetter\MagentoPrices\Events\LongWaitDetected;
+use JustBetter\MagentoPrices\Events\LongWaitDetectedEvent;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 
 class MonitorWaitTimes implements MonitorsWaitTimes
@@ -27,7 +27,7 @@ class MonitorWaitTimes implements MonitorsWaitTimes
         $wait = $waitingCount / $retrievalsPerMinute;
 
         if ($wait > $maxWaitTime) {
-            event(new LongWaitDetected('retrieve', $wait));
+            event(new LongWaitDetectedEvent('retrieve', $wait));
         }
     }
 
@@ -44,7 +44,7 @@ class MonitorWaitTimes implements MonitorsWaitTimes
         $wait = $waitingCount / $retrievalsPerMinute;
 
         if ($wait > $maxWaitTime) {
-            event(new LongWaitDetected('update', $wait));
+            event(new LongWaitDetectedEvent('update', $wait));
         }
     }
 
