@@ -180,7 +180,7 @@ This will fire the `\JustBetter\MagentoPrices\Events\LongWaitDetected` event in 
 
 You can configure the limits of when the event will be fired in the config:
 ```php
-<?ph
+<?php
 
 return [
     'monitor' => [
