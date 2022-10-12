@@ -31,7 +31,7 @@ class MonitorWaitTimesTest extends TestCase
 
         $action->monitor();
 
-        Event::assertDispatched(LongWaitDetected::class, function(LongWaitDetected $event) {
+        Event::assertDispatched(LongWaitDetected::class, function (LongWaitDetected $event) {
             return $event->type === 'retrieve' && $event->wait === 10;
         });
     }
@@ -81,7 +81,7 @@ class MonitorWaitTimesTest extends TestCase
 
         $action->monitor();
 
-        Event::assertDispatched(LongWaitDetected::class, function(LongWaitDetected $event) {
+        Event::assertDispatched(LongWaitDetected::class, function (LongWaitDetected $event) {
             return $event->type === 'update' && $event->wait === 10;
         });
     }

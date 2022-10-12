@@ -4,7 +4,6 @@ namespace JustBetter\MagentoPrices\Commands;
 
 use Illuminate\Console\Command;
 use JustBetter\MagentoPrices\Jobs\MonitorWaitTimesJob;
-use JustBetter\MagentoPrices\Jobs\UpdatePriceJob;
 
 class MonitorWaitTimesCommand extends Command
 {
