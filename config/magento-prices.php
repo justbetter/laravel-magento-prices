@@ -26,4 +26,12 @@ return [
 
     /* Queue for the jobs to run on */
     'queue' => 'default',
+
+    'monitor' => [
+        /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
+        'retrieval_max_wait' => 30,
+
+        /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
+        'update_max_wait' => 30,
+    ]
 ];
