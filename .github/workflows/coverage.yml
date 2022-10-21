@@ -35,4 +35,4 @@ jobs:
                   composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" pestphp/pest --no-interaction --no-update
                   composer update --${{ matrix.stability }} --prefer-dist --no-interaction
             - name: Execute tests
-              run: XDEBUG_MODE=coverage php vendor/bin/pest --coverage --min=99
+              run: XDEBUG_MODE=coverage php vendor/bin/pest --coverage --min=100
