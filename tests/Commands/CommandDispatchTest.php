@@ -26,9 +26,9 @@ class CommandDispatchTest extends TestCase
     }
 
     /** @dataProvider dataProvider */
-    public function test_simple_commands(string $command, string $job): void
+    public function test_simple_commands(string $command, string $job, array $args = []): void
     {
-        $this->artisan($command);
+        $this->artisan($command, $args);
 
         Bus::assertDispatched($job);
     }
@@ -60,6 +60,11 @@ class CommandDispatchTest extends TestCase
             'Sync prices' => [
                 SyncPricesCommand::class,
                 SyncPricesJob::class,
+            ],
+            'Sync prices sync' => [
+                SyncPricesCommand::class,
+                SyncPricesJob::class,
+                ['--sync' => true]
             ],
             'Search missing' => [
                 SearchMissingPricesCommand::class,

@@ -173,4 +173,13 @@ class UpdatePriceJobTest extends TestCase
         $job = new UpdatePriceJob('::sku::', 'base');
         $this->assertEquals(['::sku::', 'type:base'], $job->tags());
     }
+
+    public function test_it_does_nothing(): void
+    {
+        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
+            $mock->shouldNotReceive('exists');
+        });
+
+        UpdatePriceJob::dispatch('::non_existent::');
+    }
 }
