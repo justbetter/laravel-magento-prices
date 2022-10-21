@@ -64,7 +64,7 @@ class CommandDispatchTest extends TestCase
             'Sync prices sync' => [
                 SyncPricesCommand::class,
                 SyncPricesJob::class,
-                ['--sync' => true]
+                ['--sync' => true],
             ],
             'Search missing' => [
                 SearchMissingPricesCommand::class,
