@@ -317,4 +317,16 @@ class MagentoPriceTest extends TestCase
         $this->assertFalse($model->retrieve);
         $this->assertEquals(0, $model->fail_count);
     }
+
+    public function test_it_has_activity(): void
+    {
+        /** @var MagentoPrice $price */
+        $price = MagentoPrice::query()->create([
+            'sku' => '::sku::',
+            'fail_count' => 3,
+        ]);
+
+        $binds = $price->activity()->getBindings();
+        $this->assertEquals([MagentoPrice::class, $price->id], $binds);
+    }
 }
