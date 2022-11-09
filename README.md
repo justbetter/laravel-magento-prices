@@ -1,5 +1,12 @@
 # Laravel Magento Prices
 
+<p>
+    <a href="https://github.com/justbetter/laravel-magento-prices"><img src="https://img.shields.io/github/workflow/status/justbetter/laravel-magento-prices/tests?label=tests&style=flat-square" alt="Tests"></a>
+    <a href="https://github.com/justbetter/laravel-magento-prices"><img src="https://img.shields.io/github/workflow/status/justbetter/laravel-magento-prices/coverage?label=coverage&style=flat-square" alt="Coverage"></a>
+    <a href="https://github.com/justbetter/laravel-magento-prices"><img src="https://img.shields.io/github/workflow/status/justbetter/laravel-magento-prices/analyse?label=analysis&style=flat-square" alt="Analysis"></a>
+    <a href="https://github.com/justbetter/laravel-magento-prices"><img src="https://img.shields.io/packagist/dt/justbetter/laravel-magento-prices?color=blue&style=flat-square" alt="Total downloads"></a>
+</p>
+
 Package to send prices to Magento from a Laravel application using a configurable source.
 
 ## Features
