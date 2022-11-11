@@ -34,6 +34,11 @@ php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProv
 
 Run migrations.
 
+
+### Laravel Nova
+
+We have a [Laravel Nova integration](https://github.com/justbetter/laravel-magento-prices-nova) for this package.
+
 ## Usage
 
 Add the following commands to your scheduler:
