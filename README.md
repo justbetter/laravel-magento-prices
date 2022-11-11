@@ -22,6 +22,9 @@ This package can:
 - Logs errors using [JustBetter Error Logger](https://github.com/justbetter/laravel-error-logger)
 - Checks if Magento products exist using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 
+> Also using customer specific prices? [See our other package!](https://github.com/justbetter/laravel-magento-customer-prices)
+> We also have a [Magento Client](https://github.com/justbetter/laravel-magento-client) to easily connect Laravel to Magento!
+
 ## Installation
 
 Require this package: `composer require justbetter/laravel-magento-prices`
@@ -37,6 +40,11 @@ php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProv
 ```
 
 Run migrations.
+
+
+### Laravel Nova
+
+We have a [Laravel Nova integration](https://github.com/justbetter/laravel-magento-prices-nova) for this package.
 
 ## Usage
 
