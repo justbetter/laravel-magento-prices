@@ -1,5 +1,13 @@
 # Changelog 
 
+## 1.0.5 - 2023-01-23
+
+## What's Changed
+* Add price updated event by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/7
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.0.4...1.0.5
+
 ## 1.0.4 - 2023-01-12
 
 ## What's Changed
