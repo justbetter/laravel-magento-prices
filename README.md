@@ -224,6 +224,12 @@ return [
 ```
 > *Note* This applies to all three types of updates. Base, tier and special.
 
+### Events
+
+Events that are dispatched by this package are:
+- [`\JustBetter\MagentoPrices\Events\LongWaitDetectedEvent`](#long-waits)
+- `\JustBetter\MagentoPrices\Events\UpdatedPriceEvent` - Triggered when a price is updated
+
 ## Quality
 
 To ensure the quality of this package, run the following command:
