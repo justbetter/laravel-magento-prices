@@ -10,7 +10,7 @@ class DummySkuRetriever extends SkuRetriever
 {
     public function retrieveAll(): Enumerable
     {
-        return collect(); /** @phpstan-ignore-line */
+        return collect();
     }
 }
 
