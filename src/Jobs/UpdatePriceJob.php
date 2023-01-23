@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Data\PriceData;
+use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 
@@ -52,6 +53,8 @@ class UpdatePriceJob implements ShouldQueue, ShouldBeUnique
         $model->update([
             'update' => false,
         ]);
+
+        UpdatedPriceEvent::dispatch($this->sku);
     }
 
     protected function handleBasePrices(PriceData $data): void

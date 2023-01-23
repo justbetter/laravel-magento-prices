@@ -3,6 +3,8 @@
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Event;
+use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoBasePricesJob;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoSpecialPricesJob;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoTierPricesJob;
@@ -21,6 +23,8 @@ class UpdatePriceJobTest extends TestCase
         Bus::fake([
             UpdateMagentoBasePricesJob::class, UpdateMagentoTierPricesJob::class, UpdateMagentoSpecialPricesJob::class,
         ]);
+
+        Event::fake();
 
         $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
             $mock->shouldReceive('exists')
@@ -69,12 +73,20 @@ class UpdatePriceJobTest extends TestCase
         $this->assertFalse($model->update);
     }
 
+    public function test_it_dispatches_updated_event(): void
+    {
+        UpdatePriceJob::dispatchSync('::sku::');
+
+        Event::assertDispatched(UpdatedPriceEvent::class);
+    }
+
     /** @dataProvider jobTypes */
     public function test_it_dispatches_update_jobs_by_type(string $type, string $dispatch, array $notDispatch): void
     {
         UpdatePriceJob::dispatchSync('::sku::', $type);
 
         Bus::assertDispatched($dispatch);
+
         foreach ($notDispatch as $jobClass) {
             Bus::assertNotDispatched($jobClass);
         }
