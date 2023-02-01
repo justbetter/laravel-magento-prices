@@ -4,13 +4,14 @@ namespace JustBetter\MagentoPrices\Jobs;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Contracts\RetrievesPrice;
 
-class RetrievePriceJob implements ShouldQueue
+class RetrievePriceJob implements ShouldQueue, ShouldBeUnique
 {
     use Batchable;
     use Dispatchable;
@@ -37,6 +38,11 @@ class RetrievePriceJob implements ShouldQueue
         }
 
         ProcessPriceJob::dispatch($price, $this->forceUpdate);
+    }
+
+    public function uniqueId(): string
+    {
+        return $this->sku;
     }
 
     public function tags(): array
