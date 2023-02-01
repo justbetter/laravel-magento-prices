@@ -1,5 +1,15 @@
 # Changelog 
 
+## 1.0.6 - 2023-02-01
+
+## What's Changed
+* Add uniqueId to RetrievePriceJob by @ramonrietdijk in https://github.com/justbetter/laravel-magento-prices/pull/8
+
+## New Contributors
+* @ramonrietdijk made their first contribution in https://github.com/justbetter/laravel-magento-prices/pull/8
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.0.5...1.0.6
+
 ## 1.0.5 - 2023-01-23
 
 ## What's Changed
