@@ -14,7 +14,11 @@ use JustBetter\MagentoPrices\Models\MagentoPrice;
 
 class SyncMissingPricesJob implements ShouldQueue, ShouldBeUnique
 {
-    use Dispatchable, Batchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use Batchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public int $timeout = 1800;
 
