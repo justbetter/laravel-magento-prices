@@ -87,6 +87,14 @@ class TierPriceData implements Arrayable
         return implode('-', [$this->storeId, $this->quantity, $this->groupId]);
     }
 
+    public function equals(self $other): bool
+    {
+        return $this->price->isEqualTo($other->price) &&
+            $this->groupId === $other->groupId &&
+            $this->storeId === $other->storeId &&
+            $this->priceType === $other->priceType;
+    }
+
     public function toArray(): array
     {
         return [

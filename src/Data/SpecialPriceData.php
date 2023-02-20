@@ -21,8 +21,8 @@ class SpecialPriceData implements Arrayable
     {
         $this->price = $price;
         $this->storeId = $storeId;
-        $this->from = $from ?? now();
-        $this->to = $to ?? now()->addYear();
+        $this->from = $from ?? Carbon::createFromTimestamp(0);
+        $this->to = $to ?? Carbon::createFromTimestamp(2147483647);
     }
 
     public function getStoreId(): int
@@ -72,6 +72,19 @@ class SpecialPriceData implements Arrayable
         $this->price = $helper->getMoney($price);
 
         return $this;
+    }
+
+    public function equals(self $other): bool
+    {
+        if (! $this->price->isEqualTo($other->price)) {
+            return false;
+        }
+
+        if (! $this->from->startOfDay()->equalTo($other->from->startOfDay()) || ! $this->to->startOfDay()->equalTo($other->to->startOfDay())) {
+            return false;
+        }
+
+        return true;
     }
 
     public function toArray(): array

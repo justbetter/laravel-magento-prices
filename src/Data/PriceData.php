@@ -5,6 +5,7 @@ namespace JustBetter\MagentoPrices\Data;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoPrices\Actions\CheckTierDuplicates;
+use JustBetter\MagentoPrices\Contracts\DeterminesPricesEqual;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 
 class PriceData implements Arrayable
@@ -96,15 +97,19 @@ class PriceData implements Arrayable
 
     public function getModel(): MagentoPrice
     {
-        return MagentoPrice::query()
+        /** @var MagentoPrice $price */
+        $price = MagentoPrice::query()
                 ->firstOrCreate(['sku' => $this->sku]);
+
+        return $price;
     }
 
-    public function equals(PriceData $data): bool
+    public function equals(self $other): bool
     {
-        return md5(json_encode($this->basePrices->toArray())) == md5(json_encode($data->basePrices->toArray())) &&
-            md5(json_encode($this->tierPrices->toArray())) == md5(json_encode($data->tierPrices->toArray())) &&
-            md5(json_encode($this->specialPrices->toArray())) == md5(json_encode($data->specialPrices->toArray()));
+        /** @var DeterminesPricesEqual $check */
+        $check = app(DeterminesPricesEqual::class);
+
+        return $check->equals($this, $other);
     }
 
     public function validate(): void
