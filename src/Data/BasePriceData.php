@@ -47,6 +47,12 @@ class BasePriceData implements Arrayable
         return $this;
     }
 
+    public function equals(self $other): bool
+    {
+        return $this->price->isEqualTo($other->price) &&
+            $this->storeId === $other->storeId;
+    }
+
     public function toArray(): array
     {
         return [

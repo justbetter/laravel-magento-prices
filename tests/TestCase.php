@@ -20,6 +20,9 @@ abstract class TestCase extends BaseTestCase
         config()->set('magento.timeout', 30);
         config()->set('magento.connect_timeout', 30);
 
+        config()->set('magento.currency', 'EUR');
+        config()->set('magento.precision', 2);
+
         config()->set('magento-prices.retrievers.sku', DummySkuRetriever::class);
         config()->set('magento-prices.retrievers.price', DummyPriceRetriever::class);
 
