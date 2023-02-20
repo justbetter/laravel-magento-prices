@@ -1,5 +1,14 @@
 # Changelog 
 
+## 1.0.7 - 2023-02-20
+
+## What's Changed
+* Allow multiple brick/money versions by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/9
+* Improve price equal checks by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/10
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.0.6...1.0.7
+
 ## 1.0.6 - 2023-02-01
 
 ## What's Changed
