@@ -1,5 +1,15 @@
 # Changelog 
 
+## 1.0.8 - 2023-02-28
+
+## What's Changed
+* Use the appropriate import for ShouldBeUnique by @jbclaudio in https://github.com/justbetter/laravel-magento-prices/pull/11
+
+## New Contributors
+* @jbclaudio made their first contribution in https://github.com/justbetter/laravel-magento-prices/pull/11
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.0.7...1.0.8
+
 ## 1.0.7 - 2023-02-20
 
 ## What's Changed
