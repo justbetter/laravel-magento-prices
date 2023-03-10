@@ -23,7 +23,7 @@ class MoneyHelperTest extends TestCase
         $this->assertEquals($expectedAmount ?? $amount, $money->getAmount()->toFloat());
     }
 
-    public function provider(): array
+    public static function provider(): array
     {
         return [
             [

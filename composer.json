@@ -4,21 +4,21 @@
     "type": "package",
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "brick/money": "^0.5|^0.6|^0.7|^0.8",
-        "justbetter/laravel-error-logger": "^2.2",
-        "justbetter/laravel-magento-client": "^1.0",
-        "justbetter/laravel-magento-products": "^1.0",
-        "laravel/framework": "^9.0",
-        "spatie/laravel-activitylog": "^4.5"
+        "php": "^8.1",
+        "brick/money": "^0.7|^0.8",
+        "justbetter/laravel-error-logger": "^2.3",
+        "justbetter/laravel-magento-client": "^1.1",
+        "justbetter/laravel-magento-products": "^1.2",
+        "laravel/framework": "^10.0",
+        "spatie/laravel-activitylog": "^4.7"
     },
     "require-dev": {
-        "laravel/pint": "^1.2",
-        "nunomaduro/larastan": "^2.2",
-        "orchestra/testbench": "^7.0",
+        "laravel/pint": "^1.6",
+        "nunomaduro/larastan": "^2.4",
+        "orchestra/testbench": "^8.0",
         "phpstan/phpstan-mockery": "^1.1",
-        "phpunit/phpunit": "^9.5.10",
-        "doctrine/dbal": "^3.4"
+        "phpunit/phpunit": "^10.0",
+        "doctrine/dbal": "^3.6"
     },
     "authors": [
         {
