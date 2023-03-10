@@ -92,7 +92,7 @@ class UpdatePriceJobTest extends TestCase
         }
     }
 
-    public function jobTypes(): array
+    public static function jobTypes(): array
     {
         return [
             [

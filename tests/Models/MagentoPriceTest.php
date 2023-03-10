@@ -27,7 +27,7 @@ class MagentoPriceTest extends TestCase
         $this->assertEquals($expectChanged, $model->specialPriceChanged());
     }
 
-    public function specialPriceProvider(): array
+    public static function specialPriceProvider(): array
     {
         return [
             'No change' => [

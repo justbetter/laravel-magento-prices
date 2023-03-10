@@ -54,7 +54,7 @@ class CommandDispatchTest extends TestCase
         Bus::assertDispatched(UpdatePriceJob::class);
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             'Sync prices' => [
