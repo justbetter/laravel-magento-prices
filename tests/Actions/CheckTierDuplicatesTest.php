@@ -6,6 +6,7 @@ use Brick\Money\Money;
 use JustBetter\MagentoPrices\Actions\CheckTierDuplicates;
 use JustBetter\MagentoPrices\Data\TierPriceData;
 use JustBetter\MagentoPrices\Exceptions\DuplicateTierPriceException;
+use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
 class CheckTierDuplicatesTest extends TestCase
@@ -37,6 +38,10 @@ class CheckTierDuplicatesTest extends TestCase
         $prices = collect([
             new TierPriceData('GROUP', Money::of(1, 'EUR'), 1, 0),
             new TierPriceData('GROUP', Money::of(1, 'EUR'), 1, 0),
+        ]);
+
+        MagentoPrice::query()->create([
+            'sku' => '::sku::',
         ]);
 
         $this->expectException(DuplicateTierPriceException::class);
