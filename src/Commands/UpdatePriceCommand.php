@@ -15,7 +15,13 @@ class UpdatePriceCommand extends Command
     {
         $this->info('Dispatching...');
 
-        UpdatePriceJob::dispatch($this->argument('sku'), $this->option('force'));
+        /** @var string $sku */
+        $sku = $this->argument('sku');
+
+        /** @var bool $force */
+        $force = $this->argument('force');
+
+        UpdatePriceJob::dispatch($sku, $force);
 
         $this->info('Done!');
 
