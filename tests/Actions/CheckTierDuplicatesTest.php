@@ -22,11 +22,6 @@ class CheckTierDuplicatesTest extends TestCase
             new TierPriceData('GROUP', Money::of(1, 'EUR'), 1, 1),
         ]);
 
-
-        MagentoPrice::query()->create([
-            'sku' => '::sku::',
-        ]);
-
         try {
             $action->check('::sku::', $prices);
         } catch (DuplicateTierPriceException $e) {
@@ -43,6 +38,10 @@ class CheckTierDuplicatesTest extends TestCase
         $prices = collect([
             new TierPriceData('GROUP', Money::of(1, 'EUR'), 1, 0),
             new TierPriceData('GROUP', Money::of(1, 'EUR'), 1, 0),
+        ]);
+
+        MagentoPrice::query()->create([
+            'sku' => '::sku::',
         ]);
 
         $this->expectException(DuplicateTierPriceException::class);
