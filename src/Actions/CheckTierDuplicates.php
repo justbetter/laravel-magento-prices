@@ -36,7 +36,7 @@ class CheckTierDuplicates implements ChecksTierDuplicates
                 ->withMessage("Duplicate tier prices found for $sku!")
                 ->withDetails([
                     'sku' => $sku,
-                    'duplicate' => $matching->toArray()
+                    'duplicate' => $matching->toArray(),
                 ]);
 
             if ($model !== null) {
