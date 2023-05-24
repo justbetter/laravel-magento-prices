@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.1.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.1.2...main)
+## [1.1.2](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.1.2) - 2023-05-24
+
+### What's Changed
+* Do not sent non existing tier groups to Magento by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/14
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.1.1...1.1.2
+
+## [1.1.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.1.1) - 2023-04-20
+
+### What's Changed
+* Log duplicate tier prices by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/13
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.1.0...1.1.1
+
 ## [1.1.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.1.0) - 2023-03-10
 
 ### What's Changed
