@@ -43,28 +43,42 @@ class MagentoUpdateTest extends TestCase
     {
         Http::fake([
             'rest/all/V1/products/tier-prices*' => Http::response([]),
+            'rest/all/V1/customerGroups/search*' => Http::response([
+                'items' => [
+                    [
+                        'code' => 'GROUP',
+                    ],
+                ],
+            ]),
         ]);
 
-        $tierPrice = new TierPriceData('GROUP', Money::of(10, 'EUR'));
-        $price = new PriceData('::sku::', collect(), collect([$tierPrice]));
+        $price = new PriceData('::sku::', collect(), collect([
+            new TierPriceData('GROUP', Money::of(10, 'EUR')),
+            new TierPriceData('GROUP2', Money::of(10, 'EUR')),
+        ]));
 
         /** @var UpdateMagentoTierPrices $action */
         $action = app(UpdateMagentoTierPrices::class);
         $action->update($price);
 
-        Http::assertSent(function (Request $request) {
-            return $request->data() == [
-                'prices' => [
-                    [
-                        'sku' => '::sku::',
-                        'price' => 10.0,
-                        'website_id' => 0,
-                        'quantity' => 1,
-                        'customer_group' => 'GROUP',
-                        'price_type' => 'fixed',
+        Http::assertSentInOrder([
+            function (Request $request) {
+                return $request->url() === 'rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1';
+            },
+            function (Request $request) {
+                return $request->data() == [
+                    'prices' => [
+                        [
+                            'sku' => '::sku::',
+                            'price' => 10.0,
+                            'website_id' => 0,
+                            'quantity' => 1,
+                            'customer_group' => 'GROUP',
+                            'price_type' => 'fixed',
+                        ],
                     ],
-                ],
-            ];
-        });
+                ];
+            },
+        ]);
     }
 }

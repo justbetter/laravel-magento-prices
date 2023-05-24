@@ -7,7 +7,7 @@ use JustBetter\MagentoPrices\Jobs\UpdatePriceJob;
 
 class UpdatePriceCommand extends Command
 {
-    protected $signature = 'magento:price:update {sku} {--force}';
+    protected $signature = 'magento:price:update {sku}';
 
     protected $description = 'Dispatch job to update price(s) in Magento';
 
@@ -18,10 +18,7 @@ class UpdatePriceCommand extends Command
         /** @var string $sku */
         $sku = $this->argument('sku');
 
-        /** @var bool $force */
-        $force = $this->argument('force');
-
-        UpdatePriceJob::dispatch($sku, $force);
+        UpdatePriceJob::dispatch($sku);
 
         $this->info('Done!');
 
