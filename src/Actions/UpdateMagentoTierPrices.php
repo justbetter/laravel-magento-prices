@@ -14,8 +14,13 @@ class UpdateMagentoTierPrices implements UpdatesMagentoTierPrice
 
     public function update(PriceData $priceData): void
     {
+        $existingGroups = $this->getGroups();
+
+        $tierPrices = collect($priceData->getMagentoTierPrices())
+            ->whereIn('customer_group', $existingGroups);
+
         $response = $this->magento
-            ->put('products/tier-prices', ['prices' => $priceData->getMagentoTierPrices()])
+            ->put('products/tier-prices', ['prices' => $tierPrices->toArray()])
             ->throw()
             ->json();
 
@@ -26,6 +31,19 @@ class UpdateMagentoTierPrices implements UpdatesMagentoTierPrice
             ->performedOn($model)
             ->withProperties($response)
             ->log('Updated tier price in Magento');
+    }
+
+    protected function getGroups(): array
+    {
+        return cache()->remember(
+            'magento:prices:customer:groups',
+            now()->addDay(),
+            fn () => $this->magento
+                ->lazy('customerGroups/search')
+                ->collect()
+                ->pluck('code')
+                ->toArray()
+        );
     }
 
     public static function bind(): void
