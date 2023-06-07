@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.1.2...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.1.3...main)
+## [1.1.3](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.1.3) - 2023-06-07
+
+### What's Changed
+* Add async update option by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/15
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.1.2...1.1.3
+
 ## [1.1.2](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.1.2) - 2023-05-24
 
 ### What's Changed
