@@ -34,4 +34,7 @@ return [
         /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
         'update_max_wait' => 30,
     ],
+
+    /* Send stock updates using Magento 2's async endpoints, a configured message queue in Magento is required for this */
+    'async' => false,
 ];

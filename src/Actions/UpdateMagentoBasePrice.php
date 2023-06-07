@@ -14,17 +14,20 @@ class UpdateMagentoBasePrice implements UpdatesMagentoBasePrice
 
     public function update(PriceData $priceData): void
     {
-        $response = $this->magento
-            ->post('products/base-prices', ['prices' => $priceData->getMagentoBasePrices()])
-            ->throw()
-            ->json();
+        if (config('magento-prices.async')) {
+            $response = $this->magento->postAsync('products/base-prices', ['prices' => $priceData->getMagentoBasePrices()]);
+        } else {
+            $response = $this->magento->post('products/base-prices', ['prices' => $priceData->getMagentoBasePrices()]);
+        }
+
+        $response->throw();
 
         $model = $priceData->getModel();
         $model->update(['last_updated' => now()]);
 
         activity()
             ->performedOn($model)
-            ->withProperties($response)
+            ->withProperties($response->json())
             ->log('Updated base price in Magento');
     }
 

@@ -17,17 +17,20 @@ class UpdateMagentoSpecialPrices implements UpdatesMagentoSpecialPrice
     {
         $this->deleteCurrentSpecialPrices($priceData->sku);
 
-        $response = $this->magento
-            ->post('products/special-price', ['prices' => $priceData->getMagentoSpecialPrices()])
-            ->throw()
-            ->json();
+        if (config('magento-prices.async')) {
+            $response = $this->magento->postAsync('products/special-price', ['prices' => $priceData->getMagentoSpecialPrices()]);
+        } else {
+            $response = $this->magento->post('products/special-price', ['prices' => $priceData->getMagentoSpecialPrices()]);
+        }
+
+        $response->throw();
 
         $model = $priceData->getModel();
         $model->update(['last_updated' => now()]);
 
         activity()
             ->performedOn($model)
-            ->withProperties($response)
+            ->withProperties($response->json())
             ->log('Updated special price in Magento');
     }
 

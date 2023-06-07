@@ -19,17 +19,20 @@ class UpdateMagentoTierPrices implements UpdatesMagentoTierPrice
         $tierPrices = collect($priceData->getMagentoTierPrices())
             ->whereIn('customer_group', $existingGroups);
 
-        $response = $this->magento
-            ->put('products/tier-prices', ['prices' => $tierPrices->toArray()])
-            ->throw()
-            ->json();
+        if (config('magento-prices.async')) {
+            $response = $this->magento->putAsync('products/tier-prices', ['prices' => $tierPrices->toArray()]);
+        } else {
+            $response = $this->magento->put('products/tier-prices', ['prices' => $tierPrices->toArray()]);
+        }
+
+        $response->throw();
 
         $model = $priceData->getModel();
         $model->update(['last_updated' => now()]);
 
         activity()
             ->performedOn($model)
-            ->withProperties($response)
+            ->withProperties($response->json())
             ->log('Updated tier price in Magento');
     }
 
