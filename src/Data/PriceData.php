@@ -99,7 +99,7 @@ class PriceData implements Arrayable
     {
         /** @var MagentoPrice $price */
         $price = MagentoPrice::query()
-                ->firstOrCreate(['sku' => $this->sku]);
+            ->firstOrCreate(['sku' => $this->sku]);
 
         return $price;
     }

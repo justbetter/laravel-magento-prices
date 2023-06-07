@@ -83,16 +83,16 @@ class MagentoSpecialPriceUpdateTest extends TestCase
             fn (Request $request) => $request->data() == ['skus' => ['::sku::']],
             fn (Request $request) => $request->data() == ['prices' => ['::response::']],
             fn (Request $request) => $request->data() == [
-                    'prices' => [
-                        [
-                            'sku' => '::sku::',
-                            'price' => 1.0,
-                            'store_id' => 0,
-                            'price_from' => $from->toDateTimeString(),
-                            'price_to' => $to->toDateTimeString(),
-                        ],
+                'prices' => [
+                    [
+                        'sku' => '::sku::',
+                        'price' => 1.0,
+                        'store_id' => 0,
+                        'price_from' => $from->toDateTimeString(),
+                        'price_to' => $to->toDateTimeString(),
                     ],
                 ],
+            ],
         ]);
     }
 }

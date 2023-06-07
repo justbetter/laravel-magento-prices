@@ -153,7 +153,4 @@ class MagentoUpdateTest extends TestCase
             },
         ]);
     }
-
-
-
 }
