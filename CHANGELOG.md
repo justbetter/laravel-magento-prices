@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.1.3...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.4.0...main)
+## [1.4.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.4.0) - 2023-06-26
+
+### What's Changed
+* Use activity log for error logging by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/16
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.1.3...1.4.0
+
 ## [1.1.3](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.1.3) - 2023-06-07
 
 ### What's Changed
