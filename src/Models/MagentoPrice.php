@@ -37,7 +37,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class MagentoPrice extends Model
 {
-    use HasErrors;
     use LogsActivity;
 
     public $casts = [

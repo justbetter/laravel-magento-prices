@@ -41,6 +41,5 @@ class UpdateMagentoTierPricesJobTest extends TestCase
 
         $this->assertEquals(1, $model->fail_count);
         $this->assertNotNull($model->last_failed);
-        $this->assertEquals(1, $model->errors()->count());
     }
 }

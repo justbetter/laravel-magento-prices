@@ -42,7 +42,6 @@ abstract class TestCase extends BaseTestCase
             ServiceProvider::class,
             \JustBetter\MagentoClient\ServiceProvider::class,
             ActivitylogServiceProvider::class,
-            \JustBetter\ErrorLogger\ServiceProvider::class,
         ];
     }
 }

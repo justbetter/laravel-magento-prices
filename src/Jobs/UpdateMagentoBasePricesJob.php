@@ -9,7 +9,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoPrices\Contracts\UpdatesMagentoBasePrice;
 use JustBetter\MagentoPrices\Data\PriceData;
 use Throwable;
@@ -37,22 +36,21 @@ class UpdateMagentoBasePricesJob implements ShouldQueue, ShouldBeUnique
 
     public function failed(Throwable $exception): void
     {
-        $details = [
-            'sku' => $this->price->sku,
-            'priceData' => $this->price->getMagentoBasePrices(),
-        ];
-
         if (is_a($exception, RequestException::class)) {
-            $details['response'] = $exception->response->body();
+            $response = $exception->response->body();
         }
 
-        Error::log()
-            ->withGroup('Prices')
-            ->withMessage('Failed to update prices in Magento for '.$this->price->sku)
-            ->fromThrowable($exception)
-            ->withDetails($details)
-            ->withModel($this->price->getModel())
-            ->save();
+        activity()
+            ->on($this->price->getModel())
+            ->withProperties([
+                'priceData' => $this->price->getMagentoBasePrices(),
+                'message' => $exception->getMessage(),
+                'response' => $response ?? '',
+                'metadata' => [
+                    'level' => 'error',
+                ]
+            ])
+            ->log('Failed to update base prices');
 
         $this->price->getModel()->registerError();
     }
