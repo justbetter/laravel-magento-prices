@@ -50,7 +50,7 @@ class UpdateMagentoSpecialPricesJob implements ShouldQueue, ShouldBeUnique
                 'response' => $response ?? '',
                 'metadata' => [
                     'level' => 'error',
-                ]
+                ],
             ])
             ->log('Failed to update special prices');
 

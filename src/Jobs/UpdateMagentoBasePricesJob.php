@@ -48,7 +48,7 @@ class UpdateMagentoBasePricesJob implements ShouldQueue, ShouldBeUnique
                 'response' => $response ?? '',
                 'metadata' => [
                     'level' => 'error',
-                ]
+                ],
             ])
             ->log('Failed to update base prices');
 
