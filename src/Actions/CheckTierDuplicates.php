@@ -3,11 +3,11 @@
 namespace JustBetter\MagentoPrices\Actions;
 
 use Illuminate\Support\Collection;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoPrices\Contracts\ChecksTierDuplicates;
 use JustBetter\MagentoPrices\Data\TierPriceData;
 use JustBetter\MagentoPrices\Exceptions\DuplicateTierPriceException;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
+use Spatie\Activitylog\ActivityLogger;
 
 /**
  * Check if the tier prices have duplicates.
@@ -31,19 +31,16 @@ class CheckTierDuplicates implements ChecksTierDuplicates
             /** @var ?MagentoPrice $model */
             $model = MagentoPrice::query()->firstWhere('sku', '=', $sku);
 
-            $error = Error::log()
-                ->withGroup('Prices')
-                ->withMessage("Duplicate tier prices found for $sku!")
-                ->withDetails([
+            activity()
+                ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model))
+                ->withProperties([
                     'sku' => $sku,
                     'duplicate' => $matching->toArray(),
-                ]);
-
-            if ($model !== null) {
-                $error->withModel($model);
-            }
-
-            $error->save();
+                    'metadata' => [
+                        'level' => 'error',
+                    ],
+                ])
+                ->log("Duplicate tier prices found for $sku");
 
             throw new DuplicateTierPriceException($sku, $matching);
         }

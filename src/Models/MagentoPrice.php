@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
-use JustBetter\ErrorLogger\Traits\HasErrors;
 use JustBetter\MagentoPrices\Data\BasePriceData;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Data\SpecialPriceData;
@@ -37,7 +36,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class MagentoPrice extends Model
 {
-    use HasErrors;
     use LogsActivity;
 
     public $casts = [
