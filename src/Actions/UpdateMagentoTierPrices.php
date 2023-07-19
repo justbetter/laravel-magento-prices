@@ -45,6 +45,7 @@ class UpdateMagentoTierPrices implements UpdatesMagentoTierPrice
                 ->lazy('customerGroups/search')
                 ->collect()
                 ->pluck('code')
+                ->push('ALL GROUPS')
                 ->toArray()
         );
     }

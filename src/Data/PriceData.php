@@ -24,8 +24,8 @@ class PriceData implements Arrayable
     public function __construct(
         string $sku,
         Collection $basePrices,
-        ?Collection $tierPrices = null,
-        ?Collection $specialPrices = null
+        Collection $tierPrices = null,
+        Collection $specialPrices = null
     ) {
         $this->sku = $sku;
         $this->basePrices = $basePrices;
