@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.4.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.4.1...main)
+## [1.4.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.4.1) - 2023-07-19
+
+### What's Changed
+* Add 'ALL GROUPS' to tier prices group filter by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/17
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.4.0...1.4.1
+
 ## [1.4.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.4.0) - 2023-06-26
 
 ### What's Changed
