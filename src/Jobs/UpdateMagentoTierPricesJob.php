@@ -14,10 +14,10 @@ use JustBetter\MagentoPrices\Contracts\UpdatesMagentoTierPrice;
 use JustBetter\MagentoPrices\Data\PriceData;
 use Throwable;
 
-class UpdateMagentoTierPricesJob implements ShouldQueue, ShouldBeUnique
+class UpdateMagentoTierPricesJob implements ShouldBeUnique, ShouldQueue
 {
-    use Dispatchable;
     use Batchable;
+    use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;

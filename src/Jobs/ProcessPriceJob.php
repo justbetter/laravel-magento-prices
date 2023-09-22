@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Contracts\ProcessesPrice;
 use JustBetter\MagentoPrices\Data\PriceData;
 
-class ProcessPriceJob implements ShouldQueue, ShouldBeUnique
+class ProcessPriceJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

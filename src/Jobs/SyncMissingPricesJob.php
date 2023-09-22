@@ -12,10 +12,10 @@ use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Contracts\FindsProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 
-class SyncMissingPricesJob implements ShouldQueue, ShouldBeUnique
+class SyncMissingPricesJob implements ShouldBeUnique, ShouldQueue
 {
-    use Dispatchable;
     use Batchable;
+    use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;

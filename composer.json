@@ -8,13 +8,13 @@
     "brick/money": "^0.7|^0.8",
     "justbetter/laravel-magento-client": "^1.4",
     "justbetter/laravel-magento-products": "^1.2",
-    "laravel/framework": "^10.0",
+    "laravel/framework": "10.*",
+    "orchestra/testbench": "8.*",
     "spatie/laravel-activitylog": "^4.7"
   },
   "require-dev": {
     "laravel/pint": "^1.6",
     "nunomaduro/larastan": "^2.4",
-    "orchestra/testbench": "^8.0",
     "phpstan/phpstan-mockery": "^1.1",
     "phpunit/phpunit": "^10.0",
     "doctrine/dbal": "^3.6"

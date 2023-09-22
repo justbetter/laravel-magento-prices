@@ -13,7 +13,7 @@ use JustBetter\MagentoPrices\Contracts\UpdatesMagentoBasePrice;
 use JustBetter\MagentoPrices\Data\PriceData;
 use Throwable;
 
-class UpdateMagentoBasePricesJob implements ShouldQueue, ShouldBeUnique
+class UpdateMagentoBasePricesJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

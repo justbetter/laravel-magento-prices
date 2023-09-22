@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Contracts\MonitorsWaitTimes;
 
-class MonitorWaitTimesJob implements ShouldQueue, ShouldBeUnique
+class MonitorWaitTimesJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

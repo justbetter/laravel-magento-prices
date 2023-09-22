@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoPrices\Contracts\RetrievesPrice;
 
-class RetrievePriceJob implements ShouldQueue, ShouldBeUnique
+class RetrievePriceJob implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;

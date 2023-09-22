@@ -13,7 +13,7 @@ use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 
-class UpdatePriceJob implements ShouldQueue, ShouldBeUnique
+class UpdatePriceJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
