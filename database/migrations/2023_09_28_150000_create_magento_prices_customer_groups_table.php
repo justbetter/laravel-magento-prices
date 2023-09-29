@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('magento_prices_groups');
+        Schema::dropIfExists('magento_prices_customer_groups');
     }
 };
