@@ -13,9 +13,9 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  */
-class MagentoGroup extends Model
+class MagentoCustomerGroup extends Model
 {
-    protected $table = 'magento_prices_groups';
+    protected $table = 'magento_prices_customer_groups';
 
     protected $guarded = [];
 

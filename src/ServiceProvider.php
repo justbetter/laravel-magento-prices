@@ -6,14 +6,14 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JustBetter\MagentoPrices\Actions\CheckTierDuplicates;
 use JustBetter\MagentoPrices\Actions\DeterminePricesEqual;
 use JustBetter\MagentoPrices\Actions\FindProductsWithMissingPrices;
-use JustBetter\MagentoPrices\Actions\ImportGroups;
+use JustBetter\MagentoPrices\Actions\ImportCustomerGroups;
 use JustBetter\MagentoPrices\Actions\MonitorWaitTimes;
 use JustBetter\MagentoPrices\Actions\ProcessPrice;
 use JustBetter\MagentoPrices\Actions\SyncPrices;
 use JustBetter\MagentoPrices\Actions\UpdateMagentoBasePrice;
 use JustBetter\MagentoPrices\Actions\UpdateMagentoSpecialPrices;
 use JustBetter\MagentoPrices\Actions\UpdateMagentoTierPrices;
-use JustBetter\MagentoPrices\Commands\ImportGroupsCommand;
+use JustBetter\MagentoPrices\Commands\ImportCustomerGroupsCommand;
 use JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand;
 use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
 use JustBetter\MagentoPrices\Commands\SearchMissingPricesCommand;
@@ -44,7 +44,7 @@ class ServiceProvider extends BaseServiceProvider
         MonitorWaitTimes::bind();
         DeterminePricesEqual::bind();
 
-        ImportGroups::bind();
+        ImportCustomerGroups::bind();
 
         return $this;
     }
@@ -72,7 +72,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ImportGroupsCommand::class,
+                ImportCustomerGroupsCommand::class,
                 RetrievePricesCommand::class,
                 SyncPricesCommand::class,
                 UpdatePriceCommand::class,

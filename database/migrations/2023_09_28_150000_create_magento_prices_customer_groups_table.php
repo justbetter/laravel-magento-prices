@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('magento_prices_groups', function (Blueprint $table): void {
+        Schema::create('magento_prices_customer_groups', function (Blueprint $table): void {
             $table->id();
             $table->string('code')->index();
             $table->json('data');

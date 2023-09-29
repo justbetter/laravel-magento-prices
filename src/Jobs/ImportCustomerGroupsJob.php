@@ -8,9 +8,9 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use JustBetter\MagentoPrices\Contracts\ImportsGroups;
+use JustBetter\MagentoPrices\Contracts\ImportsCustomerGroups;
 
-class ImportGroupsJob implements ShouldBeUnique, ShouldQueue
+class ImportCustomerGroupsJob implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -22,7 +22,7 @@ class ImportGroupsJob implements ShouldBeUnique, ShouldQueue
         $this->onQueue(config('magento-prices.queue'));
     }
 
-    public function handle(ImportsGroups $contract): void
+    public function handle(ImportsCustomerGroups $contract): void
     {
         $contract->import();
     }

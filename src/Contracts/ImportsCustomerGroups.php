@@ -2,7 +2,7 @@
 
 namespace JustBetter\MagentoPrices\Contracts;
 
-interface ImportsGroups
+interface ImportsCustomerGroups
 {
     public function import(): void;
 }

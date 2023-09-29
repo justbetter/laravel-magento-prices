@@ -3,18 +3,16 @@
 namespace JustBetter\MagentoPrices\Actions;
 
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Contracts\ImportsGroups;
 use JustBetter\MagentoPrices\Contracts\UpdatesMagentoTierPrice;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Exceptions\PriceUpdateException;
-use JustBetter\MagentoPrices\Jobs\ImportGroupsJob;
-use JustBetter\MagentoPrices\Models\MagentoGroup;
+use JustBetter\MagentoPrices\Jobs\ImportCustomerGroupsJob;
+use JustBetter\MagentoPrices\Models\MagentoCustomerGroup;
 
 class UpdateMagentoTierPrices implements UpdatesMagentoTierPrice
 {
     public function __construct(
-        protected Magento $magento,
-        protected ImportsGroups $importsGroups,
+        protected Magento $magento
     ) {
     }
 
@@ -45,12 +43,12 @@ class UpdateMagentoTierPrices implements UpdatesMagentoTierPrice
     protected function getGroups(): array
     {
         cache()->remember('magento:prices:customer:groups:imported', now()->addDay(), function (): bool {
-            ImportGroupsJob::dispatch();
+            ImportCustomerGroupsJob::dispatch();
 
             return true;
         });
 
-        $groups = MagentoGroup::query()->pluck('code');
+        $groups = MagentoCustomerGroup::query()->pluck('code');
 
         if ($groups->isEmpty()) {
             throw new PriceUpdateException('The Magento customer groups are not imported');

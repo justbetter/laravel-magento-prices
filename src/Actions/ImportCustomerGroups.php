@@ -3,11 +3,11 @@
 namespace JustBetter\MagentoPrices\Actions;
 
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Contracts\ImportsGroups;
-use JustBetter\MagentoPrices\Models\MagentoGroup;
+use JustBetter\MagentoPrices\Contracts\ImportsCustomerGroups;
+use JustBetter\MagentoPrices\Models\MagentoCustomerGroup;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 
-class ImportGroups implements ImportsGroups
+class ImportCustomerGroups implements ImportsCustomerGroups
 {
     public function __construct(
         protected Magento $magento
@@ -19,7 +19,7 @@ class ImportGroups implements ImportsGroups
         $date = now();
 
         $this->magento->lazy('customerGroups/search')->each(function (array $group) use ($date): void {
-            MagentoGroup::query()->updateOrCreate([
+            MagentoCustomerGroup::query()->updateOrCreate([
                 'code' => $group['code'],
             ], [
                 'data' => $group,
@@ -27,12 +27,12 @@ class ImportGroups implements ImportsGroups
             ]);
         });
 
-        $deletions = MagentoGroup::query()
+        $deletions = MagentoCustomerGroup::query()
             ->where('imported_at', '<', $date)
             ->orWhereNull('imported_at')
             ->get();
 
-        $newGroupCount = MagentoGroup::query()
+        $newGroupCount = MagentoCustomerGroup::query()
             ->where('created_at', '>=', $date)
             ->count();
 
@@ -51,13 +51,13 @@ class ImportGroups implements ImportsGroups
             ]);
         }
 
-        $deletions->each(function (MagentoGroup $magentoGroup): void {
-            $magentoGroup->delete();
+        $deletions->each(function (MagentoCustomerGroup $group): void {
+            $group->delete();
         });
     }
 
     public static function bind(): void
     {
-        app()->singleton(ImportsGroups::class, static::class);
+        app()->singleton(ImportsCustomerGroups::class, static::class);
     }
 }

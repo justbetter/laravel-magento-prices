@@ -4,15 +4,15 @@ namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Actions\ImportGroups;
-use JustBetter\MagentoPrices\Models\MagentoGroup;
+use JustBetter\MagentoPrices\Actions\ImportCustomerGroups;
+use JustBetter\MagentoPrices\Models\MagentoCustomerGroup;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
-class ImportGroupsTest extends TestCase
+class ImportCustomerGroupsTest extends TestCase
 {
     /** @test */
-    public function it_can_import_groups(): void
+    public function it_can_import_customer_groups(): void
     {
         Magento::fake();
 
@@ -41,17 +41,17 @@ class ImportGroupsTest extends TestCase
             ],
         ]);
 
-        /** @var ImportGroups $action */
-        $action = app(ImportGroups::class);
+        /** @var ImportCustomerGroups $action */
+        $action = app(ImportCustomerGroups::class);
         $action->import();
 
-        $count = MagentoGroup::query()->count();
+        $count = MagentoCustomerGroup::query()->count();
 
         $this->assertEquals(3, $count);
     }
 
     /** @test */
-    public function it_can_add_groups(): void
+    public function it_can_add_customer_groups(): void
     {
         Magento::fake();
 
@@ -80,7 +80,7 @@ class ImportGroupsTest extends TestCase
             ],
         ]);
 
-        MagentoGroup::query()->create([
+        MagentoCustomerGroup::query()->create([
             'code' => 'General',
             'data' => [],
         ]);
@@ -91,11 +91,11 @@ class ImportGroupsTest extends TestCase
             'update' => false,
         ]);
 
-        /** @var ImportGroups $action */
-        $action = app(ImportGroups::class);
+        /** @var ImportCustomerGroups $action */
+        $action = app(ImportCustomerGroups::class);
         $action->import();
 
-        $count = MagentoGroup::query()->count();
+        $count = MagentoCustomerGroup::query()->count();
 
         $this->assertEquals(3, $count);
 
@@ -105,7 +105,7 @@ class ImportGroupsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_delete_groups(): void
+    public function it_can_delete_customer_groups(): void
     {
         Magento::fake();
 
@@ -115,7 +115,7 @@ class ImportGroupsTest extends TestCase
             ],
         ]);
 
-        MagentoGroup::query()->create([
+        MagentoCustomerGroup::query()->create([
             'code' => 'Delete',
             'data' => [],
         ]);
@@ -127,11 +127,11 @@ class ImportGroupsTest extends TestCase
             'update' => false,
         ]);
 
-        /** @var ImportGroups $action */
-        $action = app(ImportGroups::class);
+        /** @var ImportCustomerGroups $action */
+        $action = app(ImportCustomerGroups::class);
         $action->import();
 
-        $count = MagentoGroup::query()->count();
+        $count = MagentoCustomerGroup::query()->count();
 
         $this->assertEquals(0, $count);
 
