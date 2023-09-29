@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.4.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.5.0...main)
+## [1.5.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.5.0) - 2023-09-29
+
+### What's Changed
+* Automatically import customer groups to export missing tier prices by @ramonrietdijk in https://github.com/justbetter/laravel-magento-prices/pull/18
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.4.1...1.5.0
+
 ## [1.4.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.4.1) - 2023-07-19
 
 ### What's Changed
