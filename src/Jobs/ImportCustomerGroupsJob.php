@@ -2,7 +2,6 @@
 
 namespace JustBetter\MagentoPrices\Jobs;
 
-use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +11,6 @@ use JustBetter\MagentoPrices\Contracts\ImportsCustomerGroups;
 
 class ImportCustomerGroupsJob implements ShouldBeUnique, ShouldQueue
 {
-    use Batchable;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
