@@ -29,7 +29,7 @@ This package can:
 
 Require this package: `composer require justbetter/laravel-magento-prices`
 
-Publish the config
+Publish the config:
 ```
 php artisan vendor:publish --provider="JustBetter\MagentoPrices\ServiceProvider" --tag="config"
 ```
@@ -37,6 +37,11 @@ php artisan vendor:publish --provider="JustBetter\MagentoPrices\ServiceProvider"
 Publish the activity log's migrations:
 ```
 php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
+```
+
+Publish the batches table migration:
+```
+php artisan queue:batches-table
 ```
 
 Run migrations.
