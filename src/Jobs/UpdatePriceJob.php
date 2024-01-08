@@ -47,19 +47,20 @@ class UpdatePriceJob implements ShouldBeUnique, ShouldQueue
 
         $data = $model->getData();
 
-        $batch = Bus::batch(array_filter([
+        Bus::batch(array_filter([
             $this->handleBasePrices($data),
             $this->handleTierPrices($data),
             $this->handleSpecialPrices($data),
         ]))
+            ->name('update-price-jobs')
+            ->onQueue(config('magento-prices.queue'))
+            ->then(function () use ($model): void {
+                $model->update([
+                    'fail_count' => 0,
+                    'last_failed' => null,
+                ]);
+            })
             ->dispatch();
-
-        if (! $batch->hasFailures()) {
-            $model->update([
-                'fail_count' => 0,
-                'last_failed' => null,
-            ]);
-        }
 
         $model->update([
             'update' => false,

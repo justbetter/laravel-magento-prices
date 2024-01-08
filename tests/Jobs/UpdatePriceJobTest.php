@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use Illuminate\Bus\PendingBatch;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
@@ -67,7 +68,16 @@ class UpdatePriceJobTest extends TestCase
         UpdatePriceJob::dispatchSync('::sku::');
 
         Bus::assertBatched(function (PendingBatch $batch): bool {
-            return $batch->jobs->count() === 3;
+            /** @var Collection $jobs */
+            $jobs = $batch->jobs->map(function (mixed $job): string {
+                return get_class($job);
+            });
+
+            if ($jobs->contains('JustBetter\MagentoPrices\Jobs\UpdateMagentoBasePricesJob') && $jobs->contains('JustBetter\MagentoPrices\Jobs\UpdateMagentoTierPricesJob') && $jobs->contains('JustBetter\MagentoPrices\Jobs\UpdateMagentoSpecialPricesJob')) {
+                return true;
+            }
+
+            return false;
         });
 
         $model = MagentoPrice::findBySku('::sku::');
