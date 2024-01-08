@@ -250,4 +250,29 @@ class UpdatePriceJobTest extends TestCase
 
         UpdatePriceJob::dispatch('::non_existent::');
     }
+
+    public function test_it_clears_failure_data_if_success(): void
+    {
+        MagentoPrice::findBySku('::sku::')
+            ->update([
+                'fail_count' => 5,
+                'last_failed' => now(),
+            ]);
+
+        UpdatePriceJob::dispatchSync('::sku::');
+
+        Bus::assertBatched(function (PendingBatch $batch) {
+            /* @var \Illuminate\Queue\SerializableClosure $thenCallback */
+            [$thenCallback] = $batch->thenCallbacks();
+
+            $thenCallback->getClosure()->call($this);
+
+            $model = MagentoPrice::findBySku('::sku::');
+
+            $this->assertEquals(0, $model->fail_count);
+            $this->assertNull($model->last_failed);
+
+            return true;
+        });
+    }
 }
