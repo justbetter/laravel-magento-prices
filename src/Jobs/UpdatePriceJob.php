@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
@@ -46,9 +47,19 @@ class UpdatePriceJob implements ShouldBeUnique, ShouldQueue
 
         $data = $model->getData();
 
-        $this->handleBasePrices($data);
-        $this->handleTierPrices($data);
-        $this->handleSpecialPrices($data);
+        $batch = Bus::batch(array_filter([
+            $this->handleBasePrices($data),
+            $this->handleTierPrices($data),
+            $this->handleSpecialPrices($data),
+        ]))
+            ->dispatch();
+
+        if (! $batch->hasFailures()) {
+            $model->update([
+                'fail_count' => 0,
+                'last_failed' => null,
+            ]);
+        }
 
         $model->update([
             'update' => false,
@@ -57,55 +68,57 @@ class UpdatePriceJob implements ShouldBeUnique, ShouldQueue
         UpdatedPriceEvent::dispatch($this->sku);
     }
 
-    protected function handleBasePrices(PriceData $data): void
+    protected function handleBasePrices(PriceData $data): ?UpdateMagentoBasePricesJob
     {
         if ($this->shouldUpdateType('base') && $data->basePrices->isNotEmpty()) {
-            UpdateMagentoBasePricesJob::dispatch($data);
+            return new UpdateMagentoBasePricesJob($data);
         }
+
+        return null;
     }
 
-    protected function handleTierPrices(PriceData $data): void
+    protected function handleTierPrices(PriceData $data): ?UpdateMagentoTierPricesJob
     {
         if ($this->shouldUpdateType('tier') && $data->tierPrices->isNotEmpty()) {
-            UpdateMagentoTierPricesJob::dispatch($data);
-
             $data->getModel()->update([
                 'has_tier' => true,
             ]);
 
-            return;
+            return new UpdateMagentoTierPricesJob($data);
         }
 
         // Delete the tier price
         if ($data->getModel()->has_tier) {
-            UpdateMagentoTierPricesJob::dispatch($data);
-
             $data->getModel()->update([
                 'has_tier' => false,
             ]);
+
+            return new UpdateMagentoTierPricesJob($data);
         }
+
+        return null;
     }
 
-    protected function handleSpecialPrices(PriceData $data): void
+    protected function handleSpecialPrices(PriceData $data): ?UpdateMagentoSpecialPricesJob
     {
         if ($this->shouldUpdateType('special') && $data->specialPrices->isNotEmpty()) {
-            UpdateMagentoSpecialPricesJob::dispatch($data);
-
             $data->getModel()->update([
                 'has_special' => true,
             ]);
 
-            return;
+            return new UpdateMagentoSpecialPricesJob($data);
         }
 
         // Delete the special price
         if ($data->getModel()->has_special) {
-            UpdateMagentoSpecialPricesJob::dispatch($data);
-
             $data->getModel()->update([
                 'has_special' => false,
             ]);
+
+            return new UpdateMagentoSpecialPricesJob($data);
         }
+
+        return null;
     }
 
     protected function shouldUpdateType(string $type): bool

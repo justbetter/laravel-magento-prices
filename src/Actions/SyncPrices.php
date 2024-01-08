@@ -9,7 +9,7 @@ use JustBetter\MagentoPrices\Models\MagentoPrice;
 
 class SyncPrices implements SyncsPrices
 {
-    public function sync(int $retrieveLimit = null, int $updateLimit = null): void
+    public function sync(?int $retrieveLimit = null, ?int $updateLimit = null): void
     {
         $this->resetDoubleStatus();
 

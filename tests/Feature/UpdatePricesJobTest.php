@@ -2,6 +2,7 @@
 
 namespace JustBetter\MagentoPrices\Tests\Feature;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
 use JustBetter\MagentoPrices\Commands\UpdatePriceCommand;
@@ -30,6 +31,14 @@ class UpdatePricesJobTest extends TestCase
 
         $this->artisan(UpdatePriceCommand::class, ['sku' => '123']);
 
-        Bus::assertDispatched(UpdateMagentoBasePricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch) {
+            foreach ($batch->jobs as $job) {
+                if ($job instanceof UpdateMagentoBasePricesJob) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 }

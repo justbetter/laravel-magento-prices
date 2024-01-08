@@ -17,7 +17,7 @@ class SpecialPriceData implements Arrayable
 
     public Carbon $to;
 
-    public function __construct(Money $price, int $storeId = 0, Carbon $from = null, Carbon $to = null)
+    public function __construct(Money $price, int $storeId = 0, ?Carbon $from = null, ?Carbon $to = null)
     {
         $this->price = $price;
         $this->storeId = $storeId;
