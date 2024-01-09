@@ -52,7 +52,7 @@ class UpdatePriceJob implements ShouldBeUnique, ShouldQueue
             $this->handleTierPrices($data),
             $this->handleSpecialPrices($data),
         ]))
-            ->name('update-price-jobs')
+            ->name("Magento price update $this->sku")
             ->onQueue(config('magento-prices.queue'))
             ->then(function () use ($model): void {
                 $model->update([
