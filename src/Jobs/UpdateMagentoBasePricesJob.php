@@ -2,6 +2,7 @@
 
 namespace JustBetter\MagentoPrices\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,6 +16,7 @@ use Throwable;
 
 class UpdateMagentoBasePricesJob implements ShouldBeUnique, ShouldQueue
 {
+    use Batchable;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;

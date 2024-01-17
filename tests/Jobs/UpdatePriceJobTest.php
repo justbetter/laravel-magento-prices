@@ -2,6 +2,8 @@
 
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
+use Illuminate\Bus\PendingBatch;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
@@ -65,11 +67,21 @@ class UpdatePriceJobTest extends TestCase
     {
         UpdatePriceJob::dispatchSync('::sku::');
 
-        Bus::assertDispatched(UpdateMagentoBasePricesJob::class);
-        Bus::assertDispatched(UpdateMagentoTierPricesJob::class);
-        Bus::assertDispatched(UpdateMagentoSpecialPricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch): bool {
+            /** @var Collection $jobs */
+            $jobs = $batch->jobs->map(function (mixed $job): string {
+                return get_class($job);
+            });
+
+            if ($jobs->contains('JustBetter\MagentoPrices\Jobs\UpdateMagentoBasePricesJob') && $jobs->contains('JustBetter\MagentoPrices\Jobs\UpdateMagentoTierPricesJob') && $jobs->contains('JustBetter\MagentoPrices\Jobs\UpdateMagentoSpecialPricesJob')) {
+                return true;
+            }
+
+            return false;
+        });
 
         $model = MagentoPrice::findBySku('::sku::');
+
         $this->assertFalse($model->update);
     }
 
@@ -85,11 +97,21 @@ class UpdatePriceJobTest extends TestCase
     {
         UpdatePriceJob::dispatchSync('::sku::', $type);
 
-        Bus::assertDispatched($dispatch);
+        Bus::assertBatched(function (PendingBatch $batch) use ($dispatch): bool {
+            return $batch->jobs->first() instanceof $dispatch;
+        });
 
-        foreach ($notDispatch as $jobClass) {
-            Bus::assertNotDispatched($jobClass);
-        }
+        Bus::assertBatched(function (PendingBatch $batch) use ($notDispatch): bool {
+            foreach ($notDispatch as $notDispatchJobClass) {
+                foreach ($batch->jobs as $job) {
+                    if ($job instanceof $notDispatchJobClass) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        });
     }
 
     public static function jobTypes(): array
@@ -120,9 +142,15 @@ class UpdatePriceJobTest extends TestCase
 
         UpdatePriceJob::dispatchSync('::sku::');
 
-        Bus::assertNotDispatched(UpdateMagentoBasePricesJob::class);
-        Bus::assertDispatched(UpdateMagentoTierPricesJob::class);
-        Bus::assertDispatched(UpdateMagentoSpecialPricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch): bool {
+            foreach ($batch->jobs as $job) {
+                if ($job instanceof UpdateMagentoBasePricesJob) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
     }
 
     public function test_it_does_not_dispatch_empty_tier(): void
@@ -132,9 +160,15 @@ class UpdatePriceJobTest extends TestCase
 
         UpdatePriceJob::dispatchSync('::sku::');
 
-        Bus::assertDispatched(UpdateMagentoBasePricesJob::class);
-        Bus::assertNotDispatched(UpdateMagentoTierPricesJob::class);
-        Bus::assertDispatched(UpdateMagentoSpecialPricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch): bool {
+            foreach ($batch->jobs as $job) {
+                if ($job instanceof UpdateMagentoTierPricesJob) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
     }
 
     public function test_it_does_not_dispatch_empty_special(): void
@@ -144,9 +178,15 @@ class UpdatePriceJobTest extends TestCase
 
         UpdatePriceJob::dispatchSync('::sku::');
 
-        Bus::assertDispatched(UpdateMagentoBasePricesJob::class);
-        Bus::assertDispatched(UpdateMagentoTierPricesJob::class);
-        Bus::assertNotDispatched(UpdateMagentoSpecialPricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch): bool {
+            foreach ($batch->jobs as $job) {
+                if ($job instanceof UpdateMagentoSpecialPricesJob) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
     }
 
     public function test_it_does_dispatch_empty_tier_to_remove_tier_prices(): void
@@ -156,7 +196,15 @@ class UpdatePriceJobTest extends TestCase
 
         UpdatePriceJob::dispatchSync('::sku::');
 
-        Bus::assertDispatched(UpdateMagentoTierPricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch): bool {
+            foreach ($batch->jobs as $job) {
+                if ($job instanceof UpdateMagentoTierPricesJob) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
 
         $model = MagentoPrice::findBySku('::sku::');
         $this->assertFalse($model->has_tier);
@@ -169,7 +217,15 @@ class UpdatePriceJobTest extends TestCase
 
         UpdatePriceJob::dispatchSync('::sku::');
 
-        Bus::assertDispatched(UpdateMagentoSpecialPricesJob::class);
+        Bus::assertBatched(function (PendingBatch $batch): bool {
+            foreach ($batch->jobs as $job) {
+                if ($job instanceof UpdateMagentoSpecialPricesJob) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
 
         $model = MagentoPrice::findBySku('::sku::');
         $this->assertFalse($model->has_special);
@@ -193,5 +249,30 @@ class UpdatePriceJobTest extends TestCase
         });
 
         UpdatePriceJob::dispatch('::non_existent::');
+    }
+
+    public function test_it_clears_failure_data_if_success(): void
+    {
+        MagentoPrice::findBySku('::sku::')
+            ->update([
+                'fail_count' => 5,
+                'last_failed' => now(),
+            ]);
+
+        UpdatePriceJob::dispatchSync('::sku::');
+
+        Bus::assertBatched(function (PendingBatch $batch) {
+            /* @var \Illuminate\Queue\SerializableClosure $thenCallback */
+            [$thenCallback] = $batch->thenCallbacks();
+
+            $thenCallback->getClosure()->call($this);
+
+            $model = MagentoPrice::findBySku('::sku::');
+
+            $this->assertEquals(0, $model->fail_count);
+            $this->assertNull($model->last_failed);
+
+            return true;
+        });
     }
 }
