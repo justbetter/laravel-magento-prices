@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.5.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.5.1...main)
+## [1.5.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.5.1) - 2024-01-17
+
+### What's Changed
+* Remove price failed_at data if success by @FinnPaes in https://github.com/justbetter/laravel-magento-prices/pull/19
+
+### New Contributors
+* @FinnPaes made their first contribution in https://github.com/justbetter/laravel-magento-prices/pull/19
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.5.0...1.5.1
+
 ## [1.5.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.5.0) - 2023-09-29
 
 ### What's Changed
