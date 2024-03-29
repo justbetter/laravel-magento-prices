@@ -17,7 +17,7 @@ class ImportCustomerGroupsTest extends TestCase
         Magento::fake();
 
         Http::fake([
-            'http://magento.test/rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1' => [
+            'magento/rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1' => [
                 'items' => [
                     [
                         'id' => 0,
@@ -56,7 +56,7 @@ class ImportCustomerGroupsTest extends TestCase
         Magento::fake();
 
         Http::fake([
-            'http://magento.test/rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1' => [
+            'magento/rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1' => [
                 'items' => [
                     [
                         'id' => 0,
@@ -110,7 +110,7 @@ class ImportCustomerGroupsTest extends TestCase
         Magento::fake();
 
         Http::fake([
-            'http://magento.test/rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1' => [
+            'magento/rest/all/V1/customerGroups/search?searchCriteria%5BpageSize%5D=100&searchCriteria%5BcurrentPage%5D=1' => [
                 'items' => [],
             ],
         ]);

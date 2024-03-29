@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoPrices\Tests;
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Retriever\DummyPriceRetriever;
 use JustBetter\MagentoPrices\Retriever\DummySkuRetriever;
 use JustBetter\MagentoPrices\ServiceProvider;
@@ -34,6 +35,8 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         activity()->disableLogging();
+
+        Magento::fake();
     }
 
     protected function getPackageProviders($app): array
