@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.5.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/1.6.0...main)
+## [1.6.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.6.0) - 2024-03-29
+
+### What's Changed
+* Support Laravel 11 by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/20
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/1.5.1...1.6.0
+
 ## [1.5.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/1.5.1) - 2024-01-17
 
 ### What's Changed
