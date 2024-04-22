@@ -33,12 +33,10 @@ class CheckTierDuplicates implements ChecksTierDuplicates
 
             activity()
                 ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model))
+                ->useLog('error')
                 ->withProperties([
                     'sku' => $sku,
                     'duplicate' => $matching->toArray(),
-                    'metadata' => [
-                        'level' => 'error',
-                    ],
                 ])
                 ->log("Duplicate tier prices found for $sku");
 

@@ -44,13 +44,11 @@ class UpdateMagentoSpecialPricesJob implements ShouldBeUnique, ShouldQueue
 
         activity()
             ->on($this->price->getModel())
+            ->useLog('error')
             ->withProperties([
                 'priceData' => $this->price->getMagentoBasePrices(),
                 'message' => $exception->getMessage(),
                 'response' => $response ?? '',
-                'metadata' => [
-                    'level' => 'error',
-                ],
             ])
             ->log('Failed to update special prices');
 
