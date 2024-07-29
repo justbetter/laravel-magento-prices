@@ -4,7 +4,7 @@ namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Actions\ImportCustomerGroups;
+use JustBetter\MagentoPrices\Actions\Utility\ImportCustomerGroups;
 use JustBetter\MagentoPrices\Models\MagentoCustomerGroup;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;

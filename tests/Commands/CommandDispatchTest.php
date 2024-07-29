@@ -4,16 +4,16 @@ namespace JustBetter\MagentoPrices\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand;
-use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
-use JustBetter\MagentoPrices\Commands\SearchMissingPricesCommand;
-use JustBetter\MagentoPrices\Commands\SyncPricesCommand;
-use JustBetter\MagentoPrices\Commands\UpdatePriceCommand;
+use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
+use JustBetter\MagentoPrices\Commands\ProcessPricesCommand;
+use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
+use JustBetter\MagentoPrices\Commands\Utility\SearchMissingPricesCommand;
 use JustBetter\MagentoPrices\Jobs\MonitorWaitTimesJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePriceJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePricesJob;
-use JustBetter\MagentoPrices\Jobs\SyncMissingPricesJob;
 use JustBetter\MagentoPrices\Jobs\SyncPricesJob as SyncPricesJob;
-use JustBetter\MagentoPrices\Jobs\UpdatePriceJob;
+use JustBetter\MagentoPrices\Jobs\Update\UpdatePriceJob;
+use JustBetter\MagentoPrices\Jobs\Utility\SyncMissingPricesJob;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
 class CommandDispatchTest extends TestCase
@@ -35,14 +35,14 @@ class CommandDispatchTest extends TestCase
 
     public function test_retrieve_price(): void
     {
-        $this->artisan(RetrievePricesCommand::class, ['sku' => '::sku::']);
+        $this->artisan(RetrievePriceCommand::class, ['sku' => '::sku::']);
 
         Bus::assertDispatched(RetrievePriceJob::class);
     }
 
     public function test_retrieve_prices(): void
     {
-        $this->artisan(RetrievePricesCommand::class);
+        $this->artisan(RetrievePriceCommand::class);
 
         Bus::assertDispatched(RetrievePricesJob::class);
     }
@@ -58,11 +58,11 @@ class CommandDispatchTest extends TestCase
     {
         return [
             'Sync prices' => [
-                SyncPricesCommand::class,
+                ProcessPricesCommand::class,
                 SyncPricesJob::class,
             ],
             'Sync prices sync' => [
-                SyncPricesCommand::class,
+                ProcessPricesCommand::class,
                 SyncPricesJob::class,
                 ['--sync' => true],
             ],

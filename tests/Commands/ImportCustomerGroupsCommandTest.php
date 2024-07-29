@@ -4,8 +4,8 @@ namespace JustBetter\MagentoPrices\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\PendingCommand;
-use JustBetter\MagentoPrices\Commands\ImportCustomerGroupsCommand;
-use JustBetter\MagentoPrices\Jobs\ImportCustomerGroupsJob;
+use JustBetter\MagentoPrices\Commands\Utility\ImportCustomerGroupsCommand;
+use JustBetter\MagentoPrices\Jobs\Utility\ImportCustomerGroupsJob;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
 class ImportCustomerGroupsCommandTest extends TestCase

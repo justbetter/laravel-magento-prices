@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Illuminate\Support\Facades\Http;
-use JustBetter\MagentoPrices\Actions\FindProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Actions\Utility\FindProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
 class FindProductsWithMissingPricesTest extends TestCase

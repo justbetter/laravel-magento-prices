@@ -12,7 +12,7 @@ use JustBetter\MagentoPrices\Data\BasePriceData;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Data\TierPriceData;
 use JustBetter\MagentoPrices\Exceptions\PriceUpdateException;
-use JustBetter\MagentoPrices\Jobs\ImportCustomerGroupsJob;
+use JustBetter\MagentoPrices\Jobs\Utility\ImportCustomerGroupsJob;
 use JustBetter\MagentoPrices\Models\MagentoCustomerGroup;
 use JustBetter\MagentoPrices\Tests\TestCase;
 

@@ -2,8 +2,8 @@
 
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
-use JustBetter\MagentoPrices\Contracts\ImportsCustomerGroups;
-use JustBetter\MagentoPrices\Jobs\ImportCustomerGroupsJob;
+use JustBetter\MagentoPrices\Contracts\Utility\ImportsCustomerGroups;
+use JustBetter\MagentoPrices\Jobs\Utility\ImportCustomerGroupsJob;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 

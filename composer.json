@@ -8,6 +8,7 @@
     "brick/money": "^0.7|^0.8",
     "justbetter/laravel-magento-client": "^2.4",
     "justbetter/laravel-magento-products": "^1.4",
+    "justbetter/laravel-magento-async": "^1.0",
     "laravel/framework": "^10.0|^11.0",
     "spatie/laravel-activitylog": "^4.8"
   },

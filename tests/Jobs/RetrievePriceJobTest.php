@@ -4,7 +4,7 @@ namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoPrices\Data\PriceData;
-use JustBetter\MagentoPrices\Jobs\ProcessPriceJob;
+use JustBetter\MagentoPrices\Jobs\ProcessPricesJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePriceJob;
 use JustBetter\MagentoPrices\Retriever\DummyPriceRetriever;
 use JustBetter\MagentoPrices\Tests\TestCase;
@@ -14,7 +14,7 @@ class RetrievePriceJobTest extends TestCase
 {
     public function test_it_dispatches_process_job(): void
     {
-        Bus::fake([ProcessPriceJob::class]);
+        Bus::fake([ProcessPricesJob::class]);
 
         config()->set('magento-prices.retrievers.price', DummyPriceRetriever::class);
 
@@ -25,12 +25,12 @@ class RetrievePriceJobTest extends TestCase
 
         RetrievePriceJob::dispatchSync('::sku::');
 
-        Bus::assertDispatched(ProcessPriceJob::class);
+        Bus::assertDispatched(ProcessPricesJob::class);
     }
 
     public function test_it_does_not_dispatch_process_job(): void
     {
-        Bus::fake([ProcessPriceJob::class]);
+        Bus::fake([ProcessPricesJob::class]);
 
         config()->set('magento-prices.retrievers.price', DummyPriceRetriever::class);
 
@@ -41,7 +41,7 @@ class RetrievePriceJobTest extends TestCase
 
         RetrievePriceJob::dispatchSync('::sku::');
 
-        Bus::assertNotDispatched(ProcessPriceJob::class);
+        Bus::assertNotDispatched(ProcessPricesJob::class);
     }
 
     public function test_queue_attributes_force_false(): void

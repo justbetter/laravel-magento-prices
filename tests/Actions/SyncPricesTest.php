@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoPrices\Actions\SyncPrices;
 use JustBetter\MagentoPrices\Jobs\RetrievePriceJob;
-use JustBetter\MagentoPrices\Jobs\UpdatePriceJob;
+use JustBetter\MagentoPrices\Jobs\Update\UpdatePriceJob;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;
 

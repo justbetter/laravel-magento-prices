@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Brick\Money\Money;
-use JustBetter\MagentoPrices\Actions\CheckTierDuplicates;
+use JustBetter\MagentoPrices\Actions\Utility\CheckTierDuplicates;
 use JustBetter\MagentoPrices\Data\TierPriceData;
 use JustBetter\MagentoPrices\Exceptions\DuplicateTierPriceException;
 use JustBetter\MagentoPrices\Models\MagentoPrice;

@@ -2,7 +2,7 @@
 
 namespace JustBetter\MagentoPrices\Tests\Feature;
 
-use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
+use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
@@ -22,7 +22,7 @@ class RetrievePricesJobTest extends TestCase
 
     public function test_it_retrieves_all(): void
     {
-        $this->artisan(RetrievePricesCommand::class);
+        $this->artisan(RetrievePriceCommand::class);
 
         $prices = MagentoPrice::all();
 
@@ -31,7 +31,7 @@ class RetrievePricesJobTest extends TestCase
 
     public function test_it_retrieves_by_date(): void
     {
-        $this->artisan(RetrievePricesCommand::class, ['--date' => 'today']);
+        $this->artisan(RetrievePriceCommand::class, ['--date' => 'today']);
 
         $prices = MagentoPrice::all();
 

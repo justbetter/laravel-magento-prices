@@ -3,10 +3,10 @@
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoPrices\Contracts\FindsProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Contracts\Utility\FindsProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Jobs\RetrievePriceJob;
-use JustBetter\MagentoPrices\Jobs\SyncMissingPricesJob;
-use JustBetter\MagentoPrices\Jobs\UpdatePriceJob;
+use JustBetter\MagentoPrices\Jobs\Update\UpdatePriceJob;
+use JustBetter\MagentoPrices\Jobs\Utility\SyncMissingPricesJob;
 use JustBetter\MagentoPrices\Models\MagentoPrice;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;

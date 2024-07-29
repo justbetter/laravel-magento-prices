@@ -4,8 +4,8 @@ namespace JustBetter\MagentoPrices\Tests\Feature;
 
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
-use JustBetter\MagentoPrices\Commands\UpdatePriceCommand;
+use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
+use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
 use JustBetter\MagentoPrices\Jobs\UpdateMagentoBasePricesJob;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
@@ -22,7 +22,7 @@ class UpdatePricesJobTest extends TestCase
                 ->andReturnTrue();
         });
 
-        $this->artisan(RetrievePricesCommand::class);
+        $this->artisan(RetrievePriceCommand::class);
     }
 
     public function test_it_updates(): void

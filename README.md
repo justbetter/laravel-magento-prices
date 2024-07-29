@@ -58,16 +58,17 @@ We have a [Laravel Nova integration](https://github.com/justbetter/laravel-magen
 ## Usage
 
 Add the following commands to your scheduler:
+
 ```php
 <?php
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command(\JustBetter\MagentoPrices\Commands\SyncPricesCommand::class)->everyMinute();
+        $schedule->command(\JustBetter\MagentoPrices\Commands\ProcessPricesCommand::class)->everyMinute();
 
-        $schedule->command(\JustBetter\MagentoPrices\Commands\RetrievePricesCommand::class)->daily();
+        $schedule->command(\JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand::class)->daily();
         // Or for example
-        $schedule->command(\JustBetter\MagentoPrices\Commands\RetrievePricesCommand::class)->weekly(); // Retrieve all weekly
+        $schedule->command(\JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand::class)->weekly(); // Retrieve all weekly
         $schedule->command('price:retrieve --date=today')->dailyAt('23:00'); // Retrieve updated daily
     }
 
