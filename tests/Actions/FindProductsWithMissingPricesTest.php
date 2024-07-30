@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Illuminate\Support\Facades\Http;
-use JustBetter\MagentoPrices\Actions\Utility\FindProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Actions\Utility\ProcessProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
 class FindProductsWithMissingPricesTest extends TestCase
@@ -31,10 +31,10 @@ class FindProductsWithMissingPricesTest extends TestCase
             ]),
         ]);
 
-        /** @var FindProductsWithMissingPrices $action */
-        $action = app(FindProductsWithMissingPrices::class);
+        /** @var ProcessProductsWithMissingPrices $action */
+        $action = app(ProcessProductsWithMissingPrices::class);
 
-        $prices = $action->retrieve()->all();
+        $prices = $action->retrieveSkus()->all();
 
         $this->assertEquals(['::sku_2::', '::sku_3::'], $prices);
     }

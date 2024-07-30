@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoPrices\Repository;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use JustBetter\MagentoPrices\Data\PriceData;
 
 abstract class BaseRepository
@@ -42,8 +42,8 @@ abstract class BaseRepository
         return $instance;
     }
 
-    /** @return Collection<int, string> */
-    abstract public function skus(?Carbon $from = null): Collection;
+    /** @return Enumerable<int, string> */
+    abstract public function skus(?Carbon $from = null): Enumerable;
 
     abstract public function retrieve(string $sku): ?PriceData;
 }

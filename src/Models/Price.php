@@ -3,10 +3,12 @@
 namespace JustBetter\MagentoPrices\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use JustBetter\MagentoAsync\Concerns\HasOperations;
 use JustBetter\MagentoPrices\Repository\BaseRepository;
+use JustBetter\MagentoProducts\Models\MagentoProduct;
 use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -29,6 +31,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property ?Carbon $last_failed
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property ?MagentoProduct $product
  */
 class Price extends Model
 {
@@ -52,6 +55,11 @@ class Price extends Model
     ];
 
     protected $guarded = [];
+
+    public function product(): HasOne
+    {
+        return $this->hasOne(MagentoProduct::class, 'sku', 'sku');
+    }
 
     public function registerFailure(): void
     {

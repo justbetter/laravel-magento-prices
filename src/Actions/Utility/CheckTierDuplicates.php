@@ -4,9 +4,8 @@ namespace JustBetter\MagentoPrices\Actions\Utility;
 
 use Illuminate\Support\Collection;
 use JustBetter\MagentoPrices\Contracts\Utility\ChecksTierDuplicates;
-use JustBetter\MagentoPrices\Data\TierPriceData;
 use JustBetter\MagentoPrices\Exceptions\DuplicateTierPriceException;
-use JustBetter\MagentoPrices\Models\MagentoPrice;
+use JustBetter\MagentoPrices\Models\Price;
 use Spatie\Activitylog\ActivityLogger;
 
 /**
@@ -15,33 +14,26 @@ use Spatie\Activitylog\ActivityLogger;
  */
 class CheckTierDuplicates implements ChecksTierDuplicates
 {
-    public function check(string $sku, Collection $tierPrices): void
+    public function check(Price $model, array $tierPrices): void
     {
-        /** @var TierPriceData $tierPrice */
-        foreach ($tierPrices as $tierPrice) {
-            $matching = $tierPrices
-                ->where('storeId', $tierPrice->storeId)
-                ->where('quantity', $tierPrice->quantity)
-                ->where('groupId', $tierPrice->groupId);
+        $duplicates = collect($tierPrices)
+            ->groupBy(['store_id', 'quantity', 'group_id'])
+            ->flatten(2)
+            ->filter(fn (Collection $matches): bool => $matches->count() > 1);
 
-            if ($matching->count() == 1) {
-                continue;
-            }
-
-            /** @var ?MagentoPrice $model */
-            $model = MagentoPrice::query()->firstWhere('sku', '=', $sku);
-
-            activity()
-                ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model))
-                ->useLog('error')
-                ->withProperties([
-                    'sku' => $sku,
-                    'duplicate' => $matching->toArray(),
-                ])
-                ->log("Duplicate tier prices found for $sku");
-
-            throw new DuplicateTierPriceException($sku, $matching);
+        if ($duplicates->isEmpty()) {
+            return;
         }
+
+        activity()
+            ->when($model->exists, fn (ActivityLogger $logger): ActivityLogger => $logger->on($model))
+            ->useLog('error')
+            ->withProperties([
+                'duplicate' => $duplicates->toArray(),
+            ])
+            ->log("Duplicate tier prices found for $model->sku");
+
+        throw new DuplicateTierPriceException("Duplicate tier prices found for $model->sku");
     }
 
     public static function bind(): void

@@ -2,9 +2,9 @@
 
 namespace JustBetter\MagentoPrices\Contracts\Utility;
 
-use Illuminate\Support\Collection;
+use JustBetter\MagentoPrices\Models\Price;
 
 interface ChecksTierDuplicates
 {
-    public function check(string $sku, Collection $tierPrices): void;
+    public function check(Price $model, array $tierPrices): void;
 }

@@ -7,13 +7,13 @@ use JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand;
 use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
 use JustBetter\MagentoPrices\Commands\ProcessPricesCommand;
 use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
-use JustBetter\MagentoPrices\Commands\Utility\SearchMissingPricesCommand;
+use JustBetter\MagentoPrices\Commands\Utility\ProcessProductsWithMissingPricesCommand;
 use JustBetter\MagentoPrices\Jobs\MonitorWaitTimesJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePriceJob;
 use JustBetter\MagentoPrices\Jobs\RetrievePricesJob;
 use JustBetter\MagentoPrices\Jobs\SyncPricesJob as SyncPricesJob;
 use JustBetter\MagentoPrices\Jobs\Update\UpdatePriceJob;
-use JustBetter\MagentoPrices\Jobs\Utility\SyncMissingPricesJob;
+use JustBetter\MagentoPrices\Jobs\Utility\ProcessProductsWithMissingPricesJob;
 use JustBetter\MagentoPrices\Tests\TestCase;
 
 class CommandDispatchTest extends TestCase
@@ -67,8 +67,8 @@ class CommandDispatchTest extends TestCase
                 ['--sync' => true],
             ],
             'Search missing' => [
-                SearchMissingPricesCommand::class,
-                SyncMissingPricesJob::class,
+                ProcessProductsWithMissingPricesCommand::class,
+                ProcessProductsWithMissingPricesJob::class,
             ],
             'Monitor wait times' => [
                 MonitorWaitTimesCommand::class,

@@ -16,7 +16,7 @@ use JustBetter\MagentoPrices\Actions\Update\Sync\UpdatePrice;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateSpecialPrice;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateTierPrice;
 use JustBetter\MagentoPrices\Actions\Utility\CheckTierDuplicates;
-use JustBetter\MagentoPrices\Actions\Utility\FindProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Actions\Utility\ProcessProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Actions\Utility\ImportCustomerGroups;
 use JustBetter\MagentoPrices\Commands\Retrieval\RetrieveAllPricesCommand;
 use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
@@ -24,7 +24,7 @@ use JustBetter\MagentoPrices\Commands\ProcessPricesCommand;
 use JustBetter\MagentoPrices\Commands\Update\UpdateAllPricesCommand;
 use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
 use JustBetter\MagentoPrices\Commands\Utility\ImportCustomerGroupsCommand;
-use JustBetter\MagentoPrices\Commands\Utility\SearchMissingPricesCommand;
+use JustBetter\MagentoPrices\Commands\Utility\ProcessProductsWithMissingPricesCommand;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -61,7 +61,7 @@ class ServiceProvider extends BaseServiceProvider
         ProcessPrices::bind();
 
         CheckTierDuplicates::bind();
-        FindProductsWithMissingPrices::bind();
+        ProcessProductsWithMissingPrices::bind();
         ImportCustomerGroups::bind();
 
         return $this;
@@ -96,7 +96,7 @@ class ServiceProvider extends BaseServiceProvider
                 UpdatePriceCommand::class,
                 ProcessPricesCommand::class,
                 ImportCustomerGroupsCommand::class,
-                SearchMissingPricesCommand::class,
+                ProcessProductsWithMissingPricesCommand::class,
             ]);
         }
 

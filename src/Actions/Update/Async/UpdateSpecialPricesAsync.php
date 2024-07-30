@@ -36,7 +36,7 @@ class UpdateSpecialPricesAsync implements UpdatesSpecialPricesAsync
 
         $this->magentoAsync
             ->subjects($prices->all())
-            ->postBulk('products/special-prices', $payload);
+            ->postBulk('products/special-price', $payload);
     }
 
     public static function bind(): void

@@ -25,7 +25,7 @@ class UpdateSpecialPrice implements UpdatesSpecialPrice
         }
 
         $response = $this->magento
-            ->post('products/special-prices', ['prices' => $payload])
+            ->post('products/special-price', ['prices' => $payload])
             ->onError(function (Response $response) use ($price, $payload): void {
                 activity()
                     ->on($price)
@@ -34,7 +34,7 @@ class UpdateSpecialPrice implements UpdatesSpecialPrice
                         'response' => $response->body(),
                         'payload' => $payload,
                     ])
-                    ->log('Failed to special base price');
+                    ->log('Failed to update special price');
             });
 
         $price->update([
