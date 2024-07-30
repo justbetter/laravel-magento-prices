@@ -15,8 +15,8 @@ class UpdateSpecialPricesAsync implements UpdatesSpecialPricesAsync
 
     public function update(Collection $prices): void
     {
-        $prices = $prices->reject(fn (Price $price
-        ): bool => count($price->special_prices) === 0 || ! $price->has_special);
+        $prices = $prices
+            ->reject(fn (Price $price): bool => count($price->special_prices) === 0 || ! $price->has_special);
 
         if ($prices->isEmpty()) {
             return;

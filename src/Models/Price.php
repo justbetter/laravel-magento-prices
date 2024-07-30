@@ -4,12 +4,10 @@ namespace JustBetter\MagentoPrices\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use JustBetter\MagentoAsync\Concerns\HasOperations;
 use JustBetter\MagentoPrices\Repository\BaseRepository;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
-use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -19,12 +17,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property bool $sync
  * @property ?array $base_prices
  * @property ?array $tier_prices
- * @property bool $has_tier
  * @property ?array $special_prices
  * @property bool $has_special
  * @property bool $retrieve
  * @property bool $update
- * @property string $checksum
+ * @property ?string $checksum
  * @property ?Carbon $last_retrieved
  * @property ?Carbon $last_updated
  * @property int $fail_count
@@ -48,13 +45,25 @@ class Price extends Model
         'tier_prices' => 'array',
         'special_prices' => 'array',
         'sync' => 'boolean',
-        'has_tier' => 'boolean',
         'has_special' => 'boolean',
         'retrieve' => 'boolean',
         'update' => 'boolean',
     ];
 
     protected $guarded = [];
+
+    public static function booted(): void
+    {
+        static::updating(function (self $model) {
+            if ($model->update && $model->retrieve) {
+                if (! $model->isDirty(['retrieve'])) {
+                    $model->retrieve = false;
+                } else {
+                    $model->update = false;
+                }
+            }
+        });
+    }
 
     public function product(): HasOne
     {

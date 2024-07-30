@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('magento_prices', function (Blueprint $table): void {
-            $table->string('checksum')->nullable()->after('update');
-        });
+        Schema::dropColumns('magento_prices', ['has_tier']);
     }
 
     public function down(): void
     {
-        Schema::dropColumns('magento_prices', ['checksum']);
+        Schema::table('magento_prices', function (Blueprint $table): void {
+            $table->boolean('has_tier')->default(false)->after('tier_prices');
+        });
     }
 };

@@ -4,21 +4,21 @@ namespace JustBetter\MagentoPrices\Actions\Update\Async;
 
 use Illuminate\Support\Collection;
 use JustBetter\MagentoAsync\Client\MagentoAsync;
-use JustBetter\MagentoPrices\Actions\Utility\RetrieveCustomerGroups;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesTierPricesAsync;
+use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
 use JustBetter\MagentoPrices\Models\Price;
 
 class UpdateTierPricesAsync implements UpdatesTierPricesAsync
 {
     public function __construct(
         protected MagentoAsync $magentoAsync,
-        protected RetrieveCustomerGroups $customerGroups
+        protected RetrievesCustomerGroups $customerGroups
     ) {
     }
 
     public function update(Collection $prices): void
     {
-        $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices) === 0 || ! $price->has_tier);
+        $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices) === 0);
 
         if ($prices->isEmpty()) {
             return;
@@ -41,7 +41,7 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
 
         $this->magentoAsync
             ->subjects($prices->all())
-            ->postBulk('products/tier-prices', $payload);
+            ->putBulk('products/tier-prices', $payload);
     }
 
     public static function bind(): void

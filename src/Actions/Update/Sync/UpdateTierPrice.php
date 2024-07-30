@@ -4,15 +4,15 @@ namespace JustBetter\MagentoPrices\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Response;
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Actions\Utility\RetrieveCustomerGroups;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesTierPrice;
+use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
 use JustBetter\MagentoPrices\Models\Price;
 
 class UpdateTierPrice implements UpdatesTierPrice
 {
     public function __construct(
         protected Magento $magento,
-        protected RetrieveCustomerGroups $customerGroups
+        protected RetrievesCustomerGroups $customerGroups
     ) {
     }
 
@@ -24,7 +24,7 @@ class UpdateTierPrice implements UpdatesTierPrice
                 'sku' => $price->sku,
             ]));
 
-        if ($payload->isEmpty() && ! $price->has_tier) {
+        if ($payload->isEmpty()) {
             return true;
         }
 
@@ -41,9 +41,6 @@ class UpdateTierPrice implements UpdatesTierPrice
                     ->log('Failed to update tier price');
             });
 
-        $price->update([
-            'has_tier' => $payload->isNotEmpty(),
-        ]);
 
         return $response->successful();
     }

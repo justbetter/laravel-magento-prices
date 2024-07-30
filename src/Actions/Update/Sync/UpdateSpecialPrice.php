@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoPrices\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Enumerable;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesSpecialPrice;
 use JustBetter\MagentoPrices\Models\Price;
@@ -20,7 +21,15 @@ class UpdateSpecialPrice implements UpdatesSpecialPrice
                 'sku' => $price->sku,
             ]));
 
-        if ($payload->isEmpty() && ! $price->has_special) {
+        if ($price->has_special) {
+            $this->deleteCurrentSpecialPrices($price);
+        }
+
+        $price->update([
+            'has_special' => $payload->isNotEmpty(),
+        ]);
+
+        if ($payload->isEmpty()) {
             return true;
         }
 
@@ -37,11 +46,31 @@ class UpdateSpecialPrice implements UpdatesSpecialPrice
                     ->log('Failed to update special price');
             });
 
-        $price->update([
-            'has_special' => $payload->isNotEmpty(),
-        ]);
-
         return $response->successful();
+    }
+
+    protected function deleteCurrentSpecialPrices(Price $price): void
+    {
+        $this->magento
+            ->post('products/special-price-information', ['skus' => [$price->sku]])
+            ->throw()
+            ->collect()
+            ->chunk(20)
+            ->each(function (Enumerable $specialPrices) use ($price): void {
+                $this->magento
+                    ->post('products/special-price-delete', ['prices' => $specialPrices->toArray()])
+                    ->onError(function (Response $response) use ($price, $specialPrices): void {
+                        activity()
+                            ->on($price)
+                            ->useLog('error')
+                            ->withProperties([
+                                'response' => $response->body(),
+                                'payload' => $specialPrices->toArray(),
+                            ])
+                            ->log('Failed to remove special price');
+                    })
+                    ->throw();
+            });
     }
 
     public static function bind(): void

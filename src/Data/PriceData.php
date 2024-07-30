@@ -13,7 +13,7 @@ class PriceData extends Data
 
         'tier_prices' => ['nullable', 'array'],
         'tier_prices.*.website_id' => ['required', 'integer'],
-        'tier_prices.*.group_id' => ['required', 'string'],
+        'tier_prices.*.customer_group' => ['required', 'string'],
         'tier_prices.*.price_type' => ['required', 'string'],
         'tier_prices.*.quantity' => ['required', 'numeric'],
         'tier_prices.*.price' => ['required', 'numeric'],

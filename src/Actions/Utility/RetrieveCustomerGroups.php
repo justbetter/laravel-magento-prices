@@ -2,11 +2,12 @@
 
 namespace JustBetter\MagentoPrices\Actions\Utility;
 
+use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
 use JustBetter\MagentoPrices\Exceptions\PriceUpdateException;
 use JustBetter\MagentoPrices\Jobs\Utility\ImportCustomerGroupsJob;
 use JustBetter\MagentoPrices\Models\CustomerGroup;
 
-class RetrieveCustomerGroups
+class RetrieveCustomerGroups implements RetrievesCustomerGroups
 {
     public function retrieve(): array
     {
@@ -25,5 +26,10 @@ class RetrieveCustomerGroups
         return $groups
             ->push('ALL GROUPS')
             ->toArray();
+    }
+
+    public static function bind(): void
+    {
+        app()->singleton(RetrievesCustomerGroups::class, static::class);
     }
 }
