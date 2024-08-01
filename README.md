@@ -22,8 +22,8 @@ This package can:
 - Only update prices in Magento when are modified. i.e. when you retrieve the same price ten times it only updates once to Magento
 - Search for missing prices in Magento
 - Automatically stop syncing when updating fails
+- Supports Magento 2 async bulk requests for updatingusing [Laravel Magento Async](https://github.com/justbetter/laravel-magento-async)
 - Logs activities using [Spatie activitylog](https://github.com/spatie/laravel-activitylog)
-- Logs errors using [JustBetter Error Logger](https://github.com/justbetter/laravel-error-logger)
 - Checks if Magento products exist using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 
 > Also using customer specific prices? [See our other package!](https://github.com/justbetter/laravel-magento-customer-prices)
@@ -33,23 +33,13 @@ This package can:
 
 Require this package: `composer require justbetter/laravel-magento-prices`
 
-Publish the config:
-```
-php artisan vendor:publish --provider="JustBetter\MagentoPrices\ServiceProvider" --tag="config"
-```
+Publish the config: `php artisan vendor:publish --provider="JustBetter\MagentoPrices\ServiceProvider" --tag="config"`
 
-Publish the activity log's migrations:
-```
-php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
-```
+Publish the activity log's migrations: `php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"`
 
-Publish the batches table migration:
-```
-php artisan queue:batches-table
-```
+Run migrations. `php artisan migrate`
 
-Run migrations.
-
+> **_TIP:_** All actions in this package are run via jobs, we recommend Laravel Horizon or another queueing system to run these
 
 ### Laravel Nova
 
@@ -66,109 +56,137 @@ Add the following commands to your scheduler:
     {
         $schedule->command(\JustBetter\MagentoPrices\Commands\ProcessPricesCommand::class)->everyMinute();
 
-        $schedule->command(\JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand::class)->daily();
-        // Or for example
-        $schedule->command(\JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand::class)->weekly(); // Retrieve all weekly
-        $schedule->command('price:retrieve --date=today')->dailyAt('23:00'); // Retrieve updated daily
+        $schedule->command(\JustBetter\MagentoPrices\Commands\Retrieval\RetrieveAllPricesCommand::class)->daily();
+        $schedule->command(\JustBetter\MagentoPrices\Commands\Retrieval\RetrieveAllPricesCommand::class, ['from' => 'now -2 hours'])->hourly(); // Retrieve updated
     }
 
 ```
 
-
 ### Retrieving Prices
 
-In order to retrieve prices you have to create two classes. One to retrieve skus and one to retrieve the price(s) per sku.
+This package works with a repository that retrieves prices per SKU which you have to implement.
 
-#### Price retriever
+#### Repository
 
-This class is responsible for retrieving prices for products. Your class must extend `\JustBetter\MagentoPrices\Retriever\PriceRetriever`.
-Your class must return a `PriceData` object or `null`.
-The `PriceData` object is a wrapper around three collections:
-- Base prices
-- Tier prices
-- Special Prices
+This class is responsible for retrieving prices for products, retrieving sku's and settings.
+Your class must extend `\JustBetter\MagentoPrices\Repository\Repository` and implement the `retrieve` method.
+If there is no price for the SKU you may return `null`. In all other cases you need to return a `PriceData` object which contains four elements:
+- `sku` Required
+- `base_prices` Optional, array of base prices
+- `tier_prices` Optional, array of tier prices
+- `special_prices` Optional, array of special prices
 
-See the classes `BasePriceData` and `TierPriceData` in the `JustBetter\MagentoPrices\Data` namespace on how to use them.
+The formats of the price arrays follows Magento's API.
+You can view the rules in the `PriceData` class to get an idea of what you need to provide.
 
-For example:
+##### Example
 
 ```php
+
 <?php
 
-namespace JustBetter\MagentoPrices\Retriever;
+namespace App\Integrations\MagentoPrices;
 
-use JustBetter\MagentoPrices\Data\BasePriceData;
 use JustBetter\MagentoPrices\Data\PriceData;
-use JustBetter\MagentoPrices\Data\SpecialPriceData;
-use JustBetter\MagentoPrices\Data\TierPriceData;
-use JustBetter\MagentoPrices\Helpers\MoneyHelper;
+use JustBetter\MagentoPrices\Repository\Repository;
 
-class ExamplePriceRetriever extends PriceRetriever
+class MyPriceRepository extends Repository
 {
-    public function __construct(protected ExternalService $externalService, protected MoneyHelper $moneyHelper) {}
-
-    public function retrieve(string $sku): ?PriceData
+  public function retrieve(string $sku): ?PriceData
     {
-        $basePrice = new BasePriceData(
-            $this->moneyHelper->getMoney($this->externalService->getBasePrice($sku))
-        );
-
-        $tierPrices = $this->externalService->getTierPrices($sku)
-            ->mapInto(TierPriceData::class);
-
-        $specialPrices = $this->externalService->getSpecialPrices($sku)
-            ->mapInto(SpecialPriceData::class);
-
-        return new PriceData($sku, collect([$basePrice]), $tierPrices, $specialPrices);
+        return PriceData::of([
+            'sku' => $sku,
+            'base_prices' => [
+                [
+                    'store_id' => 0,
+                    'price' => 10,
+                ],
+                [
+                    'store_id' => 2,
+                    'price' => 19,
+                ],
+            ],
+            'tier_prices' => [
+                [
+                    'website_id' => 0,
+                    'customer_group' => 'group_1',
+                    'price_type' => 'fixed',
+                    'quantity' => 1,
+                    'price' => 8,
+                ],
+                [
+                    'website_id' => 0,
+                    'customer_group' => '4040',
+                    'price_type' => 'group_2',
+                    'quantity' => 1,
+                    'price' => 7,
+                ],
+            ],
+            'special_prices' => [
+                [
+                    'store_id' => 0,
+                    'price' => 5,
+                    'price_from' => now()->subWeek()->toDateString(),
+                    'price_to' => now()->addWeek()->toDateString(),
+                ],
+            ],
+        ]);
     }
 }
 ```
 
-Then register your retriever in the config file `config/magento-prices.php`:
+### Retrieving SKU's
+
+By default, the `Repository` that you are extending will retrieve the SKU's from [justbetter/laravel-magento-products](https://github.com/justbetter/laravel-magento-products).
+If you wish to use this you have to add the commands to your scheduler to automatically import products.
+
+If you have another source for your SKU's you may implement the `skus` method yourself.
+It accepts an optional carbon instance to only retrieve modified stock.
+
+```php
+<?php
+
+namespace App\Integrations\MagentoPrices;
+
+use JustBetter\MagentoPrices\Repositories\Repository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+
+class MyPriceRepository implements Repository
+{
+    public function skus(?Carbon $from = null): ?Collection
+    {
+        return collect(['sku_1', 'sku_2']);
+    }
+}
+```
+
+### Configuring the repository
+
+The repository class has a couple of settings that you can adjust:
+
+```php
+class BaseRepository
+{
+    // How many prices may be retrieved at once when the process job runs
+    protected int $retrieveLimit = 250;
+
+    // How many prices may be updated at once when the process job runs
+    protected int $updateLimit = 250;
+
+    // How many times an update to Magento may fail before it stops trying
+    protected int $failLimit = 3;
+}
+```
+
+After you've created and configured the repository you have to set it in your configuration file:
 
 ```php
 <?php
 
 return [
-    'retrievers' => [
-        'price' => ExamplePriceRetriever::class,
-    ],
-```
-
-You can retrieve the price by running: `php artisan price:retrieve {sku}`
-
-##### Storing Money
-
-We use Brick/money for storing prices, to create a price use:
-```php
- $basePrice = new BasePriceData(
-            Money::of(10, config('laravel-magento-prices.currency'))
-        );
-```
-
-There is a helper for that which adds precision, context and the rounding mode from the config: `JustBetter\MagentoPrices\Helpers\MoneyHelper`
-
-##### Example
-
-To help you get started you can look at the `\JustBetter\MagentoPrices\Retriever\DummyPriceRetriever`
-
-#### SKU Retriever
-
-In order to know what SKU's to retrieve prices for you have to create a SKU retriever class. This class must extend `\JustBetter\MagentoPrices\Retriever\SkuRetriever`.
-
-It is required to have a method that retrieves all skus. You can optionally implement the `retrieveByDate` method to retrieve updated skus.
-
-And example can be found in `\JustBetter\MagentoPrices\Retriever\DummySkuRetriever`
-
-Don't forget to register your retriever in the config file `config/magento-prices.php`:
-
-```php
-<?php
-
-return [
-    'retrievers' => [
-        'sku' => MyAwewsomeSkuRetriever::class,
-    ],
+    'repository' => \App\Integrations\MagentoPrices\MyPriceRepository::class,
+];
 ```
 
 ### Checking for missing prices
@@ -176,69 +194,23 @@ return [
 There is a build in action that checks all products in Magento where there is no price or the price is zero.
 For each product it will automatically start an update or retrieve.
 
-You can run this with the command: `php artisan price:missing`
-
-
-### Syncing
-
-The `php artisan price:sync` command will check the `retrieve` and `update` flags and dispatch jobs to retrieve/update the prices.
-In order to not overload your price source or Magento you can set limits in the config file.
-```php
-<?php
-
-return [
-    /* How many price retrieval jobs may be dispatched per sync */
-    'retrieve_limit' => 25,
-
-    /* How many prices update jobs may be dispatched per sync */
-    'update_limit' => 100,
-];
-```
-
-#### Long Waits
-
-The sync limits the amount of products that are retrieved/updated each sync.
-This may result in long waits if not properly configured for the amount of updates you get.
-
-To detect this you can add the `\JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand` to your schedule.
-This will fire the `\JustBetter\MagentoPrices\Events\LongWaitDetectedEvent` event in which you can for example trigger more updates or send a notification.
-
-You can configure the limits of when the event will be fired in the config:
-```php
-<?php
-
-return [
-    'monitor' => [
-        /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
-        'retrieval_max_wait' => 30,
-
-        /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
-        'update_max_wait' => 30,
-    ]
-];
-```
+You can run this with the command: `php artisan magento-prices:process-missing-prices`
 
 ### Handling failures
 
 When an update fails it will try again. A fail counter is stored with the model which is increased at each failure.
-A common failure is a missing required attribute in Magento.
-
-In the config you can specify how many times the update may be attempted:
-```php
-<?php
-
-return [
-    /* How many times can a price update failed before being cancelled */
-    'fail_count' => 5,
-];
-```
-> *Note* This applies to all three types of updates. Base, tier and special.
+In the repository you can specify how many times the update may be attempted
 
 ### Events
 
 Events that are dispatched by this package are:
-- [`\JustBetter\MagentoPrices\Events\LongWaitDetectedEvent`](#long-waits)
 - `\JustBetter\MagentoPrices\Events\UpdatedPriceEvent` - Triggered when a price is updated
+
+### Async bulk
+
+In order to drastically decrease the amount of requests to Magento you can enable the `async` option in the configuration file.
+This will use [Laravel Magento Async](https://github.com/justbetter/laravel-magento-async) to send the update requets.
+Do not forget to follow the installation guide on that package.
 
 ## Quality
 
