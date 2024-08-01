@@ -11,8 +11,7 @@ class ImportCustomerGroups implements ImportsCustomerGroups
 {
     public function __construct(
         protected Magento $magento
-    ) {
-    }
+    ) {}
 
     public function import(): void
     {

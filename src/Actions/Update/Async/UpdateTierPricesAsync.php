@@ -13,12 +13,11 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
     public function __construct(
         protected MagentoAsync $magentoAsync,
         protected RetrievesCustomerGroups $customerGroups
-    ) {
-    }
+    ) {}
 
     public function update(Collection $prices): void
     {
-        $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices) === 0);
+        $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices ?? []) === 0);
 
         if ($prices->isEmpty()) {
             return;
@@ -27,14 +26,14 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
         $customerGroups = $this->customerGroups->retrieve();
 
         $payload = $prices
-            ->map(function (Price $price) use($customerGroups): array {
+            ->map(function (Price $price) use ($customerGroups): array {
                 return [
                     'prices' => collect($price->tier_prices)
                         ->whereIn('customer_group', $customerGroups)
                         ->map(fn (array $tierPrice): array => array_merge($tierPrice, [
                             'sku' => $price->sku,
                         ]))
-                        ->toArray()
+                        ->toArray(),
                 ];
             })
             ->toArray();

@@ -13,10 +13,10 @@ class ProcessPricesCommandTest extends TestCase
     #[Test]
     public function it_dispatches_job(): void
     {
-       Bus::fake([ProcessPricesJob::class]);
+        Bus::fake([ProcessPricesJob::class]);
 
-       $this->artisan(ProcessPricesCommand::class);
+        $this->artisan(ProcessPricesCommand::class);
 
-       Bus::assertDispatched(ProcessPricesJob::class);
+        Bus::assertDispatched(ProcessPricesJob::class);
     }
 }

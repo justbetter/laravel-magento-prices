@@ -16,12 +16,13 @@ use JustBetter\MagentoPrices\Actions\Update\Sync\UpdatePrice;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateSpecialPrice;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateTierPrice;
 use JustBetter\MagentoPrices\Actions\Utility\CheckTierDuplicates;
-use JustBetter\MagentoPrices\Actions\Utility\ProcessProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Actions\Utility\DeleteCurrentSpecialPrices;
 use JustBetter\MagentoPrices\Actions\Utility\ImportCustomerGroups;
+use JustBetter\MagentoPrices\Actions\Utility\ProcessProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Actions\Utility\RetrieveCustomerGroups;
+use JustBetter\MagentoPrices\Commands\ProcessPricesCommand;
 use JustBetter\MagentoPrices\Commands\Retrieval\RetrieveAllPricesCommand;
 use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
-use JustBetter\MagentoPrices\Commands\ProcessPricesCommand;
 use JustBetter\MagentoPrices\Commands\Update\UpdateAllPricesCommand;
 use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
 use JustBetter\MagentoPrices\Commands\Utility\ImportCustomerGroupsCommand;
@@ -61,6 +62,7 @@ class ServiceProvider extends BaseServiceProvider
 
         ProcessPrices::bind();
 
+        DeleteCurrentSpecialPrices::bind();
         RetrieveCustomerGroups::bind();
         CheckTierDuplicates::bind();
         ProcessProductsWithMissingPrices::bind();

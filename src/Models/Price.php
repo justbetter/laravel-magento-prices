@@ -32,8 +32,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Price extends Model
 {
-    use LogsActivity;
     use HasOperations;
+    use LogsActivity;
 
     protected $table = 'magento_prices';
 

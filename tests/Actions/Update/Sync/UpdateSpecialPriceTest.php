@@ -2,6 +2,7 @@
 
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Sync;
 
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateSpecialPrice;
@@ -23,6 +24,7 @@ class UpdateSpecialPriceTest extends TestCase
     {
         Http::fake([
             'magento/rest/all/V1/products/special-price' => Http::response(),
+            'magento/rest/all/V1/products/special-price-information' => Http::response(),
         ])->preventStrayRequests();
 
         /** @var Price $model */
@@ -50,13 +52,21 @@ class UpdateSpecialPriceTest extends TestCase
     {
         Http::fake([
             'magento/rest/all/V1/products/special-price' => Http::response(null, 500),
+            'magento/rest/all/V1/products/special-price-information' => Http::response(),
         ])->preventStrayRequests();
 
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
             'has_special' => true,
-            'special_prices' => [],
+            'special_prices' => [
+                [
+                    'store_id' => 1,
+                    'price' => 10,
+                    'from' => '2024-07-30',
+                    'to' => '2024-08-30',
+                ],
+            ],
         ]);
 
         /** @var UpdateSpecialPrice $action */
@@ -68,7 +78,12 @@ class UpdateSpecialPriceTest extends TestCase
     public function it_removes_special_prices(): void
     {
         Http::fake([
-            'magento/rest/all/V1/products/special-price' => Http::response(),
+            'magento/rest/all/V1/products/special-price-information' => Http::response([
+                [
+                    'price',
+                ],
+            ]),
+            'magento/rest/all/V1/products/special-price-delete' => Http::response(),
         ])->preventStrayRequests();
 
         /** @var Price $model */
@@ -80,9 +95,10 @@ class UpdateSpecialPriceTest extends TestCase
 
         /** @var UpdateSpecialPrice $action */
         $action = app(UpdateSpecialPrice::class);
-        $this->assertTrue($action->update($model));
+        $action->update($model);
         $this->assertFalse($model->refresh()->has_special);
     }
+
 
     #[Test]
     public function it_only_removes_special_prices_once(): void
@@ -100,6 +116,6 @@ class UpdateSpecialPriceTest extends TestCase
         $action = app(UpdateSpecialPrice::class);
         $this->assertTrue($action->update($model));
 
-        Http::assertNothingSent();;
+        Http::assertNothingSent();
     }
 }

@@ -28,7 +28,6 @@ class UpdateBasePriceTest extends TestCase
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
-            'has_base' => false,
             'base_prices' => [
                 [
                     'store_id' => 1,
@@ -40,7 +39,6 @@ class UpdateBasePriceTest extends TestCase
         /** @var UpdateBasePrice $action */
         $action = app(UpdateBasePrice::class);
         $this->assertTrue($action->update($model));
-        $this->assertTrue($model->refresh()->has_base);
     }
 
     #[Test]
@@ -53,8 +51,12 @@ class UpdateBasePriceTest extends TestCase
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
-            'has_base' => true,
-            'base_prices' => [],
+            'base_prices' => [
+                [
+                    'store_id' => 1,
+                    'price' => 10,
+                ],
+            ],
         ]);
 
         /** @var UpdateBasePrice $action */
@@ -72,14 +74,17 @@ class UpdateBasePriceTest extends TestCase
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
-            'has_base' => true,
-            'base_prices' => [],
+            'base_prices' => [
+                [
+                    'store_id' => 1,
+                    'price' => 10,
+                ],
+            ],
         ]);
 
         /** @var UpdateBasePrice $action */
         $action = app(UpdateBasePrice::class);
         $this->assertTrue($action->update($model));
-        $this->assertFalse($model->refresh()->has_base);
     }
 
     #[Test]
@@ -90,7 +95,6 @@ class UpdateBasePriceTest extends TestCase
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
-            'has_base' => false,
             'base_prices' => [],
         ]);
 
@@ -98,6 +102,6 @@ class UpdateBasePriceTest extends TestCase
         $action = app(UpdateBasePrice::class);
         $this->assertTrue($action->update($model));
 
-        Http::assertNothingSent();;
+        Http::assertNothingSent();
     }
 }

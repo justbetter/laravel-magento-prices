@@ -3,8 +3,8 @@
 namespace JustBetter\MagentoPrices\Actions\Retrieval;
 
 use JustBetter\MagentoPrices\Contracts\Retrieval\RetrievesPrice;
-use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Jobs\Retrieval\SavePriceJob;
+use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Repository\BaseRepository;
 
 class RetrievePrice implements RetrievesPrice
@@ -13,9 +13,9 @@ class RetrievePrice implements RetrievesPrice
     {
         $repository = BaseRepository::resolve();
 
-        $stockData = $repository->retrieve($sku);
+        $priceData = $repository->retrieve($sku);
 
-        if ($stockData === null) {
+        if ($priceData === null) {
             Price::query()
                 ->where('sku', '=', $sku)
                 ->update(['retrieve' => false]);
@@ -23,7 +23,7 @@ class RetrievePrice implements RetrievesPrice
             return;
         }
 
-        SavePriceJob::dispatch($stockData, $forceUpdate);
+        SavePriceJob::dispatch($priceData, $forceUpdate);
     }
 
     public static function bind(): void

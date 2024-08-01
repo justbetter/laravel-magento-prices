@@ -13,8 +13,7 @@ class UpdateTierPrice implements UpdatesTierPrice
     public function __construct(
         protected Magento $magento,
         protected RetrievesCustomerGroups $customerGroups
-    ) {
-    }
+    ) {}
 
     public function update(Price $price): bool
     {
@@ -40,7 +39,6 @@ class UpdateTierPrice implements UpdatesTierPrice
                     ])
                     ->log('Failed to update tier price');
             });
-
 
         return $response->successful();
     }

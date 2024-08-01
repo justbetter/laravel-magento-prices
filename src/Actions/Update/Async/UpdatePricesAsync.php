@@ -15,8 +15,7 @@ class UpdatePricesAsync implements UpdatesPricesAsync
         protected UpdatesBasePricesAsync $basePrice,
         protected UpdatesTierPricesAsync $tierPrice,
         protected UpdatesSpecialPricesAsync $specialPrice,
-    ) {
-    }
+    ) {}
 
     public function update(Collection $prices): void
     {

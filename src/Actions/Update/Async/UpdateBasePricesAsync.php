@@ -9,13 +9,11 @@ use JustBetter\MagentoPrices\Models\Price;
 
 class UpdateBasePricesAsync implements UpdatesBasePricesAsync
 {
-    public function __construct(protected MagentoAsync $magentoAsync)
-    {
-    }
+    public function __construct(protected MagentoAsync $magentoAsync) {}
 
     public function update(Collection $prices): void
     {
-        $prices = $prices->reject(fn (Price $price): bool => count($price->base_prices) === 0);
+        $prices = $prices->reject(fn (Price $price): bool => count($price->base_prices ?? []) === 0);
 
         if ($prices->isEmpty()) {
             return;
@@ -28,7 +26,7 @@ class UpdateBasePricesAsync implements UpdatesBasePricesAsync
                         ->map(fn (array $basePrice): array => array_merge($basePrice, [
                             'sku' => $price->sku,
                         ]))
-                        ->toArray()
+                        ->toArray(),
                 ];
             })
             ->toArray();

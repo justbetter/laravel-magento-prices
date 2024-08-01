@@ -17,8 +17,7 @@ class UpdatePrice implements UpdatesPrice
         protected UpdatesBasePrice $basePrice,
         protected UpdatesTierPrice $tierPrice,
         protected UpdatesSpecialPrice $specialPrice,
-    ) {
-    }
+    ) {}
 
     public function update(Price $price): void
     {
@@ -40,6 +39,7 @@ class UpdatePrice implements UpdatesPrice
 
         if ($hasFailure) {
             $price->registerFailure();
+
             return;
         }
 

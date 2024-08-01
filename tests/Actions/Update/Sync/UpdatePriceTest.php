@@ -4,7 +4,6 @@ namespace JustBetter\MagentoPrices\Tests\Actions\Update\Sync;
 
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdatePrice;
-use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesTierPricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesBasePrice;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesSpecialPrice;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesTierPrice;

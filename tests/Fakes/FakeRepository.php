@@ -24,14 +24,14 @@ class FakeRepository extends Repository
             'tier_prices' => [
                 [
                     'website_id' => 0,
-                    'group_id' => 'group_1',
+                    'customer_group' => 'group_1',
                     'price_type' => 'fixed',
                     'quantity' => 1,
                     'price' => 8,
                 ],
                 [
                     'website_id' => 0,
-                    'group_id' => '4040',
+                    'customer_group' => '4040',
                     'price_type' => 'group_2',
                     'quantity' => 1,
                     'price' => 7,

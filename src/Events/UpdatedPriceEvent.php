@@ -9,7 +9,5 @@ class UpdatedPriceEvent
 {
     use Dispatchable;
 
-    public function __construct(public Price $price)
-    {
-    }
+    public function __construct(public Price $price) {}
 }

@@ -4,7 +4,6 @@ namespace JustBetter\MagentoPrices\Actions\Utility;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
@@ -17,9 +16,7 @@ use JustBetter\MagentoPrices\Repository\BaseRepository;
 
 class ProcessProductsWithMissingPrices implements ProcessesProductsWithMissingPrices
 {
-    public function __construct(protected Magento $magento)
-    {
-    }
+    public function __construct(protected Magento $magento) {}
 
     public function process(): void
     {

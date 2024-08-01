@@ -4,7 +4,4 @@ namespace JustBetter\MagentoPrices\Exceptions;
 
 use Exception;
 
-class NotImplementedException extends Exception
-{
-
-}
+class NotImplementedException extends Exception {}

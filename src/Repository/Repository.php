@@ -2,11 +2,11 @@
 
 namespace JustBetter\MagentoPrices\Repository;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Enumerable;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Exceptions\NotImplementedException;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
-use Illuminate\Support\Carbon;
 
 class Repository extends BaseRepository
 {

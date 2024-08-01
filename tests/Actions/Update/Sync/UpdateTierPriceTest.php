@@ -65,6 +65,20 @@ class UpdateTierPriceTest extends TestCase
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
+            'tier_prices' => [
+                [
+                    'website_id' => 1,
+                    'quantity' => 1,
+                    'customer_group' => 'GENERAL',
+                    'price' => 10,
+                ],
+                [
+                    'website_id' => 1,
+                    'quantity' => 1,
+                    'customer_group' => 'RETAIL',
+                    'price' => 8,
+                ],
+            ],
         ]);
 
         /** @var UpdateTierPrice $action */
@@ -105,6 +119,6 @@ class UpdateTierPriceTest extends TestCase
         $action = app(UpdateTierPrice::class);
         $this->assertTrue($action->update($model));
 
-        Http::assertNothingSent();;
+        Http::assertNothingSent();
     }
 }

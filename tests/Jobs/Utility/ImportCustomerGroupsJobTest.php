@@ -13,7 +13,7 @@ class ImportCustomerGroupsJobTest extends TestCase
     #[Test]
     public function it_calls_action(): void
     {
-        $this->mock(ImportsCustomerGroups::class, function(MockInterface $mock): void {
+        $this->mock(ImportsCustomerGroups::class, function (MockInterface $mock): void {
             $mock->shouldReceive('import')->once();
         });
 

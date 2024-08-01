@@ -13,7 +13,7 @@ class ProcessPricesJobTest extends TestCase
     #[Test]
     public function it_calls_action(): void
     {
-        $this->mock(ProcessesPrices::class, function(MockInterface $mock): void {
+        $this->mock(ProcessesPrices::class, function (MockInterface $mock): void {
             $mock->shouldReceive('process')->once();
         });
 

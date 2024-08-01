@@ -5,7 +5,6 @@ namespace JustBetter\MagentoPrices\Tests\Models;
 use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use Spatie\Activitylog\LogOptions;
 
 class PriceModelTest extends TestCase
 {

@@ -5,31 +5,25 @@ namespace JustBetter\MagentoPrices\Tests\Actions\Update\Async;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Actions\Update\Async\UpdateTierPricesAsync;
-use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
+use JustBetter\MagentoPrices\Actions\Update\Async\UpdateBasePricesAsync;
 use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateTierPricesAsyncTest extends TestCase
+class UpdateBasePricesAsyncTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
 
         Magento::fake();
-
-        $this->mock(RetrievesCustomerGroups::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('retrieve')->andReturn(['GENERAL', 'RETAIL']);
-        });
     }
 
     #[Test]
-    public function it_updates_tier_prices_async(): void
+    public function it_updates_base_prices_async(): void
     {
         Http::fake([
-            'magento/rest/all/async/bulk/V1/products/tier-prices' => Http::response([
+            'magento/rest/all/async/bulk/V1/products/base-prices' => Http::response([
                 'bulk_uuid' => '::uuid::',
                 'request_items' => [
                     [
@@ -47,50 +41,38 @@ class UpdateTierPricesAsyncTest extends TestCase
         $models = collect([
             Price::query()->create([
                 'sku' => '::sku_1::',
-                'tier_prices' => [
+                'base_prices' => [
                     [
-                        'website_id' => 1,
-                        'quantity' => 1,
-                        'customer_group' => 'GENERAL',
+                        'store_id' => 1,
                         'price' => 10,
-                    ],
-                    [
-                        'website_id' => 1,
-                        'quantity' => 1,
-                        'customer_group' => 'RETAIL',
-                        'price' => 8,
                     ],
                 ],
             ]),
             Price::query()->create([
                 'sku' => '::sku_2::',
-                'tier_prices' => [
+                'base_prices' => [
                     [
-                        'website_id' => 1,
-                        'quantity' => 1,
-                        'customer_group' => 'GENERAL',
+                        'store_id' => 1,
                         'price' => 10,
                     ],
                     [
-                        'website_id' => 1,
-                        'quantity' => 1,
-                        'customer_group' => 'RETAIL',
-                        'price' => 8,
+                        'store_id' => 2,
+                        'price' => 20,
                     ],
                 ],
             ]),
             Price::query()->create([
                 'sku' => '::sku_3::',
-                'tier_prices' => [],
+                'base_prices' => [],
             ]),
             Price::query()->create([
                 'sku' => '::sku_4::',
-                'tier_prices' => [],
+                'base_prices' => [],
             ]),
         ]);
 
-        /** @var UpdateTierPricesAsync $action */
-        $action = app(UpdateTierPricesAsync::class);
+        /** @var UpdateBasePricesAsync $action */
+        $action = app(UpdateBasePricesAsync::class);
         $action->update($models);
 
         Http::assertSent(function (Request $request): bool {
@@ -98,17 +80,8 @@ class UpdateTierPricesAsyncTest extends TestCase
                 [
                     'prices' => [
                         [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'GENERAL',
+                            'store_id' => 1,
                             'price' => 10,
-                            'sku' => '::sku_1::',
-                        ],
-                        [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'RETAIL',
-                            'price' => 8,
                             'sku' => '::sku_1::',
                         ],
                     ],
@@ -116,17 +89,13 @@ class UpdateTierPricesAsyncTest extends TestCase
                 [
                     'prices' => [
                         [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'GENERAL',
+                            'store_id' => 1,
                             'price' => 10,
                             'sku' => '::sku_2::',
                         ],
                         [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'RETAIL',
-                            'price' => 8,
+                            'store_id' => 2,
+                            'price' => 20,
                             'sku' => '::sku_2::',
                         ],
                     ],
@@ -141,15 +110,15 @@ class UpdateTierPricesAsyncTest extends TestCase
         $models = collect([
             Price::query()->create([
                 'sku' => '::sku_3::',
-                'tier_prices' => [],
+                'base_prices' => [],
             ]),
             Price::query()->create([
                 'sku' => '::sku_4::',
             ]),
         ]);
 
-        /** @var UpdateTierPricesAsync $action */
-        $action = app(UpdateTierPricesAsync::class);
+        /** @var UpdateBasePricesAsync $action */
+        $action = app(UpdateBasePricesAsync::class);
         $action->update($models);
 
         Http::assertNothingSent();

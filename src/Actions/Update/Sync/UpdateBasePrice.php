@@ -9,9 +9,7 @@ use JustBetter\MagentoPrices\Models\Price;
 
 class UpdateBasePrice implements UpdatesBasePrice
 {
-    public function __construct(protected Magento $magento)
-    {
-    }
+    public function __construct(protected Magento $magento) {}
 
     public function update(Price $price): bool
     {
