@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesPricesAsync;
+use JustBetter\MagentoPrices\Models\Price;
 
 class UpdatePricesAsyncJob implements ShouldQueue
 {
@@ -17,6 +18,7 @@ class UpdatePricesAsyncJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /** @param Collection<int, Price> $prices */
     public function __construct(public Collection $prices)
     {
         $this->onQueue(config('magento-prices.queue'));

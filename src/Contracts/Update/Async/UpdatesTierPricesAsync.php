@@ -7,6 +7,6 @@ use JustBetter\MagentoPrices\Models\Price;
 
 interface UpdatesTierPricesAsync
 {
-    /** @var Collection<int, Price> $prices */
+    /** @param Collection<int, Price> $prices */
     public function update(Collection $prices): void;
 }

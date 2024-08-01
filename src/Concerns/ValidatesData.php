@@ -5,7 +5,7 @@ namespace JustBetter\MagentoPrices\Concerns;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * @method array toArray
+ * @method array toArray()
  */
 trait ValidatesData
 {

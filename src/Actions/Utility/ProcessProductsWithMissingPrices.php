@@ -28,7 +28,7 @@ class ProcessProductsWithMissingPrices implements ProcessesProductsWithMissingPr
         $pricesToUpdate = collect();
 
         foreach ($skus as $sku) {
-            /** @var Price $price */
+            /** @var ?Price $price */
             $price = Price::query()->firstWhere('sku', '=', $sku);
 
             if ($price !== null) {
@@ -54,6 +54,7 @@ class ProcessProductsWithMissingPrices implements ProcessesProductsWithMissingPr
         }
     }
 
+    /** @return LazyCollection<int, string> */
     public function retrieveSkus(): LazyCollection
     {
         return LazyCollection::make(function () {
