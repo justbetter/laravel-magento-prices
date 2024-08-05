@@ -3,47 +3,69 @@
 namespace JustBetter\MagentoPrices;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use JustBetter\MagentoPrices\Actions\CheckTierDuplicates;
-use JustBetter\MagentoPrices\Actions\DeterminePricesEqual;
-use JustBetter\MagentoPrices\Actions\FindProductsWithMissingPrices;
-use JustBetter\MagentoPrices\Actions\ImportCustomerGroups;
-use JustBetter\MagentoPrices\Actions\MonitorWaitTimes;
-use JustBetter\MagentoPrices\Actions\ProcessPrice;
-use JustBetter\MagentoPrices\Actions\SyncPrices;
-use JustBetter\MagentoPrices\Actions\UpdateMagentoBasePrice;
-use JustBetter\MagentoPrices\Actions\UpdateMagentoSpecialPrices;
-use JustBetter\MagentoPrices\Actions\UpdateMagentoTierPrices;
-use JustBetter\MagentoPrices\Commands\ImportCustomerGroupsCommand;
-use JustBetter\MagentoPrices\Commands\MonitorWaitTimesCommand;
-use JustBetter\MagentoPrices\Commands\RetrievePricesCommand;
-use JustBetter\MagentoPrices\Commands\SearchMissingPricesCommand;
-use JustBetter\MagentoPrices\Commands\SyncPricesCommand;
-use JustBetter\MagentoPrices\Commands\UpdatePriceCommand;
+use JustBetter\MagentoPrices\Actions\ProcessPrices;
+use JustBetter\MagentoPrices\Actions\Retrieval\RetrieveAllPrices;
+use JustBetter\MagentoPrices\Actions\Retrieval\RetrievePrice;
+use JustBetter\MagentoPrices\Actions\Retrieval\SavePrice;
+use JustBetter\MagentoPrices\Actions\Update\Async\UpdateBasePricesAsync;
+use JustBetter\MagentoPrices\Actions\Update\Async\UpdatePricesAsync;
+use JustBetter\MagentoPrices\Actions\Update\Async\UpdateSpecialPricesAsync;
+use JustBetter\MagentoPrices\Actions\Update\Async\UpdateTierPricesAsync;
+use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateBasePrice;
+use JustBetter\MagentoPrices\Actions\Update\Sync\UpdatePrice;
+use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateSpecialPrice;
+use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateTierPrice;
+use JustBetter\MagentoPrices\Actions\Utility\CheckTierDuplicates;
+use JustBetter\MagentoPrices\Actions\Utility\DeleteCurrentSpecialPrices;
+use JustBetter\MagentoPrices\Actions\Utility\ImportCustomerGroups;
+use JustBetter\MagentoPrices\Actions\Utility\ProcessProductsWithMissingPrices;
+use JustBetter\MagentoPrices\Actions\Utility\RetrieveCustomerGroups;
+use JustBetter\MagentoPrices\Commands\ProcessPricesCommand;
+use JustBetter\MagentoPrices\Commands\Retrieval\RetrieveAllPricesCommand;
+use JustBetter\MagentoPrices\Commands\Retrieval\RetrievePriceCommand;
+use JustBetter\MagentoPrices\Commands\Update\UpdateAllPricesCommand;
+use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
+use JustBetter\MagentoPrices\Commands\Utility\ImportCustomerGroupsCommand;
+use JustBetter\MagentoPrices\Commands\Utility\ProcessProductsWithMissingPricesCommand;
 
 class ServiceProvider extends BaseServiceProvider
 {
     public function register(): void
     {
+        $this
+            ->registerConfig()
+            ->registerActions();
+    }
+
+    protected function registerConfig(): static
+    {
         $this->mergeConfigFrom(__DIR__.'/../config/magento-prices.php', 'magento-prices');
 
-        $this->registerActions();
+        return $this;
     }
 
     protected function registerActions(): static
     {
-        UpdateMagentoBasePrice::bind();
-        UpdateMagentoSpecialPrices::bind();
-        UpdateMagentoTierPrices::bind();
+        RetrieveAllPrices::bind();
+        RetrievePrice::bind();
+        SavePrice::bind();
 
-        FindProductsWithMissingPrices::bind();
+        UpdatePricesAsync::bind();
+        UpdateBasePricesAsync::bind();
+        UpdateTierPricesAsync::bind();
+        UpdateSpecialPricesAsync::bind();
+
+        UpdatePrice::bind();
+        UpdateBasePrice::bind();
+        UpdateTierPrice::bind();
+        UpdateSpecialPrice::bind();
+
+        ProcessPrices::bind();
+
+        DeleteCurrentSpecialPrices::bind();
+        RetrieveCustomerGroups::bind();
         CheckTierDuplicates::bind();
-
-        SyncPrices::bind();
-        ProcessPrice::bind();
-
-        MonitorWaitTimes::bind();
-        DeterminePricesEqual::bind();
-
+        ProcessProductsWithMissingPrices::bind();
         ImportCustomerGroups::bind();
 
         return $this;
@@ -57,7 +79,7 @@ class ServiceProvider extends BaseServiceProvider
             ->bootCommands();
     }
 
-    protected function bootConfig(): self
+    protected function bootConfig(): static
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -68,23 +90,24 @@ class ServiceProvider extends BaseServiceProvider
         return $this;
     }
 
-    protected function bootCommands(): self
+    protected function bootCommands(): static
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ImportCustomerGroupsCommand::class,
-                RetrievePricesCommand::class,
-                SyncPricesCommand::class,
+                RetrieveAllPricesCommand::class,
+                RetrievePriceCommand::class,
+                UpdateAllPricesCommand::class,
                 UpdatePriceCommand::class,
-                SearchMissingPricesCommand::class,
-                MonitorWaitTimesCommand::class,
+                ProcessPricesCommand::class,
+                ImportCustomerGroupsCommand::class,
+                ProcessProductsWithMissingPricesCommand::class,
             ]);
         }
 
         return $this;
     }
 
-    protected function bootMigrations(): self
+    protected function bootMigrations(): static
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 

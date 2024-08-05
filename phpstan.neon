@@ -6,9 +6,7 @@ parameters:
     paths:
         - src
         - tests
-    level: 6
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
+    level: 8
     ignoreErrors:
-        - '#Unable to resolve the template type TKey in call to function collect#'
-        - '#Unable to resolve the template type TValue in call to function collect#'
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics

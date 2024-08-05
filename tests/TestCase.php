@@ -3,9 +3,8 @@
 namespace JustBetter\MagentoPrices\Tests;
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoPrices\Retriever\DummyPriceRetriever;
-use JustBetter\MagentoPrices\Retriever\DummySkuRetriever;
 use JustBetter\MagentoPrices\ServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\Activitylog\ActivitylogServiceProvider;
@@ -16,16 +15,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function defineEnvironment($app): void
     {
-        config()->set('magento.base_url', '');
-        config()->set('magento.access_token', '::token::');
-        config()->set('magento.timeout', 30);
-        config()->set('magento.connect_timeout', 30);
+        Magento::fake();
 
-        config()->set('magento.currency', 'EUR');
-        config()->set('magento.precision', 2);
-
-        config()->set('magento-prices.retrievers.sku', DummySkuRetriever::class);
-        config()->set('magento-prices.retrievers.price', DummyPriceRetriever::class);
+        Http::preventStrayRequests();
 
         config()->set('database.default', 'testbench');
         config()->set('database.connections.testbench', [
@@ -35,8 +27,6 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         activity()->disableLogging();
-
-        Magento::fake();
     }
 
     protected function getPackageProviders($app): array
@@ -44,6 +34,8 @@ abstract class TestCase extends BaseTestCase
         return [
             ServiceProvider::class,
             \JustBetter\MagentoClient\ServiceProvider::class,
+            \JustBetter\MagentoProducts\ServiceProvider::class,
+            \JustBetter\MagentoAsync\ServiceProvider::class,
             ActivitylogServiceProvider::class,
         ];
     }
