@@ -22,7 +22,7 @@ This package can:
 - Only update prices in Magento when are modified. i.e. when you retrieve the same price ten times it only updates once to Magento
 - Search for missing prices in Magento
 - Automatically stop syncing when updating fails
-- Supports Magento 2 async bulk requests for updatingusing [Laravel Magento Async](https://github.com/justbetter/laravel-magento-async)
+- Supports Magento 2 async bulk requests for updating using [Laravel Magento Async](https://github.com/justbetter/laravel-magento-async)
 - Logs activities using [Spatie activitylog](https://github.com/spatie/laravel-activitylog)
 - Checks if Magento products exist using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 

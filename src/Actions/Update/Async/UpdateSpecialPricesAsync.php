@@ -13,20 +13,14 @@ class UpdateSpecialPricesAsync implements UpdatesSpecialPricesAsync
     public function __construct(
         protected MagentoAsync $magentoAsync,
         protected DeletesCurrentSpecialPrices $currentSpecialPrices
-    ) {
-    }
+    ) {}
 
     public function update(Collection $prices): void
     {
         $currentSpecialPrices = $prices->where('has_special', '=', true);
 
-        /** @var Price $price */
         foreach ($currentSpecialPrices as $price) {
             $this->currentSpecialPrices->delete($price);
-
-            $price->update([
-                'has_special' => count($price->special_prices ?? []) > 0,
-            ]);
         }
 
         $prices->each(fn (Price $price) => $price->update([

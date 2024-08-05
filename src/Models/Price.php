@@ -37,7 +37,7 @@ class Price extends Model
 
     protected $table = 'magento_prices';
 
-    public $casts = [
+    protected $casts = [
         'last_retrieved' => 'datetime',
         'last_updated' => 'datetime',
         'last_failed' => 'datetime',
@@ -75,7 +75,10 @@ class Price extends Model
         $this->fail_count++;
         $this->last_failed = now();
 
-        if ($this->fail_count > BaseRepository::resolve()->failLimit()) {
+        $shouldRetry = $this->fail_count < BaseRepository::resolve()->failLimit();
+        $this->sync = $shouldRetry;
+
+        if (! $shouldRetry) {
             $this->update = false;
             $this->retrieve = false;
             $this->fail_count = 0;

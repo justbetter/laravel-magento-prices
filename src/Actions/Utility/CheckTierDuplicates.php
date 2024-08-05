@@ -33,7 +33,7 @@ class CheckTierDuplicates implements ChecksTierDuplicates
             ])
             ->log("Duplicate tier prices found for $model->sku");
 
-        throw new DuplicateTierPriceException("Duplicate tier prices found for $model->sku. Duplicates: " . json_encode($duplicates->toArray()));
+        throw new DuplicateTierPriceException("Duplicate tier prices found for $model->sku. Duplicates: ".json_encode($duplicates->toArray()));
     }
 
     public static function bind(): void

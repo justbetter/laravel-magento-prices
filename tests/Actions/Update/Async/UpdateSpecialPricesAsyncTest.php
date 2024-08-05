@@ -17,7 +17,7 @@ class UpdateSpecialPricesAsyncTest extends TestCase
     #[Test]
     public function it_updates_special_prices_async(): void
     {
-        $this->mock(DeletesCurrentSpecialPrices::class, function(MockInterface $mock): void {
+        $this->mock(DeletesCurrentSpecialPrices::class, function (MockInterface $mock): void {
             $mock->shouldReceive('delete')->twice()->andReturn();
         });
 
@@ -81,29 +81,29 @@ class UpdateSpecialPricesAsyncTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->data() === [
-                    [
-                        'prices' => [
-                            [
-                                'store_id' => 1,
-                                'price' => 10,
-                                'from' => '2024-07-30',
-                                'to' => '2024-08-30',
-                                'sku' => '::sku_1::',
-                            ],
+                [
+                    'prices' => [
+                        [
+                            'store_id' => 1,
+                            'price' => 10,
+                            'from' => '2024-07-30',
+                            'to' => '2024-08-30',
+                            'sku' => '::sku_1::',
                         ],
                     ],
-                    [
-                        'prices' => [
-                            [
-                                'store_id' => 1,
-                                'price' => 10,
-                                'from' => '2024-07-30',
-                                'to' => '2024-08-30',
-                                'sku' => '::sku_2::',
-                            ],
+                ],
+                [
+                    'prices' => [
+                        [
+                            'store_id' => 1,
+                            'price' => 10,
+                            'from' => '2024-07-30',
+                            'to' => '2024-08-30',
+                            'sku' => '::sku_2::',
                         ],
                     ],
-                ];
+                ],
+            ];
         });
     }
 

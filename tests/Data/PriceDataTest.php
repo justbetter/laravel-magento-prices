@@ -4,7 +4,6 @@ namespace JustBetter\MagentoPrices\Tests\Data;
 
 use Illuminate\Validation\ValidationException;
 use JustBetter\MagentoPrices\Data\PriceData;
-use JustBetter\MagentoPrices\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 

@@ -2,7 +2,6 @@
 
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Sync;
 
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateSpecialPrice;
@@ -98,7 +97,6 @@ class UpdateSpecialPriceTest extends TestCase
         $action->update($model);
         $this->assertFalse($model->refresh()->has_special);
     }
-
 
     #[Test]
     public function it_only_removes_special_prices_once(): void

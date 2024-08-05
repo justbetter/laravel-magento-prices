@@ -49,7 +49,6 @@ class UpdatePrice implements UpdatesPrice
         ]);
 
         event(new UpdatedPriceEvent($price));
-
     }
 
     public static function bind(): void

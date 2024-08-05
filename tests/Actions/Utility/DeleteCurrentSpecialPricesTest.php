@@ -36,7 +36,6 @@ class DeleteCurrentSpecialPricesTest extends TestCase
         $this->assertFalse($model->refresh()->has_special);
     }
 
-
     #[Test]
     public function it_throws_exception_when_special_price_removal_fails(): void
     {

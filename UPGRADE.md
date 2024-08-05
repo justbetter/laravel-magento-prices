@@ -18,4 +18,4 @@ Refer to the readme on how to implement this.
 The configuration file has been stripped, most of the configuration is now done in the repository class.
 
 A lot of classes have been renamed, be sure to update your scheduler and check all classes that you use.
-The stock model has been renamed from `MagentoPrice` to `Price`.
+The price model has been renamed from `MagentoPrice` to `Price`.
