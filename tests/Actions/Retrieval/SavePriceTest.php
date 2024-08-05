@@ -14,7 +14,7 @@ class SavePriceTest extends TestCase
     #[Test]
     public function it_saves_fields(): void
     {
-        Carbon::setTestNow(2024, 8, 05);
+        Carbon::setTestNow('2024-08-05');
 
         $priceData = PriceData::of([
             'sku' => '::sku::',
