@@ -6,6 +6,6 @@ return [
     /* Queue for the jobs to run on */
     'queue' => 'default',
 
-    /* Send stock updates using Magento 2's async bulk endpoints, a configured message queue in Magento is required for this */
+    /* Send updates using Magento 2's async bulk endpoints, a configured message queue in Magento is required for this */
     'async' => false,
 ];

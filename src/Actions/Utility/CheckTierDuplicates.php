@@ -17,7 +17,7 @@ class CheckTierDuplicates implements ChecksTierDuplicates
     public function check(Price $model, array $tierPrices): void
     {
         $duplicates = collect($tierPrices)
-            ->groupBy(['store_id', 'quantity', 'group_id'])
+            ->groupBy(['website_id', 'quantity', 'customer_group'])
             ->flatten(2)
             ->filter(fn (Collection $matches): bool => $matches->count() > 1);
 
@@ -33,7 +33,7 @@ class CheckTierDuplicates implements ChecksTierDuplicates
             ])
             ->log("Duplicate tier prices found for $model->sku");
 
-        throw new DuplicateTierPriceException("Duplicate tier prices found for $model->sku");
+        throw new DuplicateTierPriceException("Duplicate tier prices found for $model->sku. Duplicates: " . json_encode($duplicates->toArray()));
     }
 
     public static function bind(): void

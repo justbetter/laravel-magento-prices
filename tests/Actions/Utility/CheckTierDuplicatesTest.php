@@ -18,15 +18,15 @@ class CheckTierDuplicatesTest extends TestCase
 
         $tierPrices = [
             [
-                'store_id' => 1,
+                'website_id' => 1,
                 'quantity' => 1,
-                'group_id' => 'GENERAL',
+                'customer_group' => 'GENERAL',
                 'price' => 10,
             ],
             [
-                'store_id' => 1,
+                'website_id' => 1,
                 'quantity' => 1,
-                'group_id' => 'RETAIL',
+                'customer_group' => 'RETAIL',
                 'price' => 10,
             ],
         ];
@@ -46,15 +46,15 @@ class CheckTierDuplicatesTest extends TestCase
 
         $tierPrices = [
             [
-                'store_id' => 1,
+                'website_id' => 1,
                 'quantity' => 1,
-                'group_id' => 'GENERAL',
+                'customer_group' => 'GENERAL',
                 'price' => 10,
             ],
             [
-                'store_id' => 1,
+                'website_id' => 1,
                 'quantity' => 1,
-                'group_id' => 'GENERAL',
+                'customer_group' => 'GENERAL',
                 'price' => 20,
             ],
         ];

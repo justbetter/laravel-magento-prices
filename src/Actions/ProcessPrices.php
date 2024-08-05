@@ -18,6 +18,7 @@ class ProcessPrices implements ProcessesPrices
         $repository = BaseRepository::resolve();
 
         Price::query()
+            ->where('sync', '=', true)
             ->where('retrieve', '=', true)
             ->select(['sku'])
             ->take($repository->retrieveLimit())
@@ -26,6 +27,7 @@ class ProcessPrices implements ProcessesPrices
 
         if (config('magento-prices.async')) {
             $prices = Price::query()
+                ->where('sync', '=', true)
                 ->where('update', '=', true)
                 ->whereHas('product', function (Builder $query): void {
                     $query->where('exists_in_magento', '=', true);
@@ -37,6 +39,7 @@ class ProcessPrices implements ProcessesPrices
             UpdatePricesAsyncJob::dispatch($prices);
         } else {
             Price::query()
+                ->where('sync', '=', true)
                 ->where('update', '=', true)
                 ->select(['id', 'sku'])
                 ->take($repository->updateLimit())

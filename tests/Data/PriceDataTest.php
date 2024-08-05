@@ -13,8 +13,6 @@ class PriceDataTest extends TestCase
     #[Test]
     public function it_passes_simple_rules(): void
     {
-        config()->set('magento-prices.repository', PriceData::class);
-
         PriceData::of([
             'sku' => '::sku::',
         ]);
@@ -25,8 +23,6 @@ class PriceDataTest extends TestCase
     #[Test]
     public function it_fails_rules(): void
     {
-        config()->set('magento-prices.repository', FakeRepository::class);
-
         $this->expectException(ValidationException::class);
 
         PriceData::of([]);

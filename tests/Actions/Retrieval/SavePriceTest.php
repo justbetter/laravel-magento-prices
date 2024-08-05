@@ -2,6 +2,7 @@
 
 namespace JustBetter\MagentoPrices\Tests\Actions\Retrieval;
 
+use Illuminate\Support\Carbon;
 use JustBetter\MagentoPrices\Actions\Retrieval\SavePrice;
 use JustBetter\MagentoPrices\Data\PriceData;
 use JustBetter\MagentoPrices\Models\Price;
@@ -13,6 +14,8 @@ class SavePriceTest extends TestCase
     #[Test]
     public function it_saves_fields(): void
     {
+        Carbon::setTestNow(2024, 8, 05);
+
         $priceData = PriceData::of([
             'sku' => '::sku::',
             'base_prices' => [
@@ -74,7 +77,7 @@ class SavePriceTest extends TestCase
         $this->assertFalse($model->retrieve);
         $this->assertTrue($model->update);
         $this->assertNotNull($model->last_retrieved);
-        $this->assertEquals('7a00c07a5d597fc050ec48536bbed030', $model->checksum);
+        $this->assertEquals('27f10836349f35baf9aa229f963e4ddf', $model->checksum);
 
     }
 
