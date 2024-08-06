@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.0.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.0.1...main)
+## [2.0.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.0.1) - 2024-08-06
+
+### What's Changed
+* Small fixes by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/23
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.0.0...2.0.1
+
 ## [2.0.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.0.0) - 2024-08-05
 
 ### What's Changed
