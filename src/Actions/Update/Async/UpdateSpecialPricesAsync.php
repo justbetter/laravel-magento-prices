@@ -28,7 +28,8 @@ class UpdateSpecialPricesAsync implements UpdatesSpecialPricesAsync
         ]));
 
         $prices = $prices
-            ->reject(fn (Price $price): bool => count($price->special_prices ?? []) === 0);
+            ->reject(fn (Price $price): bool => count($price->special_prices ?? []) === 0)
+            ->values();
 
         if ($prices->isEmpty()) {
             return;

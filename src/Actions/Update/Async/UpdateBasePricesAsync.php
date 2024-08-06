@@ -13,7 +13,7 @@ class UpdateBasePricesAsync implements UpdatesBasePricesAsync
 
     public function update(Collection $prices): void
     {
-        $prices = $prices->reject(fn (Price $price): bool => count($price->base_prices ?? []) === 0);
+        $prices = $prices->reject(fn (Price $price): bool => count($price->base_prices ?? []) === 0)->values();
 
         if ($prices->isEmpty()) {
             return;
