@@ -17,7 +17,7 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
 
     public function update(Collection $prices): void
     {
-        $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices ?? []) === 0);
+        $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices ?? []) === 0)->values();
 
         if ($prices->isEmpty()) {
             return;
