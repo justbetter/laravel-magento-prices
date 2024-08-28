@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.0.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.0.2...main)
+## [2.0.2](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.0.2) - 2024-08-28
+
+### What's Changed
+* Register listener by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/24
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.0.1...2.0.2
+
 ## [2.0.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.0.1) - 2024-08-06
 
 ### What's Changed
