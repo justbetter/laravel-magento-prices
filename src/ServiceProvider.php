@@ -2,7 +2,9 @@
 
 namespace JustBetter\MagentoPrices;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JustBetter\MagentoAsync\Events\BulkOperationStatusEvent;
 use JustBetter\MagentoPrices\Actions\ProcessPrices;
 use JustBetter\MagentoPrices\Actions\Retrieval\RetrieveAllPrices;
 use JustBetter\MagentoPrices\Actions\Retrieval\RetrievePrice;
@@ -27,6 +29,7 @@ use JustBetter\MagentoPrices\Commands\Update\UpdateAllPricesCommand;
 use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
 use JustBetter\MagentoPrices\Commands\Utility\ImportCustomerGroupsCommand;
 use JustBetter\MagentoPrices\Commands\Utility\ProcessProductsWithMissingPricesCommand;
+use JustBetter\MagentoPrices\Listeners\BulkOperationStatusListener;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -76,7 +79,8 @@ class ServiceProvider extends BaseServiceProvider
         $this
             ->bootMigrations()
             ->bootConfig()
-            ->bootCommands();
+            ->bootCommands()
+            ->bootListeners();
     }
 
     protected function bootConfig(): static
@@ -110,6 +114,13 @@ class ServiceProvider extends BaseServiceProvider
     protected function bootMigrations(): static
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        return $this;
+    }
+
+    protected function bootListeners(): static
+    {
+        Event::listen(BulkOperationStatusEvent::class, BulkOperationStatusListener::class);
 
         return $this;
     }
