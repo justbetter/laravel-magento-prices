@@ -5,7 +5,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
-    "justbetter/laravel-magento-client": "^2.4",
+    "justbetter/laravel-magento-client": "^2.6.1",
     "justbetter/laravel-magento-products": "^1.4",
     "justbetter/laravel-magento-async": "^1.0",
     "laravel/framework": "^11.0",
