@@ -4,6 +4,7 @@ namespace JustBetter\MagentoPrices\Actions;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Contracts\ProcessesPrices;
 use JustBetter\MagentoPrices\Jobs\Retrieval\RetrievePriceJob;
 use JustBetter\MagentoPrices\Jobs\Update\UpdatePriceJob;
@@ -13,6 +14,8 @@ use JustBetter\MagentoPrices\Repository\BaseRepository;
 
 class ProcessPrices implements ProcessesPrices
 {
+    public function __construct(protected Magento $magento) {}
+
     public function process(): void
     {
         $repository = BaseRepository::resolve();
@@ -24,6 +27,10 @@ class ProcessPrices implements ProcessesPrices
             ->take($repository->retrieveLimit())
             ->get()
             ->each(fn (Price $price): PendingDispatch => RetrievePriceJob::dispatch($price->sku));
+
+        if (! $this->magento->available()) {
+            return;
+        }
 
         if (config('magento-prices.async')) {
             $prices = Price::query()

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use JustBetter\MagentoClient\Jobs\Middleware\AvailableMiddleware;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesPrice;
 use JustBetter\MagentoPrices\Models\Price;
 
@@ -37,6 +38,13 @@ class UpdatePriceJob implements ShouldBeUnique, ShouldQueue
     {
         return [
             $this->price->sku,
+        ];
+    }
+
+    public function middleware(): array
+    {
+        return [
+            new AvailableMiddleware,
         ];
     }
 }
