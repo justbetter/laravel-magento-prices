@@ -37,8 +37,8 @@ class SavePriceTest extends TestCase
                 [
                     'store_id' => 0,
                     'price' => 5,
-                    'price_from' => now()->subWeek()->toDateString(),
-                    'price_to' => now()->addWeek()->toDateString(),
+                    'price_from' => now()->subWeek()->toDateTimeString(),
+                    'price_to' => now()->addWeek()->toDateTimeString(),
                 ],
             ],
         ]);
@@ -68,8 +68,8 @@ class SavePriceTest extends TestCase
             [
                 'store_id' => 0,
                 'price' => 5,
-                'price_from' => now()->subWeek()->toDateString(),
-                'price_to' => now()->addWeek()->toDateString(),
+                'price_from' => now()->subWeek()->toDateTimeString(),
+                'price_to' => now()->addWeek()->toDateTimeString(),
             ],
         ], $model->special_prices);
 
@@ -77,7 +77,7 @@ class SavePriceTest extends TestCase
         $this->assertFalse($model->retrieve);
         $this->assertTrue($model->update);
         $this->assertNotNull($model->last_retrieved);
-        $this->assertEquals('27f10836349f35baf9aa229f963e4ddf', $model->checksum);
+        $this->assertEquals('c3a03f76b7189c896e25eb6335141c96', $model->checksum);
 
     }
 
@@ -105,8 +105,8 @@ class SavePriceTest extends TestCase
                 [
                     'store_id' => 0,
                     'price' => 5,
-                    'price_from' => now()->subWeek()->toDateString(),
-                    'price_to' => now()->addWeek()->toDateString(),
+                    'price_from' => now()->subWeek()->toDateTimeString(),
+                    'price_to' => now()->addWeek()->toDateTimeString(),
                 ],
             ],
         ]);
@@ -151,8 +151,8 @@ class SavePriceTest extends TestCase
                 [
                     'store_id' => 0,
                     'price' => 5,
-                    'price_from' => now()->subWeek()->toDateString(),
-                    'price_to' => now()->addWeek()->toDateString(),
+                    'price_from' => now()->subWeek()->toDateTimeString(),
+                    'price_to' => now()->addWeek()->toDateTimeString(),
                 ],
             ],
         ]);

@@ -51,4 +51,22 @@ class PriceDataTest extends TestCase
 
         $this->assertNull($data['base_prices']);
     }
+
+    #[Test]
+    public function it_throws_exception_on_failing_special_price(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        PriceData::of([
+            'sku' => '::sku::',
+            'special_prices' => [
+                [
+                    'price' => 10,
+                    'price_from' => '2024-01-01',
+                    'price_to' => '2025-01-01',
+                ]
+            ]
+        ]);
+
+    }
 }

@@ -21,8 +21,8 @@ class PriceData extends Data
         'special_prices' => ['nullable', 'array'],
         'special_prices.*.store_id' => ['required', 'integer'],
         'special_prices.*.price' => ['required', 'numeric'],
-        'special_prices.*.price_from' => ['required', 'string'],
-        'special_prices.*.price_to' => ['required', 'string'],
+        'special_prices.*.price_from' => ['required', 'date_format:Y-m-d H:i:s'],
+        'special_prices.*.price_to' => ['required', 'date_format:Y-m-d H:i:s'],
     ];
 
     public function checksum(): string
