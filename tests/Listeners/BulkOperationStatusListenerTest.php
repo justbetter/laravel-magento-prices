@@ -27,6 +27,7 @@ class BulkOperationStatusListenerTest extends TestCase
         /** @var BulkRequest $request */
         $request = BulkRequest::query()->create([
             'magento_connection' => 'default',
+            'method' => 'POST',
             'store_code' => 'store',
             'path' => 'products',
             'bulk_uuid' => '::uuid::',
@@ -64,6 +65,7 @@ class BulkOperationStatusListenerTest extends TestCase
         /** @var BulkRequest $request */
         $request = BulkRequest::query()->create([
             'magento_connection' => 'default',
+            'method' => 'POST',
             'store_code' => 'store',
             'path' => 'products',
             'bulk_uuid' => '::uuid::',

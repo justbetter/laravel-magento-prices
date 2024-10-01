@@ -41,8 +41,8 @@ class FakeRepository extends Repository
                 [
                     'store_id' => 0,
                     'price' => 5,
-                    'price_from' => now()->subWeek()->toDateString(),
-                    'price_to' => now()->addWeek()->toDateString(),
+                    'price_from' => now()->subWeek()->toDateTimeString(),
+                    'price_to' => now()->addWeek()->toDateTimeString(),
                 ],
             ],
         ]);
