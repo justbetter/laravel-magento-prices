@@ -64,8 +64,8 @@ class PriceDataTest extends TestCase
                     'price' => 10,
                     'price_from' => '2024-01-01',
                     'price_to' => '2025-01-01',
-                ]
-            ]
+                ],
+            ],
         ]);
 
     }
