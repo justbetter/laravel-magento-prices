@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.1.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.1.1...main)
+## [2.1.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.1.1) - 2024-10-01
+
+### What's Changed
+* Require datetime string for special price dates by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/26
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.1.0...2.1.1
+
 ## [2.1.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.1.0) - 2024-09-10
 
 ### What's Changed
