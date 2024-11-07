@@ -152,7 +152,7 @@ use JustBetter\MagentoPrices\Repositories\Repository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-class MyPriceRepository implements Repository
+class MyPriceRepository extends Repository
 {
     public function skus(?Carbon $from = null): ?Collection
     {
