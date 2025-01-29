@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoPrices\Jobs\Update;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,7 +13,7 @@ use JustBetter\MagentoClient\Jobs\Middleware\AvailableMiddleware;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesPricesAsync;
 use JustBetter\MagentoPrices\Models\Price;
 
-class UpdatePricesAsyncJob implements ShouldQueue
+class UpdatePricesAsyncJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable;
     use InteractsWithQueue;
