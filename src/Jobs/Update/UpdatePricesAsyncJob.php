@@ -13,7 +13,7 @@ use JustBetter\MagentoClient\Jobs\Middleware\AvailableMiddleware;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesPricesAsync;
 use JustBetter\MagentoPrices\Models\Price;
 
-class UpdatePricesAsyncJob implements ShouldQueue, ShouldBeUnique
+class UpdatePricesAsyncJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
