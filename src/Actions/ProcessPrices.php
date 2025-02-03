@@ -4,6 +4,7 @@ namespace JustBetter\MagentoPrices\Actions;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use JustBetter\MagentoAsync\Enums\OperationStatus;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Contracts\ProcessesPrices;
 use JustBetter\MagentoPrices\Jobs\Retrieval\RetrievePriceJob;
@@ -39,11 +40,16 @@ class ProcessPrices implements ProcessesPrices
                 ->whereHas('product', function (Builder $query): void {
                     $query->where('exists_in_magento', '=', true);
                 })
+                ->whereDoesntHave('bulkOperations', function (Builder $query): void {
+                    $query
+                        ->where('status', '=', OperationStatus::Open)
+                        ->orWhereNull('status');
+                })
                 ->select(['id', 'sku'])
                 ->take($repository->updateLimit())
                 ->get();
 
-            UpdatePricesAsyncJob::dispatch($prices);
+            UpdatePricesAsyncJob::dispatchIf($prices->isNotEmpty(), $prices);
         } else {
             Price::query()
                 ->where('sync', '=', true)
