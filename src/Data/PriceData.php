@@ -15,7 +15,7 @@ class PriceData extends Data
         'tier_prices.*.website_id' => ['required', 'integer'],
         'tier_prices.*.customer_group' => ['required', 'string'],
         'tier_prices.*.price_type' => ['required', 'string'],
-        'tier_prices.*.quantity' => ['required', 'numeric'],
+        'tier_prices.*.quantity' => ['required', 'numeric', 'min:1'],
         'tier_prices.*.price' => ['required', 'numeric'],
 
         'special_prices' => ['nullable', 'array'],
