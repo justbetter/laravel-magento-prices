@@ -17,11 +17,9 @@ class UpdateSpecialPricesAsync implements UpdatesSpecialPricesAsync
 
     public function update(Collection $prices): void
     {
-        $currentSpecialPrices = $prices->where('has_special', '=', true);
-
-        foreach ($currentSpecialPrices as $price) {
-            $this->currentSpecialPrices->delete($price);
-        }
+        $prices->where('has_special', '=', true)
+            ->chunk(250)
+            ->each(fn (Collection $prices) => $this->currentSpecialPrices->delete($prices->pluck('sku')->toArray()));
 
         $prices->each(fn (Price $price) => $price->update([
             'has_special' => count($price->special_prices ?? []) > 0,

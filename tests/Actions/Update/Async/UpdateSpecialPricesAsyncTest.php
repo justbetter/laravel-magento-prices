@@ -18,7 +18,7 @@ class UpdateSpecialPricesAsyncTest extends TestCase
     public function it_updates_special_prices_async(): void
     {
         $this->mock(DeletesCurrentSpecialPrices::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('delete')->twice()->andReturn();
+            $mock->shouldReceive('delete')->once()->andReturn();
         });
 
         Magento::fake();

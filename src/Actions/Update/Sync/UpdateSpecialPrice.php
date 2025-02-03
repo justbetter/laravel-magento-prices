@@ -23,7 +23,7 @@ class UpdateSpecialPrice implements UpdatesSpecialPrice
             ]));
 
         if ($price->has_special) {
-            $this->currentSpecialPrices->delete($price);
+            $this->currentSpecialPrices->delete([$price->sku]);
         }
 
         $price->update([
