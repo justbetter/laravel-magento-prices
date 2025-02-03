@@ -134,7 +134,7 @@ class ProcessPricesTest extends TestCase
         $action->process();
 
         Bus::assertDispatched(UpdatePricesAsyncJob::class, function (UpdatePricesAsyncJob $job): bool {
-            return $job->prices->count() === 1 && $job->prices->first()->sku === '::sku_2::';
+            return $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku_2::';
         });
     }
 
