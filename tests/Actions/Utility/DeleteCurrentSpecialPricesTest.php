@@ -41,17 +41,19 @@ class DeleteCurrentSpecialPricesTest extends TestCase
     #[Test]
     public function it_removes_multiple_special_prices(): void
     {
+        $prices = [
+            [
+                'sku' => '::sku_1::',
+                'price' => 10,
+            ],
+            [
+                'sku' => '::sku_2::',
+                'price' => 11,
+            ],
+        ];
+
         Http::fake([
-            'magento/rest/all/V1/products/special-price-information' => Http::response([
-                [
-                    'sku' => '::sku_1::',
-                    'price' => 10,
-                ],
-                [
-                    'sku' => '::sku_2::',
-                    'price' => 11,
-                ],
-            ]),
+            'magento/rest/all/V1/products/special-price-information' => Http::response($prices),
             'magento/rest/all/V1/products/special-price-delete' => Http::response(),
         ])->preventStrayRequests();
 
@@ -61,7 +63,7 @@ class DeleteCurrentSpecialPricesTest extends TestCase
 
         Http::assertSentInOrder([
             fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/special-price-information',
-            fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/special-price-delete' && $request->body() === '{"prices":[{"sku":"::sku_1::","price":10},{"sku":"::sku_2::","price":11}]}',
+            fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/special-price-delete' && $request->data() === ['prices' => $prices],
         ]);
     }
 
