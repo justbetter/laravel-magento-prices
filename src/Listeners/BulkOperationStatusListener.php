@@ -28,7 +28,7 @@ class BulkOperationStatusListener extends BaseBulkOperationStatusListener
         activity()
             ->useLog('error')
             ->withProperties([
-                'status' => $operation->status?->name ?? 'unknown',
+                'status' => $operation->status->name ?? 'unknown',
                 'response' => $operation->response,
             ])
             ->log('Failed to update price');
