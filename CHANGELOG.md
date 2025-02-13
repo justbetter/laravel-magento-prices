@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.2.2...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.3.0...main)
+## [2.3.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.3.0) - 2025-02-13
+
+### What's Changed
+* Laravel 12 support by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/32
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.2.2...2.3.0
+
 ## [2.2.2](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.2.2) - 2025-02-05
 
 ### What's Changed
