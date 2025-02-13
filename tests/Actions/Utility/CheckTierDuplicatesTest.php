@@ -13,6 +13,8 @@ class CheckTierDuplicatesTest extends TestCase
     #[Test]
     public function it_passes(): void
     {
+        $this->expectNotToPerformAssertions();
+
         /** @var Price $model */
         $model = Price::query()->create(['sku' => '::sku::']);
 
@@ -34,8 +36,6 @@ class CheckTierDuplicatesTest extends TestCase
         /** @var CheckTierDuplicates $action */
         $action = app(CheckTierDuplicates::class);
         $action->check($model, $tierPrices);
-
-        $this->assertTrue(true, 'Passed');
     }
 
     #[Test]
