@@ -5,14 +5,14 @@ namespace JustBetter\MagentoPrices\Actions\Update\Async;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoAsync\Client\MagentoAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesTierPricesAsync;
-use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
+use JustBetter\MagentoPrices\Contracts\Utility\FiltersTierPrices;
 use JustBetter\MagentoPrices\Models\Price;
 
 class UpdateTierPricesAsync implements UpdatesTierPricesAsync
 {
     public function __construct(
         protected MagentoAsync $magentoAsync,
-        protected RetrievesCustomerGroups $customerGroups
+        protected FiltersTierPrices $filterTierPrice,
     ) {}
 
     public function update(Collection $prices): void
@@ -23,13 +23,12 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
             return;
         }
 
-        $customerGroups = $this->customerGroups->retrieve();
-
         $payload = $prices
-            ->map(function (Price $price) use ($customerGroups): array {
+            ->map(function (Price $price): array {
+                $filteredTierPrices = $this->filterTierPrice->filter($price->sku, $price->tier_prices ?? []);
+
                 return [
-                    'prices' => collect($price->tier_prices)
-                        ->whereIn('customer_group', $customerGroups)
+                    'prices' => collect($filteredTierPrices)
                         ->map(fn (array $tierPrice): array => array_merge($tierPrice, [
                             'sku' => $price->sku,
                         ]))
