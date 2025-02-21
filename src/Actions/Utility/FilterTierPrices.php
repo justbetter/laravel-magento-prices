@@ -24,11 +24,11 @@ class FilterTierPrices implements FiltersTierPrices
         $websiteIds = data_get($magentoProduct->data ?? [], 'extension_attributes.website_ids', []);
 
         // Only filter website ids if the product is found and has data
-        $filterWebsiteIds = $magentoProduct?->data !== null;
+        $shouldFilterWebsiteIds = $magentoProduct?->data !== null;
 
         return collect($tierPrices)
             ->whereIn('customer_group', $this->customerGroups->retrieve())
-            ->when($filterWebsiteIds, fn (Collection $tierPrices): Collection => $tierPrices->whereIn('website_id', $websiteIds))
+            ->when($shouldFilterWebsiteIds, fn (Collection $tierPrices): Collection => $tierPrices->whereIn('website_id', $websiteIds))
             ->values()
             ->toArray();
     }
