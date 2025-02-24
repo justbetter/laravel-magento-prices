@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.1...main)
+## [2.4.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.1) - 2025-02-24
+
+### What's Changed
+* Use PUT for sync action, same as async by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/34
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.0...2.4.1
+
 ## [2.4.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.0) - 2025-02-24
 
 ### What's Changed
