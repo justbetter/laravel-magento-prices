@@ -7,7 +7,7 @@
         "php": "^8.3",
         "justbetter/laravel-magento-async": "^1.0",
         "justbetter/laravel-magento-client": "^2.6.1",
-        "justbetter/laravel-magento-products": "^1.4",
+        "justbetter/laravel-magento-products": "^1.7",
         "laravel/framework": "^11.0|^12.0",
         "spatie/laravel-activitylog": "^4.8"
     },

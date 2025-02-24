@@ -5,23 +5,23 @@ namespace JustBetter\MagentoPrices\Actions\Update\Sync;
 use Illuminate\Http\Client\Response;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesTierPrice;
-use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
+use JustBetter\MagentoPrices\Contracts\Utility\FiltersTierPrices;
 use JustBetter\MagentoPrices\Models\Price;
 
 class UpdateTierPrice implements UpdatesTierPrice
 {
     public function __construct(
         protected Magento $magento,
-        protected RetrievesCustomerGroups $customerGroups
+        protected FiltersTierPrices $filterTierPrice,
     ) {}
 
     public function update(Price $price): bool
     {
-        $payload = collect($price->tier_prices)
-            ->whereIn('customer_group', $this->customerGroups->retrieve())
-            ->map(fn (array $tierPrice): array => array_merge($tierPrice, [
-                'sku' => $price->sku,
-            ]));
+        $filteredTierPrices = $this->filterTierPrice->filter($price->sku, $price->tier_prices ?? []);
+
+        $payload = collect($filteredTierPrices)->map(fn (array $tierPrice): array => array_merge($tierPrice, [
+            'sku' => $price->sku,
+        ]));
 
         if ($payload->isEmpty()) {
             return true;

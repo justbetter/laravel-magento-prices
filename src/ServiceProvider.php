@@ -19,6 +19,7 @@ use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateSpecialPrice;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdateTierPrice;
 use JustBetter\MagentoPrices\Actions\Utility\CheckTierDuplicates;
 use JustBetter\MagentoPrices\Actions\Utility\DeleteCurrentSpecialPrices;
+use JustBetter\MagentoPrices\Actions\Utility\FilterTierPrices;
 use JustBetter\MagentoPrices\Actions\Utility\ImportCustomerGroups;
 use JustBetter\MagentoPrices\Actions\Utility\ProcessProductsWithMissingPrices;
 use JustBetter\MagentoPrices\Actions\Utility\RetrieveCustomerGroups;
@@ -30,6 +31,8 @@ use JustBetter\MagentoPrices\Commands\Update\UpdatePriceCommand;
 use JustBetter\MagentoPrices\Commands\Utility\ImportCustomerGroupsCommand;
 use JustBetter\MagentoPrices\Commands\Utility\ProcessProductsWithMissingPricesCommand;
 use JustBetter\MagentoPrices\Listeners\BulkOperationStatusListener;
+use JustBetter\MagentoPrices\Listeners\ProductDataModifiedListener;
+use JustBetter\MagentoProducts\Events\ProductDataModifiedEvent;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -70,6 +73,7 @@ class ServiceProvider extends BaseServiceProvider
         CheckTierDuplicates::bind();
         ProcessProductsWithMissingPrices::bind();
         ImportCustomerGroups::bind();
+        FilterTierPrices::bind();
 
         return $this;
     }
@@ -121,6 +125,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function bootListeners(): static
     {
         Event::listen(BulkOperationStatusEvent::class, BulkOperationStatusListener::class);
+        Event::listen(ProductDataModifiedEvent::class, ProductDataModifiedListener::class);
 
         return $this;
     }
