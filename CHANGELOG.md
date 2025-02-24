@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.3.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.0...main)
+## [2.4.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.0) - 2025-02-24
+
+### What's Changed
+* Only send prices for enabled Magento websites by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/33
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.3.0...2.4.0
+
 ## [2.3.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.3.0) - 2025-02-13
 
 ### What's Changed
