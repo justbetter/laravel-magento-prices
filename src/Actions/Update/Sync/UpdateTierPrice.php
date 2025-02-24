@@ -28,7 +28,7 @@ class UpdateTierPrice implements UpdatesTierPrice
         }
 
         $response = $this->magento
-            ->post('products/tier-prices', ['prices' => $payload])
+            ->put('products/tier-prices', ['prices' => $payload])
             ->onError(function (Response $response) use ($price, $payload): void {
                 activity()
                     ->on($price)
