@@ -33,7 +33,8 @@ class UpdatePriceTest extends TestCase
         $action = app(UpdatePrice::class);
         $action->update($model);
 
-        $this->assertFalse($model->refresh()->update);
+        $model->refresh();
+        $this->assertFalse($model->update);
     }
 
     #[Test]
@@ -61,6 +62,8 @@ class UpdatePriceTest extends TestCase
         $model = Price::query()->create([
             'sku' => '::sku::',
             'update' => true,
+            'fail_count' => 1,
+            'last_failed' => now(),
         ]);
 
         /** @var UpdatePrice $action */
@@ -71,6 +74,8 @@ class UpdatePriceTest extends TestCase
 
         $this->assertFalse($model->update);
         $this->assertNotNull($model->last_updated);
+        $this->assertNull($model->last_failed);
+        $this->assertEquals(0, $model->fail_count);
 
         Event::assertDispatched(UpdatedPriceEvent::class);
     }

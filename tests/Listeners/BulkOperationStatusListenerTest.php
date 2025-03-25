@@ -22,6 +22,8 @@ class BulkOperationStatusListenerTest extends TestCase
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => 'sku',
+            'fail_count' => 1,
+            'last_failed' => now(),
         ]);
 
         /** @var BulkRequest $request */
@@ -49,7 +51,10 @@ class BulkOperationStatusListenerTest extends TestCase
         $listener->execute($operation);
 
         Event::assertDispatched(UpdatedPriceEvent::class);
-        $this->assertNotNull($model->refresh()->last_updated);
+        $model->refresh();
+        $this->assertNotNull($model->last_updated);
+        $this->assertEquals(0, $model->fail_count);
+        $this->assertNull($model->last_failed);
     }
 
     #[Test]
