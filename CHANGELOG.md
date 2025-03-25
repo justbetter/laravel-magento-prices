@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.2...main)
+## [2.4.2](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.2) - 2025-03-25
+
+### What's Changed
+* Reset failed field by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/35
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.1...2.4.2
+
 ## [2.4.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.1) - 2025-02-24
 
 ### What's Changed
