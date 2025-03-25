@@ -46,6 +46,8 @@ class UpdatePrice implements UpdatesPrice
         $price->update([
             'last_updated' => now(),
             'update' => false,
+            'last_failed' => null,
+            'fail_count' => 0,
         ]);
 
         event(new UpdatedPriceEvent($price));
