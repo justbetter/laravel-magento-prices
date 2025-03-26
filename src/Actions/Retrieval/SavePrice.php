@@ -30,7 +30,7 @@ class SavePrice implements SavesPrice
         $model->retrieve = false;
         $model->last_retrieved = now();
 
-        $model->update = $forceUpdate || $model->checksum !== $priceData->checksum();
+        $model->update = $forceUpdate || $model->checksum !== $priceData->checksum() || $model->update;
         $model->checksum = $priceData->checksum();
 
         $model->save();
