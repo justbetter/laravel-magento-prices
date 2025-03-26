@@ -172,4 +172,48 @@ class SavePriceTest extends TestCase
 
         $this->assertTrue($model->refresh()->update);
     }
+
+    #[Test]
+    public function it_does_not_reset_update_boolean(): void
+    {
+        $priceData = PriceData::of([
+            'sku' => '::sku::',
+            'base_prices' => [
+                [
+                    'store_id' => 0,
+                    'price' => 10,
+                ],
+            ],
+            'tier_prices' => [
+                [
+                    'website_id' => 0,
+                    'customer_group' => 'group_1',
+                    'price_type' => 'fixed',
+                    'quantity' => 1,
+                    'price' => 8,
+                ],
+            ],
+            'special_prices' => [
+                [
+                    'store_id' => 0,
+                    'price' => 5,
+                    'price_from' => now()->subWeek()->toDateTimeString(),
+                    'price_to' => now()->addWeek()->toDateTimeString(),
+                ],
+            ],
+        ]);
+
+        /** @var SavePrice $action */
+        $action = app(SavePrice::class);
+        $action->save($priceData, false);
+
+        /** @var Price $model */
+        $model = Price::query()->firstWhere('sku', '=', '::sku::');
+
+        $this->assertTrue($model->update);
+
+        $action->save($priceData, false);
+
+        $this->assertTrue($model->refresh()->update);
+    }
 }
