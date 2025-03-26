@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.2...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.3...main)
+## [2.4.3](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.3) - 2025-03-26
+
+### What's Changed
+* Do not set update to false if it's currently true by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/36
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.2...2.4.3
+
 ## [2.4.2](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.2) - 2025-03-25
 
 ### What's Changed
