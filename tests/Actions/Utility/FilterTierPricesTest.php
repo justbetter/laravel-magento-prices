@@ -34,6 +34,12 @@ class FilterTierPricesTest extends TestCase
                 'price' => 10,
             ],
             [
+                'website_id' => 0,
+                'quantity' => 10,
+                'customer_group' => '::group::',
+                'price' => 8,
+            ],
+            [
                 'website_id' => 1,
                 'quantity' => 1,
                 'customer_group' => '::non-existing-group::',
@@ -66,6 +72,12 @@ class FilterTierPricesTest extends TestCase
                 'quantity' => 1,
                 'customer_group' => '::group::',
                 'price' => 10,
+            ],
+            [
+                'website_id' => 0,
+                'quantity' => 10,
+                'customer_group' => '::group::',
+                'price' => 8,
             ],
         ], $filteredPrices);
 
