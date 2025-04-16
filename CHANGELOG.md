@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.3...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.4...main)
+## [2.4.4](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.4) - 2025-04-16
+
+### What's Changed
+* Do not remove prices with global website by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/37
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.3...2.4.4
+
 ## [2.4.3](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.3) - 2025-03-26
 
 ### What's Changed
