@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.4...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.5...main)
+## [2.4.5](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.5) - 2025-07-25
+
+### What's Changed
+* Adjust workflows by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/38
+* Defer retrieving all by @ramonrietdijk in https://github.com/justbetter/laravel-magento-prices/pull/39
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.4...2.4.5
+
 ## [2.4.4](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.4) - 2025-04-16
 
 ### What's Changed
