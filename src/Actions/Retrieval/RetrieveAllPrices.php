@@ -31,6 +31,7 @@ class RetrieveAllPrices implements RetrievesAllPrices
 
             Price::query()
                 ->whereIn('sku', $existing)
+                ->where('sync', '=', true)
                 ->update(['retrieve' => true]);
 
             Price::query()->insert(
