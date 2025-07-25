@@ -19,8 +19,7 @@ class RetrieveAllPricesJob implements ShouldBeUnique, ShouldQueue
     public function __construct(
         public ?Carbon $from = null,
         public bool $defer = true,
-    )
-    {
+    ) {
         $this->onQueue(config('magento-prices.queue'));
     }
 

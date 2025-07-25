@@ -4,7 +4,7 @@ namespace JustBetter\MagentoPrices\Actions\Retrieval;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use JustBetter\MagentoPrices\Contracts\Retrieval\RetrievesAllPrices;
 use JustBetter\MagentoPrices\Jobs\Retrieval\RetrievePriceJob;
 use JustBetter\MagentoPrices\Models\Price;
@@ -24,7 +24,7 @@ class RetrieveAllPrices implements RetrievesAllPrices
 
         $date = now();
 
-        $repository->skus($from)->chunk(250)->each(function (Collection $skus) use ($date): void {
+        $repository->skus($from)->chunk(250)->each(function (Enumerable $skus) use ($date): void {
             $existing = Price::query()
                 ->whereIn('sku', $skus)
                 ->pluck('sku');
