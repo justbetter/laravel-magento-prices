@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.5...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.6...main)
+## [2.4.6](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.6) - 2025-07-25
+
+### What's Changed
+* Check for sync boolean by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/40
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.5...2.4.6
+
 ## [2.4.5](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.5) - 2025-07-25
 
 ### What's Changed
