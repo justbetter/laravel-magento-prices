@@ -4,17 +4,47 @@ namespace JustBetter\MagentoPrices\Actions\Retrieval;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Enumerable;
 use JustBetter\MagentoPrices\Contracts\Retrieval\RetrievesAllPrices;
 use JustBetter\MagentoPrices\Jobs\Retrieval\RetrievePriceJob;
+use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Repository\BaseRepository;
 
 class RetrieveAllPrices implements RetrievesAllPrices
 {
-    public function retrieve(?Carbon $from): void
+    public function retrieve(?Carbon $from = null, bool $defer = true): void
     {
         $repository = BaseRepository::resolve();
 
-        $repository->skus($from)->each(fn (string $sku): PendingDispatch => RetrievePriceJob::dispatch($sku));
+        if (! $defer) {
+            $repository->skus($from)->each(fn (string $sku): PendingDispatch => RetrievePriceJob::dispatch($sku));
+
+            return;
+        }
+
+        $date = now();
+
+        $repository->skus($from)->chunk(250)->each(function (Enumerable $skus) use ($date): void {
+            $existing = Price::query()
+                ->whereIn('sku', $skus)
+                ->pluck('sku');
+
+            Price::query()
+                ->whereIn('sku', $existing)
+                ->update(['retrieve' => true]);
+
+            Price::query()->insert(
+                $skus
+                    ->diff($existing)
+                    ->values()
+                    ->map(fn (string $sku): array => [
+                        'sku' => $sku,
+                        'retrieve' => true,
+                        'created_at' => $date,
+                        'updated_at' => $date,
+                    ])->toArray()
+            );
+        });
     }
 
     public static function bind(): void
