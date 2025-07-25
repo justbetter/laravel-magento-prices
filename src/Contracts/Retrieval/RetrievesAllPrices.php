@@ -6,5 +6,5 @@ use Illuminate\Support\Carbon;
 
 interface RetrievesAllPrices
 {
-    public function retrieve(?Carbon $from): void;
+    public function retrieve(?Carbon $from = null, bool $defer = true): void;
 }
