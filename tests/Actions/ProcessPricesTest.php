@@ -122,6 +122,7 @@ class ProcessPricesTest extends TestCase
             'subject_type' => $price->getMorphClass(),
             'subject_id' => $price->getKey(),
             'status' => OperationStatus::Open,
+            'created_at' => now(),
         ]);
 
         Price::query()->create([
@@ -135,6 +136,57 @@ class ProcessPricesTest extends TestCase
 
         Bus::assertDispatched(UpdatePricesAsyncJob::class, function (UpdatePricesAsyncJob $job): bool {
             return $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku_2::';
+        });
+    }
+
+    #[Test]
+    public function it_dispatches_prices_with_stale_async_operations(): void
+    {
+        Bus::fake();
+        config()->set('magento-prices.async', true);
+        config()->set('magento-prices.async_stale_hours', 24);
+
+        MagentoProduct::query()->create([
+            'sku' => '::sku::',
+            'exists_in_magento' => true,
+        ]);
+
+        /** @var Price $price */
+        $price = Price::query()->create([
+            'sku' => '::sku::',
+            'update' => true,
+        ]);
+
+        /** @var BulkRequest $request */
+        $request = BulkRequest::query()->create([
+            'magento_connection' => '::magento-connection::',
+            'store_code' => '::store-code::',
+            'method' => 'POST',
+            'path' => '::path::',
+            'bulk_uuid' => '::bulk-uuid::',
+            'request' => [
+                [
+                    'call-1',
+                ],
+            ],
+            'response' => [],
+            'created_at' => now()->subHours(25),
+        ]);
+
+        $request->operations()->create([
+            'operation_id' => 0,
+            'subject_type' => $price->getMorphClass(),
+            'subject_id' => $price->getKey(),
+            'status' => OperationStatus::Open,
+            'created_at' => now()->subHours(25),
+        ]);
+
+        /** @var ProcessPrices $action */
+        $action = app(ProcessPrices::class);
+        $action->process();
+
+        Bus::assertDispatched(UpdatePricesAsyncJob::class, function (UpdatePricesAsyncJob $job): bool {
+            return $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku::';
         });
     }
 
