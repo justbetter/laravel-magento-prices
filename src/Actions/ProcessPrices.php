@@ -41,9 +41,16 @@ class ProcessPrices implements ProcessesPrices
                     $query->where('exists_in_magento', '=', true);
                 })
                 ->whereDoesntHave('bulkOperations', function (Builder $query): void {
+                    $staleHours = config()->integer('magento-prices.async_stale_hours', 24);
+                    $staleThreshold = now()->subHours($staleHours);
+
                     $query
-                        ->where('status', '=', OperationStatus::Open)
-                        ->orWhereNull('status');
+                        ->where(function (Builder $query): void {
+                            $query
+                                ->where('status', '=', OperationStatus::Open)
+                                ->orWhereNull('status');
+                        })
+                        ->where('created_at', '>=', $staleThreshold);
                 })
                 ->select(['id', 'sku'])
                 ->take($repository->updateLimit())
