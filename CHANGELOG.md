@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.6...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.4.7...main)
+## [2.4.7](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.7) - 2025-10-16
+
+### What's Changed
+* Bulk operations stale by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/41
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.4.6...2.4.7
+
 ## [2.4.6](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.4.6) - 2025-07-25
 
 ### What's Changed
