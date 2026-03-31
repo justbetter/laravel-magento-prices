@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions\Update\Async;
 
 use Illuminate\Support\Collection;
@@ -34,15 +36,13 @@ class UpdateSpecialPricesAsync implements UpdatesSpecialPricesAsync
         }
 
         $payload = $prices
-            ->map(function (Price $price): array {
-                return [
-                    'prices' => collect($price->special_prices)
-                        ->map(fn (array $tierPrice): array => array_merge($tierPrice, [
-                            'sku' => $price->sku,
-                        ]))
-                        ->toArray(),
-                ];
-            })
+            ->map(fn (Price $price): array => [
+                'prices' => collect($price->special_prices)
+                    ->map(fn (array $tierPrice): array => array_merge($tierPrice, [
+                        'sku' => $price->sku,
+                    ]))
+                    ->toArray(),
+            ])
             ->toArray();
 
         $this->magentoAsync

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions\Update\Async;
 
 use Illuminate\Support\Collection;

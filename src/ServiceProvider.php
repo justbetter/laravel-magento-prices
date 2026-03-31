@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices;
 
 use Illuminate\Support\Facades\Event;
@@ -36,6 +38,7 @@ use JustBetter\MagentoProducts\Events\ProductDataModifiedEvent;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    #[\Override]
     public function register(): void
     {
         $this

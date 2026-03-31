@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Sync;
 
 use Illuminate\Support\Facades\Http;
@@ -11,7 +13,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateTierPriceTest extends TestCase
+final class UpdateTierPriceTest extends TestCase
 {
     protected function setUp(): void
     {

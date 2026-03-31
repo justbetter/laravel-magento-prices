@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Utility;
 
 use Illuminate\Support\Facades\Http;
@@ -10,7 +12,7 @@ use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class ImportCustomerGroupsTest extends TestCase
+final class ImportCustomerGroupsTest extends TestCase
 {
     #[Test]
     public function it_can_import_customer_groups(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Async;
 
 use JustBetter\MagentoPrices\Actions\Update\Async\UpdatePricesAsync;
@@ -10,7 +12,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdatePricesAsyncTest extends TestCase
+final class UpdatePricesAsyncTest extends TestCase
 {
     #[Test]
     public function it_calls_update_actions(): void

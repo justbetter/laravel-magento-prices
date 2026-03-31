@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Commands\Update;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -10,7 +12,7 @@ use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdatePriceCommandTest extends TestCase
+final class UpdatePriceCommandTest extends TestCase
 {
     #[Test]
     public function it_dispatches_job(): void

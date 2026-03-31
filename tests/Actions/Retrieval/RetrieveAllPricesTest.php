@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Retrieval;
 
 use Illuminate\Support\Facades\Bus;
@@ -11,7 +13,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveAllPricesTest extends TestCase
+final class RetrieveAllPricesTest extends TestCase
 {
     #[Test]
     public function it_dispatches_jobs(): void

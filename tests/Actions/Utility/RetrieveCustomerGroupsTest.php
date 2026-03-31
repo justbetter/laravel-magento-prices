@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Utility;
 
 use Illuminate\Support\Facades\Bus;
@@ -10,7 +12,7 @@ use JustBetter\MagentoPrices\Models\CustomerGroup;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveCustomerGroupsTest extends TestCase
+final class RetrieveCustomerGroupsTest extends TestCase
 {
     protected function setUp(): void
     {

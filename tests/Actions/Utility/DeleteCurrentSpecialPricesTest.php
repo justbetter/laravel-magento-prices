@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Utility;
 
 use Illuminate\Http\Client\Request;
@@ -11,7 +13,7 @@ use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class DeleteCurrentSpecialPricesTest extends TestCase
+final class DeleteCurrentSpecialPricesTest extends TestCase
 {
     #[Test]
     public function it_removes_special_prices(): void

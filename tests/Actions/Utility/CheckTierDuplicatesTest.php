@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Utility;
 
 use JustBetter\MagentoPrices\Actions\Utility\CheckTierDuplicates;
@@ -8,7 +10,7 @@ use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckTierDuplicatesTest extends TestCase
+final class CheckTierDuplicatesTest extends TestCase
 {
     #[Test]
     public function it_passes(): void

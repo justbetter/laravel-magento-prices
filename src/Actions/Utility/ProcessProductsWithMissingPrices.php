@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions\Utility;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
@@ -65,10 +67,11 @@ class ProcessProductsWithMissingPrices implements ProcessesProductsWithMissingPr
             $products = $this->magento->lazy('products', $searchCriteria);
 
             foreach ($products as $product) {
-                if (
-                    (array_key_exists('price', $product) && floatval($product['price']) > 0) ||
-                    (array_key_exists('type_id', $product) && $product['type_id'] != 'simple')
-                ) {
+                if (array_key_exists('price', $product) && floatval($product['price']) > 0) {
+                    continue;
+                }
+
+                if (array_key_exists('type_id', $product) && $product['type_id'] != 'simple') {
                     continue;
                 }
 
