@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Sync;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoPrices\Actions\Update\Sync\UpdatePrice;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesBasePrice;
@@ -14,7 +17,7 @@ use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdatePriceTest extends TestCase
+final class UpdatePriceTest extends TestCase
 {
     #[Test]
     public function it_does_nothing_when_not_in_magento(): void
@@ -73,8 +76,8 @@ class UpdatePriceTest extends TestCase
         $model->refresh();
 
         $this->assertFalse($model->update);
-        $this->assertNotNull($model->last_updated);
-        $this->assertNull($model->last_failed);
+        $this->assertInstanceOf(Carbon::class, $model->last_updated);
+        $this->assertNotInstanceOf(Carbon::class, $model->last_failed);
         $this->assertEquals(0, $model->fail_count);
 
         Event::assertDispatched(UpdatedPriceEvent::class);
@@ -116,7 +119,7 @@ class UpdatePriceTest extends TestCase
         $model->refresh();
 
         $this->assertTrue($model->update);
-        $this->assertNotNull($model->last_failed);
+        $this->assertInstanceOf(Carbon::class, $model->last_failed);
         $this->assertEquals(1, $model->fail_count);
 
         Event::assertNotDispatched(UpdatedPriceEvent::class);

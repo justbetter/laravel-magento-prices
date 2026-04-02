@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Listeners;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoAsync\Enums\OperationStatus;
 use JustBetter\MagentoAsync\Models\BulkOperation;
@@ -12,7 +15,7 @@ use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class BulkOperationStatusListenerTest extends TestCase
+final class BulkOperationStatusListenerTest extends TestCase
 {
     #[Test]
     public function it_handles_complete_status(): void
@@ -39,7 +42,7 @@ class BulkOperationStatusListenerTest extends TestCase
 
         /** @var BulkOperation $operation */
         $operation = $request->operations()->create([
-            'subject_type' => get_class($model),
+            'subject_type' => $model::class,
             'subject_id' => $model->getKey(),
             'operation_id' => 0,
             'status' => OperationStatus::Complete,
@@ -52,9 +55,9 @@ class BulkOperationStatusListenerTest extends TestCase
 
         Event::assertDispatched(UpdatedPriceEvent::class);
         $model->refresh();
-        $this->assertNotNull($model->last_updated);
+        $this->assertInstanceOf(Carbon::class, $model->last_updated);
         $this->assertEquals(0, $model->fail_count);
-        $this->assertNull($model->last_failed);
+        $this->assertNotInstanceOf(Carbon::class, $model->last_failed);
     }
 
     #[Test]
@@ -80,7 +83,7 @@ class BulkOperationStatusListenerTest extends TestCase
 
         /** @var BulkOperation $operation */
         $operation = $request->operations()->create([
-            'subject_type' => get_class($model),
+            'subject_type' => $model::class,
             'subject_id' => $model->getKey(),
             'operation_id' => 0,
             'status' => OperationStatus::NotRetriablyFailed,
@@ -92,6 +95,6 @@ class BulkOperationStatusListenerTest extends TestCase
         $listener->execute($operation);
 
         Event::assertNotDispatched(UpdatedPriceEvent::class);
-        $this->assertNull($model->refresh()->last_updated);
+        $this->assertNotInstanceOf(Carbon::class, $model->refresh()->last_updated);
     }
 }

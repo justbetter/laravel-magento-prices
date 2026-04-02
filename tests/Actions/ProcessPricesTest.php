@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions;
 
 use Illuminate\Support\Facades\Bus;
@@ -16,7 +18,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class ProcessPricesTest extends TestCase
+final class ProcessPricesTest extends TestCase
 {
     #[Test]
     public function it_dispatches_retrieval_jobs(): void
@@ -74,9 +76,7 @@ class ProcessPricesTest extends TestCase
         $action = app(ProcessPrices::class);
         $action->process();
 
-        Bus::assertDispatched(UpdatePricesAsyncJob::class, function (UpdatePricesAsyncJob $job): bool {
-            return $job->prices->count() === 1;
-        });
+        Bus::assertDispatched(UpdatePricesAsyncJob::class, fn (UpdatePricesAsyncJob $job): bool => $job->prices->count() === 1);
     }
 
     #[Test]
@@ -134,9 +134,7 @@ class ProcessPricesTest extends TestCase
         $action = app(ProcessPrices::class);
         $action->process();
 
-        Bus::assertDispatched(UpdatePricesAsyncJob::class, function (UpdatePricesAsyncJob $job): bool {
-            return $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku_2::';
-        });
+        Bus::assertDispatched(UpdatePricesAsyncJob::class, fn (UpdatePricesAsyncJob $job): bool => $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku_2::');
     }
 
     #[Test]
@@ -185,9 +183,7 @@ class ProcessPricesTest extends TestCase
         $action = app(ProcessPrices::class);
         $action->process();
 
-        Bus::assertDispatched(UpdatePricesAsyncJob::class, function (UpdatePricesAsyncJob $job): bool {
-            return $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku::';
-        });
+        Bus::assertDispatched(UpdatePricesAsyncJob::class, fn (UpdatePricesAsyncJob $job): bool => $job->prices->count() === 1 && $job->prices->first()?->sku === '::sku::');
     }
 
     #[Test]

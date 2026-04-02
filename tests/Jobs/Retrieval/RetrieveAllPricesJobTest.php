@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Jobs\Retrieval;
 
 use JustBetter\MagentoPrices\Contracts\Retrieval\RetrievesPrice;
@@ -8,7 +10,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveAllPricesJobTest extends TestCase
+final class RetrieveAllPricesJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
@@ -25,7 +27,7 @@ class RetrieveAllPricesJobTest extends TestCase
     {
         $job = new RetrievePriceJob('::sku::', false);
 
-        $this->assertEquals('::sku::', $job->uniqueId());
+        $this->assertSame('::sku::', $job->uniqueId());
     }
 
     #[Test]
@@ -33,6 +35,6 @@ class RetrieveAllPricesJobTest extends TestCase
     {
         $job = new RetrievePriceJob('::sku::', false);
 
-        $this->assertEquals(['::sku::'], $job->tags());
+        $this->assertSame(['::sku::'], $job->tags());
     }
 }

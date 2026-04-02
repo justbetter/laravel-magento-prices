@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions\Update\Sync;
 
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesBasePrice;

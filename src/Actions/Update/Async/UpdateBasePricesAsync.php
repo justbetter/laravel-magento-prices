@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions\Update\Async;
 
 use Illuminate\Support\Collection;
@@ -20,15 +22,13 @@ class UpdateBasePricesAsync implements UpdatesBasePricesAsync
         }
 
         $payload = $prices
-            ->map(function (Price $price): array {
-                return [
-                    'prices' => collect($price->base_prices)
-                        ->map(fn (array $basePrice): array => array_merge($basePrice, [
-                            'sku' => $price->sku,
-                        ]))
-                        ->toArray(),
-                ];
-            })
+            ->map(fn (Price $price): array => [
+                'prices' => collect($price->base_prices)
+                    ->map(fn (array $basePrice): array => array_merge($basePrice, [
+                        'sku' => $price->sku,
+                    ]))
+                    ->toArray(),
+            ])
             ->toArray();
 
         $this->magentoAsync

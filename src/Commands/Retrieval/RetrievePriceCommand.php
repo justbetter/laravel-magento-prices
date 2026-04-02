@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Commands\Retrieval;
 
 use Illuminate\Console\Command;

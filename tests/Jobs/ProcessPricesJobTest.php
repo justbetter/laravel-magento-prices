@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Jobs;
 
 use JustBetter\MagentoPrices\Contracts\ProcessesPrices;
@@ -8,7 +10,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class ProcessPricesJobTest extends TestCase
+final class ProcessPricesJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void

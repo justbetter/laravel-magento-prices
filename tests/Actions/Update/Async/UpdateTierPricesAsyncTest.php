@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Async;
 
 use Illuminate\Http\Client\Request;
@@ -12,7 +14,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateTierPricesAsyncTest extends TestCase
+final class UpdateTierPricesAsyncTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -93,46 +95,44 @@ class UpdateTierPricesAsyncTest extends TestCase
         $action = app(UpdateTierPricesAsync::class);
         $action->update($models);
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->data() === [
-                [
-                    'prices' => [
-                        [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'GENERAL',
-                            'price' => 10,
-                            'sku' => '::sku_1::',
-                        ],
-                        [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'RETAIL',
-                            'price' => 8,
-                            'sku' => '::sku_1::',
-                        ],
+        Http::assertSent(fn (Request $request): bool => $request->data() === [
+            [
+                'prices' => [
+                    [
+                        'website_id' => 1,
+                        'quantity' => 1,
+                        'customer_group' => 'GENERAL',
+                        'price' => 10,
+                        'sku' => '::sku_1::',
+                    ],
+                    [
+                        'website_id' => 1,
+                        'quantity' => 1,
+                        'customer_group' => 'RETAIL',
+                        'price' => 8,
+                        'sku' => '::sku_1::',
                     ],
                 ],
-                [
-                    'prices' => [
-                        [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'GENERAL',
-                            'price' => 10,
-                            'sku' => '::sku_2::',
-                        ],
-                        [
-                            'website_id' => 1,
-                            'quantity' => 1,
-                            'customer_group' => 'RETAIL',
-                            'price' => 8,
-                            'sku' => '::sku_2::',
-                        ],
+            ],
+            [
+                'prices' => [
+                    [
+                        'website_id' => 1,
+                        'quantity' => 1,
+                        'customer_group' => 'GENERAL',
+                        'price' => 10,
+                        'sku' => '::sku_2::',
+                    ],
+                    [
+                        'website_id' => 1,
+                        'quantity' => 1,
+                        'customer_group' => 'RETAIL',
+                        'price' => 8,
+                        'sku' => '::sku_2::',
                     ],
                 ],
-            ];
-        });
+            ],
+        ]);
     }
 
     #[Test]

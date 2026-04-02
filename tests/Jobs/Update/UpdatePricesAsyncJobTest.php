@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Jobs\Update;
 
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesPricesAsync;
@@ -9,7 +11,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdatePricesAsyncJobTest extends TestCase
+final class UpdatePricesAsyncJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
@@ -30,6 +32,6 @@ class UpdatePricesAsyncJobTest extends TestCase
         ]);
         $job = new UpdatePricesAsyncJob($prices);
 
-        $this->assertEquals(['::sku_1::', '::sku_2::'], $job->tags());
+        $this->assertSame(['::sku_1::', '::sku_2::'], $job->tags());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions;
 
 use Illuminate\Database\Eloquent\Builder;

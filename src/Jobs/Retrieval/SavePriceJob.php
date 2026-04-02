@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Jobs\Retrieval;
 
 use Illuminate\Bus\Queueable;
@@ -50,9 +52,7 @@ class SavePriceJob implements ShouldBeUnique, ShouldQueue
         $model = Price::query()->firstWhere('sku', '=', $this->data['sku']);
 
         activity()
-            ->when($model, function (ActivityLogger $logger, Price $price): ActivityLogger {
-                return $logger->on($price);
-            })
+            ->when($model, fn (ActivityLogger $logger, Price $price): ActivityLogger => $logger->on($price))
             ->useLog('error')
             ->log('Failed to save price: '.$exception->getMessage());
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Update\Async;
 
 use Illuminate\Http\Client\Request;
@@ -12,7 +14,7 @@ use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateSpecialPricesAsyncTest extends TestCase
+final class UpdateSpecialPricesAsyncTest extends TestCase
 {
     #[Test]
     public function it_updates_special_prices_async(): void
@@ -79,32 +81,30 @@ class UpdateSpecialPricesAsyncTest extends TestCase
         $action = app(UpdateSpecialPricesAsync::class);
         $action->update($models);
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->data() === [
-                [
-                    'prices' => [
-                        [
-                            'store_id' => 1,
-                            'price' => 10,
-                            'from' => '2024-07-30',
-                            'to' => '2024-08-30',
-                            'sku' => '::sku_1::',
-                        ],
+        Http::assertSent(fn (Request $request): bool => $request->data() === [
+            [
+                'prices' => [
+                    [
+                        'store_id' => 1,
+                        'price' => 10,
+                        'from' => '2024-07-30',
+                        'to' => '2024-08-30',
+                        'sku' => '::sku_1::',
                     ],
                 ],
-                [
-                    'prices' => [
-                        [
-                            'store_id' => 1,
-                            'price' => 10,
-                            'from' => '2024-07-30',
-                            'to' => '2024-08-30',
-                            'sku' => '::sku_2::',
-                        ],
+            ],
+            [
+                'prices' => [
+                    [
+                        'store_id' => 1,
+                        'price' => 10,
+                        'from' => '2024-07-30',
+                        'to' => '2024-08-30',
+                        'sku' => '::sku_2::',
                     ],
                 ],
-            ];
-        });
+            ],
+        ]);
     }
 
     #[Test]

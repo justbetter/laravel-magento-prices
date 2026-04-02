@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Tests\Actions\Retrieval;
 
 use Illuminate\Support\Facades\Bus;
@@ -11,7 +13,7 @@ use JustBetter\MagentoPrices\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrievePriceTest extends TestCase
+final class RetrievePriceTest extends TestCase
 {
     #[Test]
     public function it_sets_retrieve_when_no_pricedata(): void
@@ -47,8 +49,6 @@ class RetrievePriceTest extends TestCase
         $action = app(RetrievePrice::class);
         $action->retrieve('::sku::', true);
 
-        Bus::assertDispatched(SavePriceJob::class, function (SavePriceJob $job): bool {
-            return $job->data['sku'] === '::sku::' && $job->forceUpdate;
-        });
+        Bus::assertDispatched(SavePriceJob::class, fn (SavePriceJob $job): bool => $job->data['sku'] === '::sku::' && $job->forceUpdate);
     }
 }

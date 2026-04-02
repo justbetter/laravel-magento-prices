@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoPrices\Actions\Utility;
 
 use Illuminate\Support\Collection;
@@ -31,9 +33,9 @@ class CheckTierDuplicates implements ChecksTierDuplicates
             ->withProperties([
                 'duplicate' => $duplicates->toArray(),
             ])
-            ->log("Duplicate tier prices found for $model->sku");
+            ->log('Duplicate tier prices found for '.$model->sku);
 
-        throw new DuplicateTierPriceException("Duplicate tier prices found for $model->sku. Duplicates: ".json_encode($duplicates->toArray()));
+        throw new DuplicateTierPriceException(sprintf('Duplicate tier prices found for %s. Duplicates: ', $model->sku).json_encode($duplicates->toArray()));
     }
 
     public static function bind(): void
