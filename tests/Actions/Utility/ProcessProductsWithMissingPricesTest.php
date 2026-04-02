@@ -40,6 +40,11 @@ final class ProcessProductsWithMissingPricesTest extends TestCase
                         'sku' => '::sku_3::',
                         'type_id' => 'simple',
                     ],
+                    [
+                        'sku' => '::sku_4::',
+                        'price' => 0,
+                        'type_id' => 'configurable',
+                    ],
                 ],
             ]),
         ])->preventStrayRequests();
