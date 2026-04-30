@@ -23,11 +23,15 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
     {
         $prices->where('has_tier', '=', true)
             ->chunk(250)
-            ->each(fn (Collection $prices) => $this->currentTierPrices->delete($prices->pluck('sku')->toArray()));
+            ->each(function (Collection $prices): void {
+                $this->currentTierPrices->delete($prices->pluck('sku')->toArray());
+            });
 
-        $prices->each(fn (Price $price) => $price->update([
-            'has_tier' => count($price->tier_prices ?? []) > 0,
-        ]));
+        $prices->each(function (Price $price): void {
+            $price->update([
+                'has_tier' => count($price->tier_prices ?? []) > 0,
+            ]);
+        });
 
         $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices ?? []) === 0)->values();
 
