@@ -21,6 +21,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property ?array $tier_prices
  * @property ?array $special_prices
  * @property bool $has_special
+ * @property bool $has_tier
  * @property bool $retrieve
  * @property bool $update
  * @property ?string $checksum
@@ -48,6 +49,7 @@ class Price extends Model
         'special_prices' => 'array',
         'sync' => 'boolean',
         'has_special' => 'boolean',
+        'has_tier' => 'boolean',
         'retrieve' => 'boolean',
         'update' => 'boolean',
     ];

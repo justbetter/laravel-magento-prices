@@ -7,6 +7,7 @@ namespace JustBetter\MagentoPrices\Actions\Update\Async;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoAsync\Client\MagentoAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesTierPricesAsync;
+use JustBetter\MagentoPrices\Contracts\Utility\DeletesCurrentTierPrices;
 use JustBetter\MagentoPrices\Contracts\Utility\FiltersTierPrices;
 use JustBetter\MagentoPrices\Models\Price;
 
@@ -15,10 +16,19 @@ class UpdateTierPricesAsync implements UpdatesTierPricesAsync
     public function __construct(
         protected MagentoAsync $magentoAsync,
         protected FiltersTierPrices $filterTierPrice,
+        protected DeletesCurrentTierPrices $currentTierPrices,
     ) {}
 
     public function update(Collection $prices): void
     {
+        $prices->where('has_tier', '=', true)
+            ->chunk(250)
+            ->each(fn (Collection $prices) => $this->currentTierPrices->delete($prices->pluck('sku')->toArray()));
+
+        $prices->each(fn (Price $price) => $price->update([
+            'has_tier' => count($price->tier_prices ?? []) > 0,
+        ]));
+
         $prices = $prices->reject(fn (Price $price): bool => count($price->tier_prices ?? []) === 0)->values();
 
         if ($prices->isEmpty()) {
