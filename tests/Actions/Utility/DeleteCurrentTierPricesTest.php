@@ -35,7 +35,7 @@ final class DeleteCurrentTierPricesTest extends TestCase
         Http::fake([
             'magento/rest/all/V1/products/tier-prices-information' => Http::response([
                 [
-                    'price',
+                    '::price::',
                 ],
             ]),
             'magento/rest/all/V1/products/tier-prices-delete' => Http::response(),
@@ -51,6 +51,17 @@ final class DeleteCurrentTierPricesTest extends TestCase
         /** @var UpdateTierPrice $action */
         $action = app(UpdateTierPrice::class);
         $action->update($model);
+
+        Http::assertSentInOrder([
+            fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/tier-prices-information'
+                && $request->data() === ['skus' => ['::sku::']],
+
+            fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/tier-prices-delete'
+                && $request->data() === ['prices' => [
+                    ['::price::'],
+                ]],
+        ]);
+
         $this->assertFalse($model->refresh()->has_tier);
     }
 
