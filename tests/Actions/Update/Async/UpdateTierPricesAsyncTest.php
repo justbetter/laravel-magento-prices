@@ -8,6 +8,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Actions\Update\Async\UpdateTierPricesAsync;
+use JustBetter\MagentoPrices\Contracts\Utility\DeletesCurrentTierPrices;
 use JustBetter\MagentoPrices\Contracts\Utility\RetrievesCustomerGroups;
 use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
@@ -30,6 +31,10 @@ final class UpdateTierPricesAsyncTest extends TestCase
     #[Test]
     public function it_updates_tier_prices_async(): void
     {
+        $this->mock(DeletesCurrentTierPrices::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('delete')->once()->with(['::sku_1::', '::sku_2::', '::sku_3::'])->andReturn();
+        });
+
         Http::fake([
             'magento/rest/all/async/bulk/V1/products/tier-prices' => Http::response([
                 'bulk_uuid' => '::uuid::',
@@ -49,6 +54,7 @@ final class UpdateTierPricesAsyncTest extends TestCase
         $models = collect([
             Price::query()->create([
                 'sku' => '::sku_1::',
+                'has_tier' => true,
                 'tier_prices' => [
                     [
                         'website_id' => 1,
@@ -66,6 +72,7 @@ final class UpdateTierPricesAsyncTest extends TestCase
             ]),
             Price::query()->create([
                 'sku' => '::sku_2::',
+                'has_tier' => true,
                 'tier_prices' => [
                     [
                         'website_id' => 1,
@@ -83,6 +90,7 @@ final class UpdateTierPricesAsyncTest extends TestCase
             ]),
             Price::query()->create([
                 'sku' => '::sku_3::',
+                'has_tier' => true,
                 'tier_prices' => [],
             ]),
             Price::query()->create([

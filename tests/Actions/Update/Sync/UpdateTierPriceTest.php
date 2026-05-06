@@ -30,6 +30,16 @@ final class UpdateTierPriceTest extends TestCase
     public function it_updates_tier_price(): void
     {
         Http::fake([
+            'magento/rest/all/V1/products/tier-prices-information' => Http::response([
+                [
+                    'price' => 100,
+                    'price_type' => 'fixed',
+                    'website_id' => 0,
+                    'sku' => '::sku::',
+                    'customer_group' => 'all groups',
+                    'quantity' => 1,
+                ],
+            ]),
             'magento/rest/all/V1/products/tier-prices' => Http::response(),
         ])->preventStrayRequests();
 
@@ -61,6 +71,16 @@ final class UpdateTierPriceTest extends TestCase
     public function it_returns_false_on_failure(): void
     {
         Http::fake([
+            'magento/rest/all/V1/products/tier-prices-information' => Http::response([
+                [
+                    'price' => 100,
+                    'price_type' => 'fixed',
+                    'website_id' => 0,
+                    'sku' => '::sku::',
+                    'customer_group' => 'all groups',
+                    'quantity' => 1,
+                ],
+            ]),
             'magento/rest/all/V1/products/tier-prices' => Http::response(null, 500),
         ])->preventStrayRequests();
 
@@ -92,12 +112,24 @@ final class UpdateTierPriceTest extends TestCase
     public function it_removes_tier_prices(): void
     {
         Http::fake([
+            'magento/rest/all/V1/products/tier-prices-information' => Http::response([
+                [
+                    'price' => 100,
+                    'price_type' => 'fixed',
+                    'website_id' => 0,
+                    'sku' => '::sku::',
+                    'customer_group' => 'all groups',
+                    'quantity' => 1,
+                ],
+            ]),
+            'magento/rest/all/V1/products/tier-prices-delete' => Http::response(),
             'magento/rest/all/V1/products/tier-prices' => Http::response(),
         ])->preventStrayRequests();
 
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => '::sku::',
+            'has_tier' => true,
             'tier_prices' => [],
         ]);
 

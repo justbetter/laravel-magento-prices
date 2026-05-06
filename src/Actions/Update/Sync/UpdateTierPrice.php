@@ -7,6 +7,7 @@ namespace JustBetter\MagentoPrices\Actions\Update\Sync;
 use Illuminate\Http\Client\Response;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoPrices\Contracts\Update\Sync\UpdatesTierPrice;
+use JustBetter\MagentoPrices\Contracts\Utility\DeletesCurrentTierPrices;
 use JustBetter\MagentoPrices\Contracts\Utility\FiltersTierPrices;
 use JustBetter\MagentoPrices\Models\Price;
 
@@ -15,6 +16,7 @@ class UpdateTierPrice implements UpdatesTierPrice
     public function __construct(
         protected Magento $magento,
         protected FiltersTierPrices $filterTierPrice,
+        protected DeletesCurrentTierPrices $currentTierPrices,
     ) {}
 
     public function update(Price $price): bool
@@ -24,6 +26,14 @@ class UpdateTierPrice implements UpdatesTierPrice
         $payload = collect($filteredTierPrices)->map(fn (array $tierPrice): array => array_merge($tierPrice, [
             'sku' => $price->sku,
         ]));
+
+        if ($price->has_tier) {
+            $this->currentTierPrices->delete([$price->sku]);
+        }
+
+        $price->update([
+            'has_tier' => $payload->isNotEmpty(),
+        ]);
 
         if ($payload->isEmpty()) {
             return true;
