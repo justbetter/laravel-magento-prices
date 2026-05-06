@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.5.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.6.0...main)
+## [2.6.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.6.0) - 2026-05-06
+
+### What's Changed
+* Delete old tier prices by @niekboon in https://github.com/justbetter/laravel-magento-prices/pull/43
+
+### New Contributors
+* @niekboon made their first contribution in https://github.com/justbetter/laravel-magento-prices/pull/43
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.5.0...2.6.0
+
 ## [2.5.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.5.0) - 2026-04-02
 
 ### What's Changed
