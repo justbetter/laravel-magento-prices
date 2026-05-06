@@ -35,7 +35,12 @@ final class DeleteCurrentTierPricesTest extends TestCase
         Http::fake([
             'magento/rest/all/V1/products/tier-prices-information' => Http::response([
                 [
-                    '::price::',
+                    'price' => 100,
+                    'price_type' => 'fixed',
+                    'website_id' => 0,
+                    'sku' => '::sku::',
+                    'customer_group' => 'all groups',
+                    'quantity' => 1,
                 ],
             ]),
             'magento/rest/all/V1/products/tier-prices-delete' => Http::response(),
@@ -58,7 +63,14 @@ final class DeleteCurrentTierPricesTest extends TestCase
 
             fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/tier-prices-delete'
                 && $request->data() === ['prices' => [
-                    ['::price::'],
+                    [
+                        'price' => 100,
+                        'price_type' => 'fixed',
+                        'website_id' => 0,
+                        'sku' => '::sku::',
+                        'customer_group' => 'all groups',
+                        'quantity' => 1,
+                    ],
                 ]],
         ]);
 
@@ -72,10 +84,18 @@ final class DeleteCurrentTierPricesTest extends TestCase
             [
                 'sku' => '::sku_1::',
                 'price' => 10,
+                'price_type' => 'fixed',
+                'website_id' => 0,
+                'customer_group' => 'all groups',
+                'quantity' => 1,
             ],
             [
                 'sku' => '::sku_2::',
                 'price' => 11,
+                'price_type' => 'fixed',
+                'website_id' => 0,
+                'customer_group' => 'all groups',
+                'quantity' => 1,
             ],
         ];
 
@@ -100,7 +120,12 @@ final class DeleteCurrentTierPricesTest extends TestCase
         Http::fake([
             'magento/rest/all/V1/products/tier-prices-information' => Http::response([
                 [
-                    'price',
+                    'price' => 100,
+                    'price_type' => 'fixed',
+                    'website_id' => 0,
+                    'sku' => '::sku::',
+                    'customer_group' => 'all groups',
+                    'quantity' => 1,
                 ],
             ]),
             'magento/rest/all/V1/products/tier-prices-delete' => Http::response(null, 500),
