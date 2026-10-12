@@ -40,12 +40,6 @@ class BulkOperationStatusListener extends BaseBulkOperationStatusListener
 
         $price->registerFailure();
 
-        if ($price->sync) {
-            $price->update([
-                'update' => true,
-            ]);
-        }
-
         activity()
             ->useLog('error')
             ->on($price)

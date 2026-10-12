@@ -86,7 +86,7 @@ final class BulkOperationStatusListenerTest extends TestCase
         $model = Price::query()->create([
             'sku' => 'sku',
             'sync' => true,
-            'update' => false,
+            'update' => true,
             'fail_count' => $failCount,
         ]);
 
