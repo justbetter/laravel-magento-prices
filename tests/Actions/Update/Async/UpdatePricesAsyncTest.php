@@ -8,6 +8,7 @@ use JustBetter\MagentoPrices\Actions\Update\Async\UpdatePricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesBasePricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesSpecialPricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesTierPricesAsync;
+use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
@@ -28,8 +29,17 @@ final class UpdatePricesAsyncTest extends TestCase
         $this->mock(UpdatesSpecialPricesAsync::class, function (MockInterface $mock): void {
             $mock->shouldReceive('update')->once()->andReturnTrue();
         });
+
+        /** @var Price $price */
+        $price = Price::query()->create([
+            'sku' => '::sku::',
+            'update' => true,
+        ]);
+
         /** @var UpdatePricesAsync $action */
         $action = app(UpdatePricesAsync::class);
-        $action->update(collect());
+        $action->update(collect([$price]));
+
+        $this->assertTrue($price->refresh()->update);
     }
 }

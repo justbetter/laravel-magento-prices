@@ -9,7 +9,6 @@ use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesBasePricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesPricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesSpecialPricesAsync;
 use JustBetter\MagentoPrices\Contracts\Update\Async\UpdatesTierPricesAsync;
-use JustBetter\MagentoPrices\Models\Price;
 
 class UpdatePricesAsync implements UpdatesPricesAsync
 {
@@ -24,8 +23,6 @@ class UpdatePricesAsync implements UpdatesPricesAsync
         $this->basePrice->update($prices);
         $this->tierPrice->update($prices);
         $this->specialPrice->update($prices);
-
-        $prices->each(fn (Price $price): bool => $price->update(['update' => false]));
     }
 
     public static function bind(): void

@@ -20,19 +20,35 @@ class BulkOperationStatusListener extends BaseBulkOperationStatusListener
         $price = $operation->subject;
 
         if ($operation->status === OperationStatus::Complete) {
-            $price->update([
+            $attributes = [
                 'last_updated' => now(),
                 'last_failed' => null,
                 'fail_count' => 0,
-            ]);
+            ];
+
+            // A change saved while this operation was open still has to be sent.
+            if ($price->updated_at <= $operation->created_at) {
+                $attributes['update'] = false;
+            }
+
+            $price->update($attributes);
 
             event(new UpdatedPriceEvent($price));
 
             return;
         }
 
+        $price->registerFailure();
+
+        if ($price->sync) {
+            $price->update([
+                'update' => true,
+            ]);
+        }
+
         activity()
             ->useLog('error')
+            ->on($price)
             ->withProperties([
                 'status' => $operation->status->name ?? 'unknown',
                 'response' => $operation->response,
