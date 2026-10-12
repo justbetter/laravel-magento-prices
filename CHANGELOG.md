@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.6.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-prices/compare/2.6.1...main)
+## [2.6.1](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.6.1) - 2026-10-12
+
+### What's Changed
+* Do not set update to false after async update by @VincentBean in https://github.com/justbetter/laravel-magento-prices/pull/44
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-prices/compare/2.6.0...2.6.1
+
 ## [2.6.0](https://github.com/justbetter/laravel-magento-prices/releases/tag/2.6.0) - 2026-05-06
 
 ### What's Changed
