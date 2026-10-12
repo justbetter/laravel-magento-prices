@@ -6,6 +6,7 @@ namespace JustBetter\MagentoPrices\Tests\Listeners;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
+use Iterator;
 use JustBetter\MagentoAsync\Enums\OperationStatus;
 use JustBetter\MagentoAsync\Models\BulkOperation;
 use JustBetter\MagentoAsync\Models\BulkRequest;
@@ -13,18 +14,21 @@ use JustBetter\MagentoPrices\Events\UpdatedPriceEvent;
 use JustBetter\MagentoPrices\Listeners\BulkOperationStatusListener;
 use JustBetter\MagentoPrices\Models\Price;
 use JustBetter\MagentoPrices\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 final class BulkOperationStatusListenerTest extends TestCase
 {
     #[Test]
-    public function it_handles_complete_status(): void
+    #[DataProvider('complete_cases')]
+    public function it_handles_complete_status(bool $changedAfterOperation, bool $expectedUpdate): void
     {
         Event::fake();
 
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => 'sku',
+            'update' => true,
             'fail_count' => 1,
             'last_failed' => now(),
         ]);
@@ -48,6 +52,11 @@ final class BulkOperationStatusListenerTest extends TestCase
             'status' => OperationStatus::Complete,
         ]);
 
+        if ($changedAfterOperation) {
+            Price::query()->whereKey($model->id)->update(['updated_at' => now()->addMinute()]);
+            $model->refresh();
+        }
+
         /** @var BulkOperationStatusListener $listener */
         $listener = app(BulkOperationStatusListener::class);
 
@@ -56,18 +65,29 @@ final class BulkOperationStatusListenerTest extends TestCase
         Event::assertDispatched(UpdatedPriceEvent::class);
         $model->refresh();
         $this->assertInstanceOf(Carbon::class, $model->last_updated);
-        $this->assertEquals(0, $model->fail_count);
+        $this->assertSame(0, $model->fail_count);
         $this->assertNotInstanceOf(Carbon::class, $model->last_failed);
+        $this->assertSame($expectedUpdate, $model->update);
+    }
+
+    public static function complete_cases(): Iterator
+    {
+        yield 'unchanged' => [false, false];
+        yield 'changed after operation' => [true, true];
     }
 
     #[Test]
-    public function it_handles_failed_status(): void
+    #[DataProvider('failed_cases')]
+    public function it_handles_failed_status(int $failCount, bool $expectedUpdate): void
     {
         Event::fake();
 
         /** @var Price $model */
         $model = Price::query()->create([
             'sku' => 'sku',
+            'sync' => true,
+            'update' => true,
+            'fail_count' => $failCount,
         ]);
 
         /** @var BulkRequest $request */
@@ -95,6 +115,16 @@ final class BulkOperationStatusListenerTest extends TestCase
         $listener->execute($operation);
 
         Event::assertNotDispatched(UpdatedPriceEvent::class);
-        $this->assertNotInstanceOf(Carbon::class, $model->refresh()->last_updated);
+        $model->refresh();
+        $this->assertNotInstanceOf(Carbon::class, $model->last_updated);
+        $this->assertInstanceOf(Carbon::class, $model->last_failed);
+        $this->assertSame($expectedUpdate, $model->update);
+        $this->assertSame($expectedUpdate, $model->sync);
+    }
+
+    public static function failed_cases(): Iterator
+    {
+        yield 'retry' => [0, true];
+        yield 'fail limit reached' => [2, false];
     }
 }
